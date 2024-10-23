@@ -1,0 +1,182 @@
+image: mcr.microsoft.com/dotnet/sdk:8.0
+
+variables:
+  TZ: "Europe/Berlin"
+  LANG: "de"
+
+stages:
+  - build
+  - test
+  - deploy
+
+
+
+default-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+  - if: $CI_COMMIT_TAG == null
+  script:
+    - dotnet build -c Debug --nologo
+    - mkdir ./artifacts
+    - shopt -s globstar
+    - mv ./**/*.nupkg    ./artifacts/ || true
+    - mv ./**/*.snupkg   ./artifacts/ || true
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 days
+
+default-test:
+  stage: test
+  dependencies:
+    - default-build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  coverage: /Branch coverage[\s\S].+%/
+  before_script:
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
+  script:
+    - dotnet test -c Debug --nologo /p:CoverletOutputFormat=Cobertura
+    - /dotnet-tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/coverage.cobertura.xml" "-targetdir:/reports" -reportType:TextSummary
+    - cat /reports/Summary.txt
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+default-deploy:
+  stage: deploy
+  dependencies:
+    - default-build
+    - default-test
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+
+
+
+core-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9.]+/
+  script:
+    - dotnet build -c Release --nologo Cloudflare/Cloudflare.csproj
+    - mkdir ./artifacts
+    - shopt -s globstar
+    - mv ./**/*.nupkg    ./artifacts/ || true
+    - mv ./**/*.snupkg   ./artifacts/ || true
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 days
+
+core-test:
+  stage: test
+  dependencies:
+    - core-build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9.]+/
+  script:
+    - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura Cloudflare.Tests/Cloudflare.Tests.csproj
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+core-deploy:
+  stage: deploy
+  dependencies:
+    - core-build
+    - core-test
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v[0-9.]+/
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+#    - dotnet nuget push -k $NUGET_APIKEY -s https://api.nuget.org/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+
+
+
+extensions-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^[a-z]+\/v[0-9.]+/
+  script:
+    - dotnet build -c Release --nologo
+    - mkdir ./artifacts
+    - shopt -s globstars
+    - mv ./**/*.nupkg    ./artifacts/ || true
+    - mv ./**/*.snupkg   ./artifacts/ || true
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 days
+
+extensions-test:
+  stage: test
+  dependencies:
+    - extensions-build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^[a-z]+\/v[0-9.]+/
+  script:
+    - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+extensions-deploy:
+  stage: deploy
+  dependencies:
+    - extensions-build
+    - extensions-test
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^[a-z]+\/v[0-9.]+/
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+#    - dotnet nuget push -k $NUGET_APIKEY -s https://api.nuget.org/v3/index.json --skip-duplicate artifacts/*.nupkg || true

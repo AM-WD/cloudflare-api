@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+
+    <Title>Modular Cloudflare API implementation in .NET</Title>
+    <Company>AM.WD</Company>
+    <Authors>Andreas Müller</Authors>
+    <Copyright>© {copyright:2024-} AM.WD</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)/cloudflare-api.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    <Using Include="Newtonsoft.Json"/>
+  </ItemGroup>
+</Project>
