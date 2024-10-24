@@ -11,7 +11,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// Information about the result of the request.
 		/// </summary>
 		[JsonProperty("result_info")]
-		public ResultInfo ResultInfo { get; set; }
+		public PaginationInfo ResultInfo { get; set; }
 
 		/// <summary>
 		/// Whether the API call was successful.

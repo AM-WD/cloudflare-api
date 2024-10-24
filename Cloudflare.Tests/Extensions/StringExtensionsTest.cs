@@ -1,0 +1,131 @@
+﻿using System;
+using AMWD.Net.Api.Cloudflare;
+
+namespace Cloudflare.Tests.Extensions
+{
+	[TestClass]
+	public class StringExtensionsTest
+	{
+		[TestMethod]
+		public void ShouldValidateId()
+		{
+			// Arrange
+			string id = "023e105f4ecef8ad9ca31a8372d0c353";
+
+			// Act
+			id.ValidateCloudflareId();
+
+			// Assert - no exception thrown
+		}
+
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow("")]
+		[DataRow("  ")]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldThrowArgumentNullExceptionForValidateId(string name)
+		{
+			// Arrange
+
+			// Act
+			name.ValidateCloudflareId();
+
+			// Assert - ArgumentNullException
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void ShouldThrowArgumentOutOfRangeExceptionForValidateId()
+		{
+			// Arrange
+			string id = new('a', 33);
+
+			// Act
+			id.ValidateCloudflareId();
+
+			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public void ShouldValidateName()
+		{
+			// Arrange
+			string name = "Example Account Name";
+
+			// Act
+			name.ValidateCloudflareName();
+
+			// Assert - no exception thrown
+		}
+
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow("")]
+		[DataRow("  ")]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldThrowArgumentNullExceptionForValidateName(string name)
+		{
+			// Arrange
+
+			// Act
+			name.ValidateCloudflareName();
+
+			// Assert - ArgumentNullException
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void ShouldThrowArgumentOutOfRangeExceptionForValidateName()
+		{
+			// Arrange
+			string name = new('a', 254);
+
+			// Act
+			name.ValidateCloudflareName();
+
+			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public void ShouldValidateEmail()
+		{
+			// Arrange
+			string email = "test@example.com";
+
+			// Act
+			email.ValidateCloudflareEmailAddress();
+
+			// Assert - no exception thrown
+		}
+
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow("")]
+		[DataRow("  ")]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void ShouldThrowArgumentNullExceptionForValidateEmail(string email)
+		{
+			// Arrange
+
+			// Act
+			email.ValidateCloudflareEmailAddress();
+
+			// Assert - ArgumentNullException
+		}
+
+		[DataTestMethod]
+		[DataRow("test")]
+		[DataRow("test@example")]
+		[DataRow("example.com")]
+		[ExpectedException(typeof(ArgumentException))]
+		public void ShouldThrowArgumentExceptionForValidateEmail(string email)
+		{
+			// Arrange
+
+			// Act
+			email.ValidateCloudflareEmailAddress();
+
+			// Assert - ArgumentException
+		}
+	}
+}

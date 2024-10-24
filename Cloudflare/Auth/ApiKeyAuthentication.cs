@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 
 namespace AMWD.Net.Api.Cloudflare.Auth
 {
@@ -9,7 +8,6 @@ namespace AMWD.Net.Api.Cloudflare.Auth
 	/// </summary>
 	public class ApiKeyAuthentication : IAuthentication
 	{
-		private static readonly Regex _emailCheckRegex = new(@"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$", RegexOptions.Compiled);
 		private readonly string _emailAddress;
 		private readonly string _apiKey;
 
@@ -20,14 +18,10 @@ namespace AMWD.Net.Api.Cloudflare.Auth
 		/// <param name="apiKey">The global API key.</param>
 		public ApiKeyAuthentication(string emailAddress, string apiKey)
 		{
-			if (string.IsNullOrWhiteSpace(emailAddress))
-				throw new ArgumentNullException(nameof(emailAddress));
+			emailAddress.ValidateCloudflareEmailAddress();
 
 			if (string.IsNullOrWhiteSpace(apiKey))
 				throw new ArgumentNullException(nameof(apiKey));
-
-			if (!_emailCheckRegex.IsMatch(emailAddress))
-				throw new ArgumentException("Invalid email address", nameof(emailAddress));
 
 			_emailAddress = emailAddress;
 			_apiKey = apiKey;

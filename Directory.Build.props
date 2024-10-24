@@ -6,6 +6,8 @@
     <Company>AM.WD</Company>
     <Authors>Andreas Müller</Authors>
     <Copyright>© {copyright:2024-} AM.WD</Copyright>
+
+    <PublicKey>0024000004800000940000000602000000240000525341310004000001000100a96b0435a48fcae5d097c19c0c3a312d0316c1217a7d5984236f430625510dfdbedc3ffdaea7b3bad77adbe5d85cecdd788a43cd02a8a4950313587bbcb804ff2ef68346f9d6a79f79338e4f12293f216df0536d2b05ab7977b6c50946a42422cb1ddc109c0151a3d65fbe636ce6734070fb6e3eaf000a33ac6a36cab5292ed1</PublicKey>
   </PropertyGroup>
 
   <PropertyGroup>

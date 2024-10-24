@@ -200,6 +200,54 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			VerifyNoOtherCalls();
 		}
 
+		[TestMethod]
+		public async Task ShouldPutWithoutContent()
+		{
+			// Arrange
+			_httpHandlerMock.Responses.Enqueue(new HttpResponseMessage
+			{
+				StatusCode = HttpStatusCode.OK,
+				Content = new StringContent(@"{""success"": true, ""errors"": [], ""messages"": [], ""result"": { ""string"": ""some-string"", ""integer"": 123 }}", Encoding.UTF8, MediaTypeNames.Application.Json),
+			});
+
+			var client = GetClient();
+
+			// Act
+			var response = await client.PutAsync<TestClass, object>("putput", null);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.IsNotNull(response.Errors);
+			Assert.IsNotNull(response.Messages);
+			Assert.IsNull(response.ResultInfo);
+
+			Assert.AreEqual(0, response.Errors.Count);
+			Assert.AreEqual(0, response.Messages.Count);
+
+			Assert.IsNotNull(response.Result);
+			Assert.AreEqual("some-string", response.Result.Str);
+			Assert.AreEqual(123, response.Result.Int);
+
+			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+
+			var callback = _httpHandlerMock.Callbacks.First();
+			Assert.AreEqual(HttpMethod.Put, callback.Method);
+			Assert.AreEqual("https://localhost/api/v4/putput", callback.Url);
+			Assert.IsNull(callback.Content);
+
+			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
+			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
+			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
+
+			Assert.AreEqual("application/json", callback.Headers["Accept"]);
+			Assert.AreEqual("Bearer Some-API-Token", callback.Headers["Authorization"]);
+			Assert.AreEqual("AMWD.CloudflareClient/1.0.0", callback.Headers["User-Agent"]);
+
+			_httpHandlerMock.Mock.Protected().Verify("SendAsync", Times.Once(), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
+		}
+
 		[DataTestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]

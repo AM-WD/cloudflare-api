@@ -94,15 +94,19 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest request, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest request, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
 
-			string requestUrl = BuildRequestUrl(requestPath);
+			string requestUrl = BuildRequestUrl(requestPath, queryFilter);
 
 			HttpContent httpRequestContent;
-			if (request is HttpContent httpContent)
+			if (request == null)
+			{
+				httpRequestContent = null;
+			}
+			else if (request is HttpContent httpContent)
 			{
 				httpRequestContent = httpContent;
 			}
@@ -125,7 +129,11 @@ namespace AMWD.Net.Api.Cloudflare
 			string requestUrl = BuildRequestUrl(requestPath);
 
 			HttpContent httpRequestContent;
-			if (request is HttpContent httpContent)
+			if (request == null)
+			{
+				httpRequestContent = null;
+			}
+			else if (request is HttpContent httpContent)
 			{
 				httpRequestContent = httpContent;
 			}
@@ -140,12 +148,12 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
 
-			string requestUrl = BuildRequestUrl(requestPath);
+			string requestUrl = BuildRequestUrl(requestPath, queryFilter);
 
 			var response = await _httpClient.DeleteAsync(requestUrl, cancellationToken).ConfigureAwait(false);
 			return await GetCloudflareResponse<TResponse>(response, cancellationToken).ConfigureAwait(false);
@@ -285,7 +293,7 @@ namespace AMWD.Net.Api.Cloudflare
 							return new CloudflareResponse<TRes>
 							{
 								Success = true,
-								ResultInfo = new ResultInfo(),
+								ResultInfo = new PaginationInfo(),
 								Result = (TRes)cObj,
 							};
 						}

@@ -1,9 +1,9 @@
 ﻿namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
-	/// Cloudflare Result Information.
+	/// Cloudflare pagination information.
 	/// </summary>
-	public class ResultInfo
+	public class PaginationInfo
 	{
 		/// <summary>
 		/// Total number of results for the requested service.

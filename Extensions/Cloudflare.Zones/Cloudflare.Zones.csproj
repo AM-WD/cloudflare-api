@@ -17,4 +17,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Cloudflare.Zones.Tests" PublicKey="$(PublicKey)" />
+  </ItemGroup>
+
 </Project>
