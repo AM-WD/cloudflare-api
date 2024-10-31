@@ -20,7 +20,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 	[TestClass]
 	public class PutAsyncTest
 	{
-		private const string _baseUrl = "https://localhost/api/v4/";
+		private const string BaseUrl = "https://localhost/api/v4/";
 
 		private HttpMessageHandlerMock _httpHandlerMock;
 		private Mock<ClientOptions> _clientOptionsMock;
@@ -39,7 +39,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 				.Setup(a => a.AddHeader(It.IsAny<HttpClient>()))
 				.Callback<HttpClient>(c => c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Some-API-Token"));
 
-			_clientOptionsMock.Setup(o => o.BaseUrl).Returns(_baseUrl);
+			_clientOptionsMock.Setup(o => o.BaseUrl).Returns(BaseUrl);
 			_clientOptionsMock.Setup(o => o.Timeout).Returns(TimeSpan.FromSeconds(60));
 			_clientOptionsMock.Setup(o => o.MaxRetries).Returns(2);
 			_clientOptionsMock.Setup(o => o.DefaultHeaders).Returns(new Dictionary<string, string>());
@@ -383,8 +383,8 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		{
 			var httpClient = new HttpClient(_httpHandlerMock.Mock.Object)
 			{
-				BaseAddress = new Uri(_baseUrl),
 				Timeout = _clientOptionsMock.Object.Timeout,
+				BaseAddress = new Uri(BaseUrl),
 			};
 
 			httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AMWD.CloudflareClient", "1.0.0"));

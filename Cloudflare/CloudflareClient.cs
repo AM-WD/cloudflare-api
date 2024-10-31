@@ -17,9 +17,9 @@ namespace AMWD.Net.Api.Cloudflare
 	/// <summary>
 	/// Implements the Core of the Cloudflare API client.
 	/// </summary>
-	public partial class CloudflareClient : ICloudflareClient, IDisposable
+	public class CloudflareClient : ICloudflareClient, IDisposable
 	{
-		private static readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
+		private static readonly JsonSerializerSettings _jsonSerializerSettings = new()
 		{
 			Culture = CultureInfo.InvariantCulture,
 			Formatting = Formatting.None,
@@ -100,23 +100,9 @@ namespace AMWD.Net.Api.Cloudflare
 			ValidateRequestPath(requestPath);
 
 			string requestUrl = BuildRequestUrl(requestPath, queryFilter);
+			var httpContent = ConvertRequest(request);
 
-			HttpContent httpRequestContent;
-			if (request == null)
-			{
-				httpRequestContent = null;
-			}
-			else if (request is HttpContent httpContent)
-			{
-				httpRequestContent = httpContent;
-			}
-			else
-			{
-				string json = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
-				httpRequestContent = new StringContent(json, Encoding.UTF8, "application/json");
-			}
-
-			var response = await _httpClient.PostAsync(requestUrl, httpRequestContent, cancellationToken).ConfigureAwait(false);
+			var response = await _httpClient.PostAsync(requestUrl, httpContent, cancellationToken).ConfigureAwait(false);
 			return await GetCloudflareResponse<TResponse>(response, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -127,23 +113,9 @@ namespace AMWD.Net.Api.Cloudflare
 			ValidateRequestPath(requestPath);
 
 			string requestUrl = BuildRequestUrl(requestPath);
+			var httpContent = ConvertRequest(request);
 
-			HttpContent httpRequestContent;
-			if (request == null)
-			{
-				httpRequestContent = null;
-			}
-			else if (request is HttpContent httpContent)
-			{
-				httpRequestContent = httpContent;
-			}
-			else
-			{
-				string json = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
-				httpRequestContent = new StringContent(json, Encoding.UTF8, "application/json");
-			}
-
-			var response = await _httpClient.PutAsync(requestUrl, httpRequestContent, cancellationToken).ConfigureAwait(false);
+			var response = await _httpClient.PutAsync(requestUrl, httpContent, cancellationToken).ConfigureAwait(false);
 			return await GetCloudflareResponse<TResponse>(response, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -166,31 +138,9 @@ namespace AMWD.Net.Api.Cloudflare
 			ValidateRequestPath(requestPath);
 
 			string requestUrl = BuildRequestUrl(requestPath);
+			var httpContent = ConvertRequest(request);
 
-			HttpContent httpRequestContent;
-			if (request is HttpContent httpContent)
-			{
-				httpRequestContent = httpContent;
-			}
-			else
-			{
-				string json = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
-				httpRequestContent = new StringContent(json, Encoding.UTF8, "application/json");
-			}
-
-#if NET6_0_OR_GREATER
-			var response = await _httpClient.PatchAsync(requestUrl, httpRequestContent, cancellationToken).ConfigureAwait(false);
-#else
-			var httpRequestMessage = new HttpRequestMessage
-			{
-				Version = HttpVersion.Version11,
-				Method = new HttpMethod("PATCH"),
-				RequestUri = new Uri(requestUrl),
-				Content = httpRequestContent,
-			};
-			var response = await _httpClient.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
-#endif
-
+			var response = await _httpClient.PatchAsync(requestUrl, httpContent, cancellationToken).ConfigureAwait(false);
 			return await GetCloudflareResponse<TResponse>(response, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -266,24 +216,29 @@ namespace AMWD.Net.Api.Cloudflare
 			return client;
 		}
 
-		private async Task<CloudflareResponse<TRes>> GetCloudflareResponse<TRes>(HttpResponseMessage response, CancellationToken cancellationToken)
+		private static async Task<CloudflareResponse<TRes>> GetCloudflareResponse<TRes>(HttpResponseMessage httpResponse, CancellationToken cancellationToken)
 		{
 #if NET6_0_OR_GREATER
-			string content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+			string content = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 #else
-			string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			string content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 #endif
-			switch (response.StatusCode)
+			switch (httpResponse.StatusCode)
 			{
 				case HttpStatusCode.Forbidden:
 				case HttpStatusCode.Unauthorized:
-					var errorResponse = JsonConvert.DeserializeObject<CloudflareResponse<object>>(content);
+					var errorResponse = JsonConvert.DeserializeObject<CloudflareResponse<object>>(content, _jsonSerializerSettings)
+						?? throw new CloudflareException("Response is not a valid Cloudflare API response.");
+
 					throw new AuthenticationException(string.Join(Environment.NewLine, errorResponse.Errors.Select(e => $"{e.Code}: {e.Message}")));
 
 				default:
 					try
 					{
-						return JsonConvert.DeserializeObject<CloudflareResponse<TRes>>(content);
+						var response = JsonConvert.DeserializeObject<CloudflareResponse<TRes>>(content)
+							?? throw new CloudflareException("Response is not a valid Cloudflare API response.");
+
+						return response;
 					}
 					catch
 					{
@@ -327,6 +282,18 @@ namespace AMWD.Net.Api.Cloudflare
 			string query = string.Join("&", param);
 
 			return $"{requestPath}?{query}";
+		}
+
+		private static HttpContent ConvertRequest<T>(T request)
+		{
+			if (request == null)
+				return null;
+
+			if (request is HttpContent httpContent)
+				return httpContent;
+
+			string json = JsonConvert.SerializeObject(request, _jsonSerializerSettings);
+			return new StringContent(json, Encoding.UTF8, "application/json");
 		}
 	}
 }

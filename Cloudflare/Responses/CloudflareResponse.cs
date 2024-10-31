@@ -35,7 +35,7 @@ namespace AMWD.Net.Api.Cloudflare
 	/// <summary>
 	/// The base Cloudflare response with a result.
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The result type.</typeparam>
 	public class CloudflareResponse<T> : CloudflareResponse
 	{
 		/// <summary>

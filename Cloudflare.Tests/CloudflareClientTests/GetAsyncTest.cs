@@ -20,7 +20,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 	[TestClass]
 	public class GetAsyncTest
 	{
-		private const string _baseUrl = "http://localhost/api/v4/";
+		private const string BaseUrl = "http://localhost/api/v4/";
 
 		private HttpMessageHandlerMock _httpHandlerMock;
 		private Mock<ClientOptions> _clientOptionsMock;
@@ -37,7 +37,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 				.Setup(a => a.AddHeader(It.IsAny<HttpClient>()))
 				.Callback<HttpClient>(c => c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Some-API-Token"));
 
-			_clientOptionsMock.Setup(o => o.BaseUrl).Returns(_baseUrl);
+			_clientOptionsMock.Setup(o => o.BaseUrl).Returns(BaseUrl);
 			_clientOptionsMock.Setup(o => o.Timeout).Returns(TimeSpan.FromSeconds(60));
 			_clientOptionsMock.Setup(o => o.MaxRetries).Returns(2);
 			_clientOptionsMock.Setup(o => o.DefaultHeaders).Returns(new Dictionary<string, string>());
@@ -168,6 +168,27 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			}
 		}
 
+		[DataTestMethod]
+		[DataRow(HttpStatusCode.Unauthorized)]
+		[DataRow(HttpStatusCode.Forbidden)]
+		[ExpectedException(typeof(CloudflareException))]
+		public async Task ShouldThrowCloudflareExceptionOnStatusCodeWhenDeserializeFails(HttpStatusCode statusCode)
+		{
+			// Arrange
+			_httpHandlerMock?.Responses.Enqueue(new HttpResponseMessage
+			{
+				StatusCode = statusCode,
+				Content = new StringContent("", Encoding.UTF8, MediaTypeNames.Application.Json),
+			});
+
+			var client = GetClient();
+
+			// Act
+			await client.GetAsync<TestClass>("foo");
+
+			// Assert - CloudflareException
+		}
+
 		[TestMethod]
 		public async Task ShouldReturnPlainText()
 		{
@@ -250,6 +271,25 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			await client.GetAsync<TestClass>("some-path");
 		}
 
+		[TestMethod]
+		[ExpectedException(typeof(CloudflareException))]
+		public async Task ShouldThrowCloudflareExceptionWhenDeserializeFails()
+		{
+			// Arrange
+			_httpHandlerMock?.Responses.Enqueue(new HttpResponseMessage
+			{
+				StatusCode = HttpStatusCode.OK,
+				Content = new StringContent("", Encoding.UTF8, MediaTypeNames.Application.Json),
+			});
+
+			var client = GetClient();
+
+			// Act
+			await client.GetAsync<TestClass>("foo");
+
+			// Assert - CloudflareException
+		}
+
 		private void VerifyDefaults()
 		{
 			_authenticationMock.Verify(m => m.AddHeader(It.IsAny<HttpClient>()), Times.Once);
@@ -275,8 +315,8 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		{
 			var httpClient = new HttpClient(_httpHandlerMock.Mock.Object)
 			{
-				BaseAddress = new Uri(_baseUrl),
 				Timeout = _clientOptionsMock.Object.Timeout,
+				BaseAddress = new Uri(BaseUrl),
 			};
 
 			httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("AMWD.CloudflareClient", "1.0.0"));
