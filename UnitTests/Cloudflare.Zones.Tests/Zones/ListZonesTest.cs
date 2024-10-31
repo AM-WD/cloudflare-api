@@ -178,12 +178,12 @@ namespace Cloudflare.Zones.Tests.Zones
 			{
 				AccountId = "023e105f4ecef8ad9ca31a8372d0c353",
 				AccountName = "Example Account Name",
-				MatchType = FilterMatchType.Any,
+				Match = FilterMatchType.Any,
 				Name = "example.com",
 				PerPage = 13,
 				Page = 5,
 				OrderBy = ZonesOrderBy.AccountName,
-				OrderDirection = SortDirection.Descending,
+				Direction = SortDirection.Descending,
 				Status = ZoneStatus.Active
 			};
 
@@ -261,7 +261,7 @@ namespace Cloudflare.Zones.Tests.Zones
 			// Arrange
 			var filter = new ListZonesFilter
 			{
-				OrderDirection = 0
+				Direction = 0
 			};
 
 			// Act
@@ -278,7 +278,7 @@ namespace Cloudflare.Zones.Tests.Zones
 			// Arrange
 			var filter = new ListZonesFilter
 			{
-				MatchType = 0
+				Match = 0
 			};
 
 			// Act

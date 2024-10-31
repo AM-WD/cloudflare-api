@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace AMWD.Net.Api.Cloudflare.Zones
 {
 	/// <summary>
-	/// Field to order zones by.
+	/// Possible fields to order zones by.
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum ZonesOrderBy

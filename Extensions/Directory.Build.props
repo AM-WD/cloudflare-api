@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
+    <Nullable>enable</Nullable>
 
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>

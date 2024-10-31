@@ -17,7 +17,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// Gets or sets an information whether subdomains are included in the hold.
 		/// </summary>
 		[JsonProperty("include_subdomains")]
-		public string IncludeSubdomains { get; set; }
+		public string? IncludeSubdomains { get; set; }
 
 		/// <summary>
 		/// Gets or sets the time after which the zone is no longer on hold.

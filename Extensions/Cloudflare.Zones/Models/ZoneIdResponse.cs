@@ -10,6 +10,6 @@
 		/// </summary>
 		// <= 32 characters
 		[JsonProperty("id")]
-		public string Id { get; set; }
+		public string? Id { get; set; }
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AMWD.Net.Api.Cloudflare.Zones.Cache.InternalRequests;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Requests;
 
 namespace AMWD.Net.Api.Cloudflare.Zones
 {
@@ -24,11 +24,11 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContent(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
-			var req = new PurgeRequest
+			var req = new InternalPurgeCacheRequest
 			{
 				PurgeEverything = true
 			};
-			return client.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -60,15 +60,12 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		{
 			zoneId.ValidateCloudflareId();
 
-			if (urls == null)
-				throw new ArgumentNullException(nameof(urls));
-
-			var req = new PurgeRequest();
+			var req = new InternalPurgeCacheRequest();
 
 			if (urls.Any(u => u.Headers.Count > 0))
 			{
 				req.UrlsWithHeaders = urls.Where(u => !string.IsNullOrWhiteSpace(u.Url))
-					.Select(u => new UrlWithHeaders
+					.Select(u => new PurgeUrlWithHeaders
 					{
 						Url = u.Url,
 						Headers = u.Headers
@@ -81,7 +78,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 				req.Urls = urls.Where(u => !string.IsNullOrWhiteSpace(u.Url)).Select(u => u.Url).ToList();
 			}
 
-			return client.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -111,11 +108,11 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (tags == null)
 				throw new ArgumentNullException(nameof(tags));
 
-			var req = new PurgeRequest
+			var req = new InternalPurgeCacheRequest
 			{
 				Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -145,11 +142,11 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (hosts == null)
 				throw new ArgumentNullException(nameof(hosts));
 
-			var req = new PurgeRequest
+			var req = new InternalPurgeCacheRequest
 			{
 				Hostnames = hosts.Where(h => !string.IsNullOrWhiteSpace(h)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -179,11 +176,11 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (prefixes == null)
 				throw new ArgumentNullException(nameof(prefixes));
 
-			var req = new PurgeRequest
+			var req = new InternalPurgeCacheRequest
 			{
 				Prefixes = prefixes.Where(h => !string.IsNullOrWhiteSpace(h)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AMWD.Net.Api.Cloudflare.Zones.Zones.InternalRequests;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Requests;
 
 namespace AMWD.Net.Api.Cloudflare.Zones
 {
@@ -18,7 +18,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="client">The <see cref="ICloudflareClient"/>.</param>
 		/// <param name="options">Filter options (optional).</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<IReadOnlyList<Zone>>> ListZones(this ICloudflareClient client, ListZonesFilter options = null, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IReadOnlyList<Zone>>> ListZones(this ICloudflareClient client, ListZonesFilter? options = null, CancellationToken cancellationToken = default)
 		{
 			return client.GetAsync<IReadOnlyList<Zone>>("zones", options, cancellationToken);
 		}
@@ -52,17 +52,15 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (!RegexPatterns.ZoneName.IsMatch(request.Name))
 				throw new ArgumentException("Does not match the zone name pattern", nameof(request.Name));
 
-			if (!Enum.IsDefined(typeof(ZoneType), request.Type))
+			if (request.Type.HasValue && !Enum.IsDefined(typeof(ZoneType), request.Type))
 				throw new ArgumentOutOfRangeException(nameof(request.Type));
 
-			var req = new CreateRequest
+			var req = new InternalCreateZoneRequest(account: new AccountBase { Id = request.AccountId }, name: request.Name)
 			{
-				Account = new AccountBase { Id = request.AccountId },
-				Name = request.Name,
 				Type = request.Type
 			};
 
-			return client.PostAsync<Zone, CreateRequest>("zones", req, cancellationToken: cancellationToken);
+			return client.PostAsync<Zone, InternalCreateZoneRequest>("zones", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -96,7 +94,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (request.Type.HasValue && !Enum.IsDefined(typeof(ZoneType), request.Type.Value))
 				throw new ArgumentOutOfRangeException(nameof(request.Type));
 
-			var req = new EditRequest();
+			var req = new InternalEditZoneRequest();
 
 			if (request.Type.HasValue)
 				req.Type = request.Type.Value;
@@ -104,7 +102,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			if (request.VanityNameServers != null)
 				req.VanityNameServers = request.VanityNameServers.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
-			return client.PatchAsync<Zone, EditRequest>($"zones/{request.Id}", req, cancellationToken);
+			return client.PatchAsync<Zone, InternalEditZoneRequest>($"zones/{request.Id}", req, cancellationToken);
 		}
 
 		// Triggeres a new activation check for a PENDING Zone. This can be triggered every 5 min for paygo/ent customers, every hour for FREE Zones.

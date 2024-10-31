@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Filters;
 using Moq;
 
 namespace Cloudflare.Zones.Tests.Hold
@@ -12,8 +13,8 @@ namespace Cloudflare.Zones.Tests.Hold
 	[TestClass]
 	public class CreateZoneHoldTest
 	{
+		private readonly DateTime _date = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
-		private readonly DateTime DateTime = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 
 		private Mock<ICloudflareClient> _clientMock;
 
@@ -46,7 +47,7 @@ namespace Cloudflare.Zones.Tests.Hold
 				Result = new ZoneHold
 				{
 					Hold = true,
-					HoldAfter = DateTime,
+					HoldAfter = _date,
 					IncludeSubdomains = "true"
 				}
 			};

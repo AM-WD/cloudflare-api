@@ -13,13 +13,13 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// </summary>
 		// <= 32 characters
 		[JsonProperty("id")]
-		public string Id { get; set; }
+		public string? Id { get; set; }
 
 		/// <summary>
 		/// The account the zone belongs to.
 		/// </summary>
 		[JsonProperty("account")]
-		public AccountBase Account { get; set; }
+		public AccountBase? Account { get; set; }
 
 		/// <summary>
 		/// The last time proof of ownership was detected and the zone was made active.
@@ -45,7 +45,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// Metadata about the zone.
 		/// </summary>
 		[JsonProperty("meta")]
-		public ZoneMetaData Meta { get; set; }
+		public ZoneMetaData? Meta { get; set; }
 
 		/// <summary>
 		/// When the zone was last modified.
@@ -58,37 +58,37 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// </summary>
 		// <= 253 characters
 		[JsonProperty("name")]
-		public string Name { get; set; }
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// The name servers Cloudflare assigns to a zone.
 		/// </summary>
 		[JsonProperty("name_servers")]
-		public IReadOnlyList<string> NameServers { get; set; }
+		public IReadOnlyList<string>? NameServers { get; set; }
 
 		/// <summary>
 		/// DNS host at the time of switching to Cloudflare.
 		/// </summary>
 		[JsonProperty("original_dnshost")]
-		public string OriginalDnshost { get; set; }
+		public string? OriginalDnshost { get; set; }
 
 		/// <summary>
 		/// Original name servers before moving to Cloudflare.
 		/// </summary>
 		[JsonProperty("original_name_servers")]
-		public IReadOnlyList<string> OriginalNameServers { get; set; }
+		public IReadOnlyList<string>? OriginalNameServers { get; set; }
 
 		/// <summary>
 		/// Registrar for the domain at the time of switching to Cloudflare.
 		/// </summary>
 		[JsonProperty("original_registrar")]
-		public string OriginalRegistrar { get; set; }
+		public string? OriginalRegistrar { get; set; }
 
 		/// <summary>
 		/// The owner of the zone.
 		/// </summary>
 		[JsonProperty("owner")]
-		public OwnerBase Owner { get; set; }
+		public OwnerBase? Owner { get; set; }
 
 		/// <summary>
 		/// Indicates whether the zone is only using Cloudflare DNS services.
@@ -115,6 +115,6 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <em>This is only available for Business and Enterprise plans.</em>
 		/// </summary>
 		[JsonProperty("vanity_name_servers")]
-		public IReadOnlyList<string> VanityNameServers { get; set; }
+		public IReadOnlyList<string>? VanityNameServers { get; set; }
 	}
 }

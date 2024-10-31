@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AMWD.Net.Api.Cloudflare.Zones.Cache.InternalRequests;
-using AMWD.Net.Api.Cloudflare.Zones;
-using Moq;
 using AMWD.Net.Api.Cloudflare;
+using AMWD.Net.Api.Cloudflare.Zones;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Requests;
+using Moq;
 
 namespace Cloudflare.Zones.Tests.Cache
 {
@@ -21,7 +20,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 		private CloudflareResponse<ZoneIdResponse> _response;
 
-		private List<(string RequestPath, PurgeRequest Request, IQueryParameterFilter QueryFilter)> _callbacks;
+		private List<(string RequestPath, InternalPurgeCacheRequest Request, IQueryParameterFilter QueryFilter)> _callbacks;
 
 		[TestInitialize]
 		public void Initialize()
@@ -58,8 +57,8 @@ namespace Cloudflare.Zones.Tests.Cache
 			// Arrange
 			var list = new List<ZonePurgeCachedUrlRequest>
 			{
-				new ZonePurgeCachedUrlRequest { Url = "https://example.com/foo.txt" },
-				new ZonePurgeCachedUrlRequest { Url = "https://example.com/bar.baz" },
+				new("https://example.com/foo.txt"),
+				new("https://example.com/bar.baz"),
 			};
 
 			var client = GetClient();
@@ -90,7 +89,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<PurgeRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -100,8 +99,8 @@ namespace Cloudflare.Zones.Tests.Cache
 			// Arrange
 			var list = new List<ZonePurgeCachedUrlRequest>
 			{
-				new ZonePurgeCachedUrlRequest { Url = "https://example.com/foo.txt", Headers = new Dictionary<string, string> { { "X-Test1", "Test" } } },
-				new ZonePurgeCachedUrlRequest { Url = "https://example.com/bar.baz", Headers = new Dictionary<string, string> { { "X-Test2", "Test" } } },
+				new("https://example.com/foo.txt") { Headers = new Dictionary<string, string> { { "X-Test1", "Test" } } },
+				new("https://example.com/bar.baz") { Headers = new Dictionary<string, string> { { "X-Test2", "Test" } } },
 			};
 
 			var client = GetClient();
@@ -134,7 +133,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, PurgeRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<PurgeRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -155,8 +154,8 @@ namespace Cloudflare.Zones.Tests.Cache
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PostAsync<ZoneIdResponse, PurgeRequest>(It.IsAny<string>(), It.IsAny<PurgeRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
-				.Callback<string, PurgeRequest, IQueryParameterFilter, CancellationToken>((requestPath, request, queryFilter, _) => _callbacks.Add((requestPath, request, queryFilter)))
+				.Setup(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>(It.IsAny<string>(), It.IsAny<InternalPurgeCacheRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Callback<string, InternalPurgeCacheRequest, IQueryParameterFilter, CancellationToken>((requestPath, request, queryFilter, _) => _callbacks.Add((requestPath, request, queryFilter)))
 				.ReturnsAsync(() => _response);
 
 			return _clientMock.Object;

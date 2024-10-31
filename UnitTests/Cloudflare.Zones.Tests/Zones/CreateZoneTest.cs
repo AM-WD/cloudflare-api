@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
-using AMWD.Net.Api.Cloudflare.Zones.Zones.InternalRequests;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Requests;
 using Moq;
 
 namespace Cloudflare.Zones.Tests.Zones
@@ -19,7 +19,7 @@ namespace Cloudflare.Zones.Tests.Zones
 
 		private CloudflareResponse<Zone> _response;
 
-		private List<(string RequestPath, CreateRequest Request)> _callbacks;
+		private List<(string RequestPath, InternalCreateZoneRequest Request)> _callbacks;
 
 		private CreateZoneRequest _request;
 
@@ -47,7 +47,7 @@ namespace Cloudflare.Zones.Tests.Zones
 				],
 				Result = new Zone
 				{
-					Id = "023e105f4ecef8ad9ca31a8372d0c353",
+					Id = ZoneId,
 					Account = new AccountBase
 					{
 						Id = "023e105f4ecef8ad9ca31a8372d0c353",
@@ -97,18 +97,16 @@ namespace Cloudflare.Zones.Tests.Zones
 				}
 			};
 
-			_request = new CreateZoneRequest
-			{
-				AccountId = "023e105f4ecef8ad9ca31a8372d0c353",
-				Name = "example.com",
-				Type = ZoneType.Full
-			};
+			_request = new CreateZoneRequest("023e105f4ecef8ad9ca31a8372d0c353", "example.com");
 		}
 
-		[TestMethod]
-		public async Task ShouldReturnCreatedZone()
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow(ZoneType.Full)]
+		public async Task ShouldReturnCreatedZone(ZoneType? type)
 		{
 			// Arrange
+			_request.Type = type;
 			var client = GetClient();
 
 			// Act
@@ -129,7 +127,7 @@ namespace Cloudflare.Zones.Tests.Zones
 			Assert.AreEqual(_request.Name, callback.Request.Name);
 			Assert.AreEqual(_request.Type, callback.Request.Type);
 
-			_clientMock.Verify(m => m.PostAsync<Zone, CreateRequest>("zones", It.IsAny<CreateRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<Zone, InternalCreateZoneRequest>("zones", It.IsAny<InternalCreateZoneRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -182,8 +180,8 @@ namespace Cloudflare.Zones.Tests.Zones
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PostAsync<Zone, CreateRequest>(It.IsAny<string>(), It.IsAny<CreateRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
-				.Callback<string, CreateRequest, IQueryParameterFilter, CancellationToken>((requestPath, request, _, _) => _callbacks.Add((requestPath, request)))
+				.Setup(m => m.PostAsync<Zone, InternalCreateZoneRequest>(It.IsAny<string>(), It.IsAny<InternalCreateZoneRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Callback<string, InternalCreateZoneRequest, IQueryParameterFilter, CancellationToken>((requestPath, request, _, _) => _callbacks.Add((requestPath, request)))
 				.ReturnsAsync(() => _response);
 
 			return _clientMock.Object;

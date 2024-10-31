@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AMWD.Net.Api.Cloudflare.Zones
+namespace AMWD.Net.Api.Cloudflare.Zones.Internals.Filters
 {
 	internal class CreateZoneHoldFilter : IQueryParameterFilter
 	{

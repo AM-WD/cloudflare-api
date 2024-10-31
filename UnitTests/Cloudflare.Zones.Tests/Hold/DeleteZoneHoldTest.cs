@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Filters;
 using Moq;
 
 namespace Cloudflare.Zones.Tests.Hold
@@ -12,8 +13,8 @@ namespace Cloudflare.Zones.Tests.Hold
 	[TestClass]
 	public class DeleteZoneHoldTest
 	{
+		private readonly DateTime _date = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
-		private readonly DateTime Date = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 
 		private Mock<ICloudflareClient> _clientMock;
 
@@ -46,7 +47,7 @@ namespace Cloudflare.Zones.Tests.Hold
 				Result = new ZoneHold
 				{
 					Hold = true,
-					HoldAfter = Date,
+					HoldAfter = _date,
 					IncludeSubdomains = "true"
 				}
 			};
@@ -86,7 +87,7 @@ namespace Cloudflare.Zones.Tests.Hold
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteZoneHold(ZoneId, holdAfter: Date);
+			var response = await client.DeleteZoneHold(ZoneId, holdAfter: _date);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -100,7 +101,7 @@ namespace Cloudflare.Zones.Tests.Hold
 			Assert.IsNotNull(callback.QueryFilter);
 
 			Assert.IsInstanceOfType<DeleteZoneHoldFilter>(callback.QueryFilter);
-			Assert.AreEqual(Date, ((DeleteZoneHoldFilter)callback.QueryFilter).HoldAfter);
+			Assert.AreEqual(_date, ((DeleteZoneHoldFilter)callback.QueryFilter).HoldAfter);
 
 			_clientMock.Verify(m => m.DeleteAsync<ZoneHold>($"zones/{ZoneId}/hold", It.IsAny<DeleteZoneHoldFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -124,7 +125,7 @@ namespace Cloudflare.Zones.Tests.Hold
 		public void ShouldReturnQueryParameter()
 		{
 			// Arrange
-			var filter = new DeleteZoneHoldFilter { HoldAfter = Date };
+			var filter = new DeleteZoneHoldFilter { HoldAfter = _date };
 
 			// Act
 			var dict = filter.GetQueryParameters();

@@ -12,8 +12,8 @@ namespace Cloudflare.Zones.Tests.Hold
 	[TestClass]
 	public class GetZoneHoldTest
 	{
+		private readonly DateTime _date = new DateTime(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
-		private readonly DateTime DateTime = new DateTime(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 
 		private Mock<ICloudflareClient> _clientMock;
 
@@ -46,7 +46,7 @@ namespace Cloudflare.Zones.Tests.Hold
 				Result = new ZoneHold
 				{
 					Hold = true,
-					HoldAfter = DateTime,
+					HoldAfter = _date,
 					IncludeSubdomains = "false"
 				}
 			};

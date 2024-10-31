@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
-using AMWD.Net.Api.Cloudflare.Zones.Zones.InternalRequests;
+using AMWD.Net.Api.Cloudflare.Zones.Internals.Requests;
 using Moq;
 
 namespace Cloudflare.Zones.Tests.Zones
@@ -19,7 +19,7 @@ namespace Cloudflare.Zones.Tests.Zones
 
 		private CloudflareResponse<Zone> _response;
 
-		private List<(string RequestPath, EditRequest Request)> _callbacks;
+		private List<(string RequestPath, InternalEditZoneRequest Request)> _callbacks;
 
 		private EditZoneRequest _request;
 
@@ -97,9 +97,8 @@ namespace Cloudflare.Zones.Tests.Zones
 				}
 			};
 
-			_request = new EditZoneRequest
+			_request = new EditZoneRequest(ZoneId)
 			{
-				Id = ZoneId,
 				Type = ZoneType.Full,
 				VanityNameServers = ["ns1.example.org", "ns2.example.org"]
 			};
@@ -129,7 +128,7 @@ namespace Cloudflare.Zones.Tests.Zones
 			Assert.AreEqual(_request.Type.Value, callback.Request.Type.Value);
 			Assert.IsNull(callback.Request.VanityNameServers);
 
-			_clientMock.Verify(m => m.PatchAsync<Zone, EditRequest>($"zones/{ZoneId}", It.IsAny<EditRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PatchAsync<Zone, InternalEditZoneRequest>($"zones/{ZoneId}", It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -160,7 +159,7 @@ namespace Cloudflare.Zones.Tests.Zones
 			Assert.IsTrue(callback.Request.VanityNameServers.Contains("ns1.example.org"));
 			Assert.IsTrue(callback.Request.VanityNameServers.Contains("ns2.example.org"));
 
-			_clientMock.Verify(m => m.PatchAsync<Zone, EditRequest>($"zones/{ZoneId}", It.IsAny<EditRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PatchAsync<Zone, InternalEditZoneRequest>($"zones/{ZoneId}", It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -196,8 +195,8 @@ namespace Cloudflare.Zones.Tests.Zones
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PatchAsync<Zone, EditRequest>(It.IsAny<string>(), It.IsAny<EditRequest>(), It.IsAny<CancellationToken>()))
-				.Callback<string, EditRequest, CancellationToken>((requestPath, request, _) => _callbacks.Add((requestPath, request)))
+				.Setup(m => m.PatchAsync<Zone, InternalEditZoneRequest>(It.IsAny<string>(), It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()))
+				.Callback<string, InternalEditZoneRequest, CancellationToken>((requestPath, request, _) => _callbacks.Add((requestPath, request)))
 				.ReturnsAsync(() => _response);
 
 			return _clientMock.Object;

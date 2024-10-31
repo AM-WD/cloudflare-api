@@ -12,7 +12,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// An account ID.
 		/// </summary>
 		/// <value>account.id</value>
-		public string AccountId { get; set; }
+		public string? AccountId { get; set; }
 
 		/// <summary>
 		/// An account Name.
@@ -33,19 +33,19 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <example>Dev Account</example>
 		/// <example>contains:Test</example>
 		/// <value>account.name</value>
-		public string AccountName { get; set; }
+		public string? AccountName { get; set; }
 
 		/// <summary>
 		/// Direction to order zones.
 		/// </summary>
 		/// <value>direction</value>
-		public SortDirection? OrderDirection { get; set; }
+		public SortDirection? Direction { get; set; }
 
 		/// <summary>
 		/// Whether to match all search requirements or at least one (any).
 		/// </summary>
 		/// <value>match</value>
-		public FilterMatchType? MatchType { get; set; }
+		public FilterMatchType? Match { get; set; }
 
 		/// <summary>
 		/// A domain name.
@@ -68,7 +68,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <example>ends_with:arpa</example>
 		/// <example>starts_with:dev</example>
 		/// <value>name</value>
-		public string Name { get; set; }
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// Field to order zones by.
@@ -99,17 +99,19 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		{
 			var dict = new Dictionary<string, string>();
 
+#pragma warning disable CS8602, CS8604 // There will be no null value below.
+
 			if (!string.IsNullOrWhiteSpace(AccountId))
-				dict.Add("account.id", AccountId);
+				dict.Add("account.id", AccountId.Trim());
 
 			if (!string.IsNullOrWhiteSpace(AccountName))
-				dict.Add("account.name", AccountName);
+				dict.Add("account.name", AccountName.Trim());
 
-			if (OrderDirection.HasValue && Enum.IsDefined(typeof(SortDirection), OrderDirection.Value))
-				dict.Add("direction", OrderDirection.Value.GetEnumMemberValue());
+			if (Direction.HasValue && Enum.IsDefined(typeof(SortDirection), Direction.Value))
+				dict.Add("direction", Direction.Value.GetEnumMemberValue());
 
-			if (MatchType.HasValue && Enum.IsDefined(typeof(FilterMatchType), MatchType.Value))
-				dict.Add("match", MatchType.Value.GetEnumMemberValue());
+			if (Match.HasValue && Enum.IsDefined(typeof(FilterMatchType), Match.Value))
+				dict.Add("match", Match.Value.GetEnumMemberValue());
 
 			if (!string.IsNullOrWhiteSpace(Name))
 				dict.Add("name", Name);
@@ -125,6 +127,8 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 
 			if (Status.HasValue && Enum.IsDefined(typeof(ZoneStatus), Status.Value))
 				dict.Add("status", Status.Value.GetEnumMemberValue());
+
+#pragma warning restore CS8602, CS8604
 
 			return dict;
 		}
