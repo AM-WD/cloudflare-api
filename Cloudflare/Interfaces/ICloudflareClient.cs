@@ -19,7 +19,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="requestPath">The request path (extending the base URL).</param>
 		/// <param name="queryFilter">The query parameters.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		Task<CloudflareResponse<TResponse>> GetAsync<TResponse>(string requestPath, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default);
+		Task<CloudflareResponse<TResponse>> GetAsync<TResponse>(string requestPath, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Makes a POST request to the Cloudflare API.
@@ -33,7 +33,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="request">The request content.</param>
 		/// <param name="queryFilter">The query parameters.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest request, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default);
+		Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest? request, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Makes a PUT request to the Cloudflare API.
@@ -46,7 +46,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="requestPath">The request path (extending the base URL).</param>
 		/// <param name="request">The request content.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		Task<CloudflareResponse<TResponse>> PutAsync<TResponse, TRequest>(string requestPath, TRequest request, CancellationToken cancellationToken = default);
+		Task<CloudflareResponse<TResponse>> PutAsync<TResponse, TRequest>(string requestPath, TRequest? request, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Makes a DELETE request to the Cloudflare API.
@@ -59,7 +59,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="queryFilter">The query parameters.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
 		/// <returns></returns>
-		Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default);
+		Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Makes a PATCH request to the Cloudflare API.
@@ -72,6 +72,6 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="requestPath">The request path (extending the base URL).</param>
 		/// <param name="request">The request content.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		Task<CloudflareResponse<TResponse>> PatchAsync<TResponse, TRequest>(string requestPath, TRequest request, CancellationToken cancellationToken = default);
+		Task<CloudflareResponse<TResponse>> PatchAsync<TResponse, TRequest>(string requestPath, TRequest? request, CancellationToken cancellationToken = default);
 	}
 }

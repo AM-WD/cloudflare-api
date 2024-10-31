@@ -4,6 +4,7 @@
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
 
     <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
+    <Nullable>enable</Nullable>
 
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>

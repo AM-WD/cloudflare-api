@@ -10,12 +10,12 @@
 		/// </summary>
 		// <= 32 characters
 		[JsonProperty("id")]
-		public string Id { get; set; }
+		public string? Id { get; set; }
 
 		/// <summary>
 		/// The name of the account.
 		/// </summary>
 		[JsonProperty("name")]
-		public string Name { get; set; }
+		public string? Name { get; set; }
 	}
 }

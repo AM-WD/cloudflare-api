@@ -13,7 +13,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// Gets the <see cref="EnumMemberAttribute.Value"/> of the <see cref="Enum"/> when available, otherwise the <see cref="Enum.ToString()"/>.
 		/// </summary>
 		/// <param name="value">The enum value.</param>
-		public static string GetEnumMemberValue(this Enum value)
+		public static string? GetEnumMemberValue(this Enum value)
 		{
 			var fieldInfo = value.GetType().GetField(value.ToString());
 			if (fieldInfo == null)

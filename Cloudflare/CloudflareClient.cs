@@ -37,7 +37,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <param name="emailAddress">The email address of the Cloudflare account.</param>
 		/// <param name="apiKey">The API key of the Cloudflare account.</param>
 		/// <param name="clientOptions">The client options (optional).</param>
-		public CloudflareClient(string emailAddress, string apiKey, ClientOptions clientOptions = null)
+		public CloudflareClient(string emailAddress, string apiKey, ClientOptions? clientOptions = null)
 			: this(new ApiKeyAuthentication(emailAddress, apiKey), clientOptions)
 		{ }
 
@@ -46,7 +46,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// </summary>
 		/// <param name="apiToken">The API token.</param>
 		/// <param name="clientOptions">The client options (optional).</param>
-		public CloudflareClient(string apiToken, ClientOptions clientOptions = null)
+		public CloudflareClient(string apiToken, ClientOptions? clientOptions = null)
 			: this(new ApiTokenAuthentication(apiToken), clientOptions)
 		{ }
 
@@ -55,7 +55,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// </summary>
 		/// <param name="authentication">The authentication information.</param>
 		/// <param name="clientOptions">The client options (optional).</param>
-		public CloudflareClient(IAuthentication authentication, ClientOptions clientOptions = null)
+		public CloudflareClient(IAuthentication authentication, ClientOptions? clientOptions = null)
 		{
 			if (authentication == null)
 				throw new ArgumentNullException(nameof(authentication));
@@ -82,7 +82,7 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> GetAsync<TResponse>(string requestPath, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> GetAsync<TResponse>(string requestPath, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
@@ -94,7 +94,7 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest request, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> PostAsync<TResponse, TRequest>(string requestPath, TRequest? request, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
@@ -107,7 +107,7 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> PutAsync<TResponse, TRequest>(string requestPath, TRequest request, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> PutAsync<TResponse, TRequest>(string requestPath, TRequest? request, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
@@ -120,7 +120,7 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, IQueryParameterFilter queryFilter = null, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> DeleteAsync<TResponse>(string requestPath, IQueryParameterFilter? queryFilter = null, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
@@ -132,7 +132,7 @@ namespace AMWD.Net.Api.Cloudflare
 		}
 
 		/// <inheritdoc/>
-		public async Task<CloudflareResponse<TResponse>> PatchAsync<TResponse, TRequest>(string requestPath, TRequest request, CancellationToken cancellationToken = default)
+		public async Task<CloudflareResponse<TResponse>> PatchAsync<TResponse, TRequest>(string requestPath, TRequest? request, CancellationToken cancellationToken = default)
 		{
 			ThrowIfDisposed();
 			ValidateRequestPath(requestPath);
@@ -178,7 +178,7 @@ namespace AMWD.Net.Api.Cloudflare
 		{
 			string version = typeof(CloudflareClient).Assembly
 				.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-				.InformationalVersion;
+				?.InformationalVersion ?? "unknown";
 
 			HttpMessageHandler handler;
 			try
@@ -258,7 +258,7 @@ namespace AMWD.Net.Api.Cloudflare
 			}
 		}
 
-		private string BuildRequestUrl(string requestPath, IQueryParameterFilter queryFilter = null)
+		private string BuildRequestUrl(string requestPath, IQueryParameterFilter? queryFilter = null)
 		{
 			var dict = new Dictionary<string, string>();
 
@@ -284,7 +284,7 @@ namespace AMWD.Net.Api.Cloudflare
 			return $"{requestPath}?{query}";
 		}
 
-		private static HttpContent ConvertRequest<T>(T request)
+		private static HttpContent? ConvertRequest<T>(T request)
 		{
 			if (request == null)
 				return null;

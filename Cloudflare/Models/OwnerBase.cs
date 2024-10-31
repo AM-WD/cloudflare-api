@@ -10,18 +10,18 @@
 		/// </summary>
 		// <= 32 characters
 		[JsonProperty("id")]
-		public string Id { get; set; }
+		public string? Id { get; set; }
 
 		/// <summary>
 		/// Name of the owner.
 		/// </summary>
 		[JsonProperty("name")]
-		public string Name { get; set; }
+		public string? Name { get; set; }
 
 		/// <summary>
 		/// The type of owner.
 		/// </summary>
 		[JsonProperty("type")]
-		public string Type { get; set; }
+		public string? Type { get; set; }
 	}
 }

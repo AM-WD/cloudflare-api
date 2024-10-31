@@ -15,6 +15,6 @@
 		/// The message.
 		/// </summary>
 		[JsonProperty("message")]
-		public string Message { get; set; }
+		public string? Message { get; set; }
 	}
 }
