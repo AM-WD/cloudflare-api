@@ -104,7 +104,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			_httpHandlerMock.Responses.Enqueue(new HttpResponseMessage
 			{
 				StatusCode = HttpStatusCode.OK,
-				Content = new StringContent(@"{""success"": true, ""errors"": [], ""messages"": [], ""result"": { ""string"": ""some-string"", ""integer"": 123 }}", Encoding.UTF8, MediaTypeNames.Application.Json),
+				Content = new StringContent(@"{""success"": true, ""errors"": [], ""messages"": [], ""result"": { ""string"": ""some-string"", ""integer"": 123 }, ""timing"": {""end_time"": ""2014-03-01T12:20:01Z"", ""process_time"": 1, ""start_time"": ""2014-03-01T12:20:00Z""}}", Encoding.UTF8, MediaTypeNames.Application.Json),
 			});
 
 			var client = GetClient();
@@ -125,6 +125,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
+
+			Assert.IsNotNull(response.Timing);
+			Assert.AreEqual("01.03.2014 12:20:00", response.Timing.StartTime?.ToString("dd.MM.yyyy HH:mm:ss"));
+			Assert.AreEqual("01.03.2014 12:20:01", response.Timing.EndTime?.ToString("dd.MM.yyyy HH:mm:ss"));
+			Assert.AreEqual(1, response.Timing.ProcessTime);
 
 			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
 
@@ -170,6 +175,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
+			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -221,6 +227,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
+			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -297,15 +304,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
-			Assert.IsNotNull(response.ResultInfo);
+			Assert.IsNull(response.ResultInfo);
+			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
-
-			Assert.AreEqual(0, response.ResultInfo.Count);
-			Assert.AreEqual(0, response.ResultInfo.Page);
-			Assert.AreEqual(0, response.ResultInfo.PerPage);
-			Assert.AreEqual(0, response.ResultInfo.TotalCount);
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
@@ -379,15 +382,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
-			Assert.IsNotNull(response.ResultInfo);
+			Assert.IsNull(response.ResultInfo);
+			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
-
-			Assert.AreEqual(0, response.ResultInfo.Count);
-			Assert.AreEqual(0, response.ResultInfo.Page);
-			Assert.AreEqual(0, response.ResultInfo.PerPage);
-			Assert.AreEqual(0, response.ResultInfo.TotalCount);
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 

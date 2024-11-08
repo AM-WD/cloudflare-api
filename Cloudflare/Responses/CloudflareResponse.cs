@@ -5,20 +5,9 @@ namespace AMWD.Net.Api.Cloudflare
 	/// <summary>
 	/// The base Cloudflare response.
 	/// </summary>
-	public class CloudflareResponse
+	/// <typeparam name="T">The result type.</typeparam>
+	public class CloudflareResponse<T>
 	{
-		/// <summary>
-		/// Information about the result of the request.
-		/// </summary>
-		[JsonProperty("result_info")]
-		public PaginationInfo? ResultInfo { get; set; }
-
-		/// <summary>
-		/// Whether the API call was successful.
-		/// </summary>
-		[JsonProperty("success")]
-		public bool Success { get; set; }
-
 		/// <summary>
 		/// Errors returned by the API call.
 		/// </summary>
@@ -30,18 +19,29 @@ namespace AMWD.Net.Api.Cloudflare
 		/// </summary>
 		[JsonProperty("messages")]
 		public IReadOnlyList<ResponseInfo> Messages { get; set; } = [];
-	}
 
-	/// <summary>
-	/// The base Cloudflare response with a result.
-	/// </summary>
-	/// <typeparam name="T">The result type.</typeparam>
-	public class CloudflareResponse<T> : CloudflareResponse
-	{
+		/// <summary>
+		/// Whether the API call was successful.
+		/// </summary>
+		[JsonProperty("success")]
+		public bool Success { get; set; }
+
 		/// <summary>
 		/// The result of the API call.
 		/// </summary>
 		[JsonProperty("result")]
 		public T? Result { get; set; }
+
+		/// <summary>
+		/// Information about the result of the request.
+		/// </summary>
+		[JsonProperty("result_info")]
+		public PaginationInfo? ResultInfo { get; set; }
+
+		/// <summary>
+		/// Information about the processing time of a request.
+		/// </summary>
+		[JsonProperty("timing")]
+		public RecordProcessTiming? Timing { get; set; }
 	}
 }

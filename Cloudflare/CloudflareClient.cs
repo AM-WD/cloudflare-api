@@ -248,7 +248,6 @@ namespace AMWD.Net.Api.Cloudflare
 							return new CloudflareResponse<TRes>
 							{
 								Success = true,
-								ResultInfo = new PaginationInfo(),
 								Result = (TRes)cObj,
 							};
 						}

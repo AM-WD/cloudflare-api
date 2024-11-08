@@ -297,15 +297,10 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
-			Assert.IsNotNull(response.ResultInfo);
+			Assert.IsNull(response.ResultInfo);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
-
-			Assert.AreEqual(0, response.ResultInfo.Count);
-			Assert.AreEqual(0, response.ResultInfo.Page);
-			Assert.AreEqual(0, response.ResultInfo.PerPage);
-			Assert.AreEqual(0, response.ResultInfo.TotalCount);
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
