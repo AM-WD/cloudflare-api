@@ -46,6 +46,21 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
+		[DataTestMethod]
+		[DataRow("023e105f4ecef8ad9ca31a8372d0c35")]
+		[DataRow("023e105f4ecef8ad9ca31a8372d0C353")]
+		[DataRow("023e105f4ecef8ad9ca31a8372d0y353")]
+		[ExpectedException(typeof(ArgumentException))]
+		public void ShouldThrowArgumentExceptionForValidateId(string id)
+		{
+			// Arrange
+			
+			// Act
+			id.ValidateCloudflareId();
+
+			// Assert - ArgumentException
+		}
+
 		[TestMethod]
 		public void ShouldValidateName()
 		{

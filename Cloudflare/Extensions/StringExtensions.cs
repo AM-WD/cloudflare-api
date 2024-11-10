@@ -8,6 +8,7 @@ namespace AMWD.Net.Api.Cloudflare
 	/// </summary>
 	public static class StringExtensions
 	{
+		private static readonly Regex _idCheckRegex = new(@"^[0-9a-f]{32}$", RegexOptions.Compiled);
 		private static readonly Regex _emailCheckRegex = new(@"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$", RegexOptions.Compiled);
 
 		/// <summary>
@@ -26,6 +27,13 @@ namespace AMWD.Net.Api.Cloudflare
 
 			if (id.Length > 32)
 				throw new ArgumentOutOfRangeException(nameof(id));
+
+			if (!_idCheckRegex.IsMatch(id))
+				throw new ArgumentException("Invalid Cloudflare ID", nameof(id));
+
+			// TODO: It seems like Cloudflare IDs are GUIDs - should be verified.
+			//if (!Guid.TryParse(id, out _))
+			//	throw new ArgumentException("Invalid Cloudflare ID", nameof(id));
 		}
 
 		/// <summary>

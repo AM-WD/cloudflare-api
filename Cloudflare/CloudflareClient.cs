@@ -198,9 +198,12 @@ namespace AMWD.Net.Api.Cloudflare
 				};
 			}
 
+			// Ensure a clean base URL
+			string baseUrl = _clientOptions.BaseUrl.Trim().TrimEnd('/');
+
 			var client = new HttpClient(handler, true)
 			{
-				BaseAddress = new Uri(_clientOptions.BaseUrl),
+				BaseAddress = new Uri(baseUrl + '/'),
 				Timeout = _clientOptions.Timeout,
 			};
 
@@ -259,6 +262,8 @@ namespace AMWD.Net.Api.Cloudflare
 
 		private string BuildRequestUrl(string requestPath, IQueryParameterFilter? queryFilter = null)
 		{
+			// Ensure a clean request path
+			string reqPath = requestPath.Trim().TrimStart('/');
 			var dict = new Dictionary<string, string>();
 
 			if (_clientOptions.DefaultQueryParams.Count > 0)
@@ -275,12 +280,12 @@ namespace AMWD.Net.Api.Cloudflare
 			}
 
 			if (dict.Count == 0)
-				return requestPath;
+				return reqPath;
 
 			string[] param = dict.Select(kvp => $"{kvp.Key}={WebUtility.UrlEncode(kvp.Value)}").ToArray();
 			string query = string.Join("&", param);
 
-			return $"{requestPath}?{query}";
+			return $"{reqPath}?{query}";
 		}
 
 		private static HttpContent? ConvertRequest<T>(T request)
