@@ -18,7 +18,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 		private Mock<ICloudflareClient> _clientMock;
 
-		private CloudflareResponse<ZoneIdResponse> _response;
+		private CloudflareResponse<IdResponse> _response;
 
 		private List<(string RequestPath, InternalPurgeCacheRequest Request, IQueryParameterFilter QueryFilter)> _callbacks;
 
@@ -27,7 +27,7 @@ namespace Cloudflare.Zones.Tests.Cache
 		{
 			_callbacks = [];
 
-			_response = new CloudflareResponse<ZoneIdResponse>
+			_response = new CloudflareResponse<IdResponse>
 			{
 				Success = true,
 				Messages = [
@@ -44,7 +44,7 @@ namespace Cloudflare.Zones.Tests.Cache
 						Message = "Error 1",
 					}
 				],
-				Result = new ZoneIdResponse
+				Result = new IdResponse
 				{
 					Id = ZoneId,
 				}
@@ -89,7 +89,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -133,7 +133,7 @@ namespace Cloudflare.Zones.Tests.Cache
 
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{ZoneId}/purge_cache", It.IsAny<InternalPurgeCacheRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -154,7 +154,7 @@ namespace Cloudflare.Zones.Tests.Cache
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>(It.IsAny<string>(), It.IsAny<InternalPurgeCacheRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Setup(m => m.PostAsync<IdResponse, InternalPurgeCacheRequest>(It.IsAny<string>(), It.IsAny<InternalPurgeCacheRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
 				.Callback<string, InternalPurgeCacheRequest, IQueryParameterFilter, CancellationToken>((requestPath, request, queryFilter, _) => _callbacks.Add((requestPath, request, queryFilter)))
 				.ReturnsAsync(() => _response);
 

@@ -6,18 +6,17 @@ using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
 using Moq;
 
-namespace Cloudflare.Zones.Tests.Zones
+namespace Cloudflare.Zones.Tests.DnsRecords
 {
 	[TestClass]
-	public class RerunActivationCheckTest
+	public class DeleteDnsRecordTest
 	{
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
+		private const string RecordId = "023e105f4ecef8ad9ca31a8372d0c355";
 
 		private Mock<ICloudflareClient> _clientMock;
-
 		private CloudflareResponse<IdResponse> _response;
-
-		private List<(string RequestPath, object Request)> _callbacks;
+		private List<(string RequestPath, IQueryParameterFilter QueryFilter)> _callbacks;
 
 		[TestInitialize]
 		public void Initialize()
@@ -43,19 +42,19 @@ namespace Cloudflare.Zones.Tests.Zones
 				],
 				Result = new IdResponse
 				{
-					Id = ZoneId
+					Id = RecordId,
 				}
 			};
 		}
 
 		[TestMethod]
-		public async Task ShouldRerunActivationCheck()
+		public async Task ShouldDeleteDnsRecord()
 		{
 			// Arrange
 			var client = GetClient();
 
 			// Act
-			var response = await client.RerunActivationCheck(ZoneId);
+			var response = await client.DeleteDnsRecord(ZoneId, RecordId);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -65,10 +64,10 @@ namespace Cloudflare.Zones.Tests.Zones
 			Assert.AreEqual(1, _callbacks.Count);
 
 			var callback = _callbacks.First();
-			Assert.AreEqual($"zones/{ZoneId}/activation_check", callback.RequestPath);
-			Assert.IsNull(callback.Request);
+			Assert.AreEqual($"zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
+			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.PutAsync<IdResponse, object>($"zones/{ZoneId}/activation_check", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.DeleteAsync<IdResponse>($"zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -76,8 +75,8 @@ namespace Cloudflare.Zones.Tests.Zones
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PutAsync<IdResponse, object>(It.IsAny<string>(), It.IsAny<object>(), It.IsAny<CancellationToken>()))
-				.Callback<string, object, CancellationToken>((requestPath, request, _) => _callbacks.Add((requestPath, request)))
+				.Setup(m => m.DeleteAsync<IdResponse>(It.IsAny<string>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Callback<string, IQueryParameterFilter, CancellationToken>((requestPath, queryFilter, _) => _callbacks.Add((requestPath, queryFilter)))
 				.ReturnsAsync(() => _response);
 
 			return _clientMock.Object;

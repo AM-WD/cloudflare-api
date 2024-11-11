@@ -9,7 +9,7 @@
 		/// The nameserver type.
 		/// </summary>
 		[JsonProperty("type")]
-		public virtual NameserverType Type { get; set; }
+		public NameserverType Type { get; set; }
 
 		// TODO: DEPRECATED? - not available on API request.
 		///// <summary>
@@ -17,6 +17,6 @@
 		///// </summary>
 		///// <value>Range: <c>1 &lt;=</c> X <c>&lt;= 5</c></value>
 		//[JsonProperty("ns_set")]
-		//public virtual int NameserverSet { get; set; }
+		//public int NameserverSet { get; set; }
 	}
 }

@@ -1,9 +1,9 @@
 ﻿namespace AMWD.Net.Api.Cloudflare.Zones
 {
 	/// <summary>
-	/// The deleted zone.
+	/// The deleted id.
 	/// </summary>
-	public class ZoneIdResponse
+	public class IdResponse
 	{
 		/// <summary>
 		/// Identifier.

@@ -6,17 +6,15 @@ using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
 using Moq;
 
-namespace Cloudflare.Zones.Tests.Zones
+namespace Cloudflare.Zones.Tests.DnsRecords
 {
 	[TestClass]
-	public class DeleteZoneTest
+	public class ExportDnsRecordsTest
 	{
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
-
-		private CloudflareResponse<IdResponse> _response;
-
+		private CloudflareResponse<string> _response;
 		private List<(string RequestPath, IQueryParameterFilter QueryFilter)> _callbacks;
 
 		[TestInitialize]
@@ -24,38 +22,21 @@ namespace Cloudflare.Zones.Tests.Zones
 		{
 			_callbacks = [];
 
-			_response = new CloudflareResponse<IdResponse>
+			_response = new CloudflareResponse<string>
 			{
 				Success = true,
-				Messages = [
-					new ResponseInfo
-					{
-						Code = 1000,
-						Message = "Message 1",
-					}
-				],
-				Errors = [
-					new ResponseInfo
-					{
-						Code = 1000,
-						Message = "Error 1",
-					}
-				],
-				Result = new IdResponse
-				{
-					Id = ZoneId
-				}
+				Result = "This is my BIND export file."
 			};
 		}
 
 		[TestMethod]
-		public async Task ShouldDeleteZone()
+		public async Task ShouldExportZoneDnsRecords()
 		{
 			// Arrange
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteZone(ZoneId);
+			var response = await client.ExportDnsRecords(ZoneId);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -65,10 +46,10 @@ namespace Cloudflare.Zones.Tests.Zones
 			Assert.AreEqual(1, _callbacks.Count);
 
 			var callback = _callbacks.First();
-			Assert.AreEqual($"zones/{ZoneId}", callback.RequestPath);
+			Assert.AreEqual($"zones/{ZoneId}/dns_records/export", callback.RequestPath);
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.DeleteAsync<IdResponse>($"zones/{ZoneId}", It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.GetAsync<string>($"zones/{ZoneId}/dns_records/export", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -76,7 +57,7 @@ namespace Cloudflare.Zones.Tests.Zones
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.DeleteAsync<IdResponse>(It.IsAny<string>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Setup(m => m.GetAsync<string>(It.IsAny<string>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
 				.Callback<string, IQueryParameterFilter, CancellationToken>((requestPath, queryFilter, _) => _callbacks.Add((requestPath, queryFilter)))
 				.ReturnsAsync(() => _response);
 

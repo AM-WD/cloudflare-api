@@ -69,10 +69,10 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="client">The <see cref="ICloudflareClient"/>.</param>
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> DeleteZone(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> DeleteZone(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
-			return client.DeleteAsync<ZoneIdResponse>($"zones/{zoneId}", cancellationToken: cancellationToken);
+			return client.DeleteAsync<IdResponse>($"zones/{zoneId}", cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -116,10 +116,10 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="client">The <see cref="ICloudflareClient"/>.</param>
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> RerunActivationCheck(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> RerunActivationCheck(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
-			return client.PutAsync<ZoneIdResponse, object>($"zones/{zoneId}/activation_check", null, cancellationToken);
+			return client.PutAsync<IdResponse, object>($"zones/{zoneId}/activation_check", null, cancellationToken);
 		}
 	}
 }

@@ -21,14 +21,14 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="client">The <see cref="ICloudflareClient"/>.</param>
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContent(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> PurgeCachedContent(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 			var req = new InternalPurgeCacheRequest
 			{
 				PurgeEverything = true
 			};
-			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="urls">List of URLs to purge.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContentByUrl(this ICloudflareClient client, string zoneId, IReadOnlyList<ZonePurgeCachedUrlRequest> urls, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> PurgeCachedContentByUrl(this ICloudflareClient client, string zoneId, IReadOnlyList<ZonePurgeCachedUrlRequest> urls, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 
@@ -78,7 +78,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 				req.Urls = urls.Where(u => !string.IsNullOrWhiteSpace(u.Url)).Select(u => u.Url).ToList();
 			}
 
-			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="tags">List of tags to purge.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContentByTag(this ICloudflareClient client, string zoneId, IReadOnlyList<string> tags, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> PurgeCachedContentByTag(this ICloudflareClient client, string zoneId, IReadOnlyList<string> tags, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 
@@ -112,7 +112,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			{
 				Tags = tags.Where(t => !string.IsNullOrWhiteSpace(t)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -135,7 +135,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="hosts">List of hostnames to purge.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContentByHost(this ICloudflareClient client, string zoneId, IReadOnlyList<string> hosts, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> PurgeCachedContentByHost(this ICloudflareClient client, string zoneId, IReadOnlyList<string> hosts, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 
@@ -146,7 +146,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			{
 				Hostnames = hosts.Where(h => !string.IsNullOrWhiteSpace(h)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 
 		/// <summary>
@@ -169,7 +169,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <param name="zoneId">The zone ID.</param>
 		/// <param name="prefixes">List of prefixes to purge.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<ZoneIdResponse>> PurgeCachedContentByPrefix(this ICloudflareClient client, string zoneId, IReadOnlyList<string> prefixes, CancellationToken cancellationToken = default)
+		public static Task<CloudflareResponse<IdResponse>> PurgeCachedContentByPrefix(this ICloudflareClient client, string zoneId, IReadOnlyList<string> prefixes, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 
@@ -180,7 +180,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 			{
 				Prefixes = prefixes.Where(h => !string.IsNullOrWhiteSpace(h)).ToList()
 			};
-			return client.PostAsync<ZoneIdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
+			return client.PostAsync<IdResponse, InternalPurgeCacheRequest>($"zones/{zoneId}/purge_cache", req, cancellationToken: cancellationToken);
 		}
 	}
 }
