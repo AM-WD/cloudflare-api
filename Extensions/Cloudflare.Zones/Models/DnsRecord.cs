@@ -47,6 +47,16 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		public string? Content { get; set; }
 
 		/// <summary>
+		/// The priority.
+		/// </summary>
+		/// <remarks>
+		/// Required for <see cref="DnsRecordType.Mx"/>, <see cref="DnsRecordType.Srv"/> and <see cref="DnsRecordType.Uri"/> records; unused by other record types.
+		/// Records with lower priorities are preferred.
+		/// </remarks>
+		[JsonProperty("priority")]
+		public ushort? Priority { get; set; }
+
+		/// <summary>
 		/// Components associated with the record.
 		/// </summary>
 		[JsonProperty("data")]

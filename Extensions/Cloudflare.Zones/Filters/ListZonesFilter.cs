@@ -11,7 +11,6 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <summary>
 		/// An account ID.
 		/// </summary>
-		/// <value>account.id</value>
 		public string? AccountId { get; set; }
 
 		/// <summary>
@@ -32,19 +31,16 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// </remarks>
 		/// <example>Dev Account</example>
 		/// <example>contains:Test</example>
-		/// <value>account.name</value>
 		public string? AccountName { get; set; }
 
 		/// <summary>
 		/// Direction to order zones.
 		/// </summary>
-		/// <value>direction</value>
 		public SortDirection? Direction { get; set; }
 
 		/// <summary>
 		/// Whether to match all search requirements or at least one (any).
 		/// </summary>
-		/// <value>match</value>
 		public FilterMatchType? Match { get; set; }
 
 		/// <summary>
@@ -67,31 +63,28 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <example>contains:.org</example>
 		/// <example>ends_with:arpa</example>
 		/// <example>starts_with:dev</example>
-		/// <value>name</value>
 		public string? Name { get; set; }
 
 		/// <summary>
 		/// Field to order zones by.
 		/// </summary>
-		/// <value>order</value>
 		public ZonesOrderBy? OrderBy { get; set; }
 
 		/// <summary>
 		/// Page number of paginated results.
 		/// </summary>
-		/// <value>page</value>
+		/// <value>1 &lt;= X</value>
 		public int? Page { get; set; }
 
 		/// <summary>
 		/// Number of zones per page.
 		/// </summary>
-		/// <value>per_page</value>
+		/// <value>5 &lt;= X &lt;= 50</value>
 		public int? PerPage { get; set; }
 
 		/// <summary>
 		/// A zone status.
 		/// </summary>
-		/// <value>status</value>
 		public ZoneStatus? Status { get; set; }
 
 		/// <inheritdoc />

@@ -148,13 +148,13 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// <summary>
 		/// Page number of paginated results.
 		/// </summary>
-		// >= 1
+		/// <value>1 &lt;= X</value>
 		public int? Page { get; set; }
 
 		/// <summary>
 		/// Number of DNS records per page.
 		/// </summary>
-		// >= 1 <= 5_000_000
+		/// <value>1 &lt;= X &lt;= 5,000,000</value>
 		public int? PerPage { get; set; }
 
 		/// <summary>

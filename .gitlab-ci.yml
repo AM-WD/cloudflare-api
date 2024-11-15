@@ -18,7 +18,7 @@ default-build:
     - lnx
     - 64bit
   rules:
-  - if: $CI_COMMIT_TAG == null
+    - if: $CI_COMMIT_TAG == null
   script:
     - dotnet build -c Debug --nologo
     - mkdir ./artifacts
