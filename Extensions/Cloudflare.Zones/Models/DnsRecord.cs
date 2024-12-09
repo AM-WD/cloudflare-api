@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AMWD.Net.Api.Cloudflare.Zones
@@ -131,6 +133,48 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		public DateTime? TagsModifiedOn { get; set; }
 
 		#region Type definitions for data fields
+
+		/// <summary>
+		/// Returns the data strong typed (as <see cref="Data"/> might be <see cref="JObject"/> from deserialization).
+		/// </summary>
+		[ExcludeFromCodeCoverage]
+		public object? GetTypedData()
+		{
+			return Type switch
+			{
+				DnsRecordType.Caa => GetTypedData<CaaData>(),
+				DnsRecordType.Cert => GetTypedData<CertData>(),
+				DnsRecordType.DnsKey => GetTypedData<DnsKeyData>(),
+				DnsRecordType.Ds => GetTypedData<DsData>(),
+				DnsRecordType.Https => GetTypedData<HttpsData>(),
+				DnsRecordType.Loc => GetTypedData<LocData>(),
+				DnsRecordType.NaPtr => GetTypedData<NaPtrData>(),
+				DnsRecordType.SMimeA => GetTypedData<SMimeAData>(),
+				DnsRecordType.Srv => GetTypedData<SrvData>(),
+				DnsRecordType.SshFp => GetTypedData<SshFpData>(),
+				DnsRecordType.SvcB => GetTypedData<SvcBData>(),
+				DnsRecordType.TlsA => GetTypedData<TlsAData>(),
+				DnsRecordType.Uri => GetTypedData<UriData>(),
+				_ => null
+			};
+		}
+
+		/// <summary>
+		/// Returns the data strong typed (as <see cref="Data"/> might be <see cref="JObject"/> from deserialization).
+		/// </summary>
+		/// <typeparam name="T">The type of the data.</typeparam>
+		[ExcludeFromCodeCoverage]
+		public T? GetTypedData<T>()
+			where T : class
+		{
+			if (Data == null)
+				return default;
+
+			if (Data is JObject jo)
+				return jo.ToObject<T>();
+
+			return (T)Data;
+		}
 
 		/// <summary>
 		/// Components of a CAA record.
@@ -609,6 +653,36 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		#endregion Type definitions for data fields
 
 		#region Type definitions for settings fields
+
+		/// <summary>
+		/// Returns the settings strong typed (as <see cref="Settings"/> might be <see cref="JObject"/> from deserialization).
+		/// </summary>
+		[ExcludeFromCodeCoverage]
+		public object? GetTypedSettings()
+		{
+			return Type switch
+			{
+				DnsRecordType.Cname => GetTypedSettings<CnameSettings>(),
+				_ => null
+			};
+		}
+
+		/// <summary>
+		/// Returns the settings strong typed (as <see cref="Settings"/> might be <see cref="JObject"/> from deserialization).
+		/// </summary>
+		/// <typeparam name="T">The type of the settings.</typeparam>
+		[ExcludeFromCodeCoverage]
+		public T? GetTypedSettings<T>()
+			where T : class
+		{
+			if (Settings == null)
+				return default;
+
+			if (Settings is JObject jo)
+				return jo.ToObject<T>();
+
+			return (T)Settings;
+		}
 
 		/// <summary>
 		/// Settings for the DNS record.
