@@ -106,5 +106,21 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		{
 			return client.GetAsync<IReadOnlyCollection<Zone>>($"/zones", queryFilter: options, cancellationToken: cancellationToken);
 		}
+
+		/// <summary>
+		/// Triggeres a new activation check for a <see cref="ZoneStatus.Pending"/> zone.
+		/// </summary>
+		/// <remarks>
+		/// This can be triggered every 5 min for paygo/enterprise customers, every hour for FREE Zones.
+		/// </remarks>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="zoneId">The zone identifier.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<Identifier>> RerunActivationCheck(this ICloudflareClient client, string zoneId, CancellationToken cancellationToken = default)
+		{
+			zoneId.ValidateCloudflareId();
+
+			return client.PutAsync<Identifier, object>($"/zones/{zoneId}/activation_check", null, cancellationToken);
+		}
 	}
 }

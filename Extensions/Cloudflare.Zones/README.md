@@ -20,6 +20,10 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [List Zones](https://developers.cloudflare.com/api/resources/zones/methods/list/)
 
 
+##### [Activation Check]
+
+- [Rerun The Activation Check](https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/methods/trigger/)
+
 
 
 
@@ -35,3 +39,5 @@ Published under MIT License (see [choose a license])
 [choose a license]: https://choosealicense.com/licenses/mit/
 
 [Registrar]: https://developers.cloudflare.com/api/resources/registrar/
+[Zones]: https://developers.cloudflare.com/api/resources/zones/
+[Activation Check]: https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/
