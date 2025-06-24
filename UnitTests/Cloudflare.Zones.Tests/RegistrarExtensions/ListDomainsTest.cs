@@ -5,7 +5,7 @@ using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Zones;
 using Moq;
 
-namespace Cloudflare.Zones.Tests.ZoneRegistrar
+namespace Cloudflare.Zones.Tests.RegistrarExtensions
 {
 	[TestClass]
 	public class ListDomainsTest

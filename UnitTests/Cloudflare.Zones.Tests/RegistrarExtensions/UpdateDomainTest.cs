@@ -7,7 +7,7 @@ using AMWD.Net.Api.Cloudflare.Zones.Internals;
 using Moq;
 using Newtonsoft.Json.Linq;
 
-namespace Cloudflare.Zones.Tests.ZoneRegistrar
+namespace Cloudflare.Zones.Tests.RegistrarExtensions
 {
 	[TestClass]
 	public class UpdateDomainTest
