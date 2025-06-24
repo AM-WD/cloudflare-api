@@ -25,6 +25,13 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [Rerun The Activation Check](https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/methods/trigger/)
 
 
+##### [Holds]
+
+- [Create Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/create/)
+- [Remove Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/delete/)
+- [Update Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/edit/)
+- [Get Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/get/)
+
 
 
 
@@ -41,3 +48,4 @@ Published under MIT License (see [choose a license])
 [Registrar]: https://developers.cloudflare.com/api/resources/registrar/
 [Zones]: https://developers.cloudflare.com/api/resources/zones/
 [Activation Check]: https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/
+[Holds]: https://developers.cloudflare.com/api/resources/zones/subresources/holds/
