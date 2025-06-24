@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
-namespace AMWD.Net.Api.Cloudflare.Auth
+namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// Implements the interface to authenticate using an API key and email address.

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AMWD.Net.Api.Cloudflare
 {
@@ -25,15 +24,10 @@ namespace AMWD.Net.Api.Cloudflare
 			if (string.IsNullOrWhiteSpace(id))
 				throw new ArgumentNullException(nameof(id));
 
-			if (id.Length > 32)
-				throw new ArgumentOutOfRangeException(nameof(id));
+			id.ValidateLength(32, nameof(id));
 
 			if (!_idCheckRegex.IsMatch(id))
 				throw new ArgumentException("Invalid Cloudflare ID", nameof(id));
-
-			// TODO: It seems like Cloudflare IDs are GUIDs - should be verified.
-			//if (!Guid.TryParse(id, out _))
-			//	throw new ArgumentException("Invalid Cloudflare ID", nameof(id));
 		}
 
 		/// <summary>
@@ -50,8 +44,7 @@ namespace AMWD.Net.Api.Cloudflare
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException(nameof(name));
 
-			if (name.Length > 253)
-				throw new ArgumentOutOfRangeException(nameof(name));
+			name.ValidateLength(253, nameof(name));
 		}
 
 		/// <summary>
@@ -67,6 +60,19 @@ namespace AMWD.Net.Api.Cloudflare
 
 			if (!_emailCheckRegex.IsMatch(emailAddress))
 				throw new ArgumentException("Invalid email address", nameof(emailAddress));
+		}
+
+		/// <summary>
+		/// Validate the length of a string.
+		/// </summary>
+		/// <param name="str">The string to check.</param>
+		/// <param name="length">The max. length.</param>
+		/// <param name="paramName">The name of the parameter to check.</param>
+		/// <exception cref="ArgumentException">The <paramref name="str"/> is longer than <paramref name="length"/>.</exception>
+		public static void ValidateLength(this string str, int length, string paramName)
+		{
+			if (str?.Length > length)
+				throw new ArgumentException($"The value of '{paramName}' is too long. Only {length} characters are allowed.");
 		}
 	}
 }

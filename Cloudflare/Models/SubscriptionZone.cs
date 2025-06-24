@@ -1,27 +1,21 @@
 ﻿namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
-	/// Base implementation of an owner.
+	/// A simple zone object. May have null properties if not a zone subscription.
+	/// <see href="https://github.com/cloudflare/cloudflare-typescript/blob/v4.4.1/src/resources/shared.ts#L776">Source</see>
 	/// </summary>
-	public class OwnerBase
+	public class SubscriptionZone
 	{
 		/// <summary>
 		/// Identifier.
 		/// </summary>
-		// <= 32 characters
 		[JsonProperty("id")]
 		public string? Id { get; set; }
 
 		/// <summary>
-		/// Name of the owner.
+		/// The domain name.
 		/// </summary>
 		[JsonProperty("name")]
 		public string? Name { get; set; }
-
-		/// <summary>
-		/// The type of owner.
-		/// </summary>
-		[JsonProperty("type")]
-		public string? Type { get; set; }
 	}
 }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace AMWD.Net.Api.Cloudflare.Auth
+namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// Implements the interface to authenticate using an API token.

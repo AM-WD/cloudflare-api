@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AMWD.Net.Api.Cloudflare
+﻿namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// Represents filter options defined via query parameters.

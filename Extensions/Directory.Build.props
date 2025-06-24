@@ -7,14 +7,10 @@
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/AM-WD/cloudflare-api.git</RepositoryUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-
     <PackageIcon>package-icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://developers.cloudflare.com/api</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -39,6 +35,7 @@
 
   <ItemGroup>
     <None Include="$(SolutionDir)/package-icon.png" Pack="true" PackagePath="/" />
+    <None Include="$(SolutionDir)/LICENSE.txt" Pack="true" PackagePath="/" />
     <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
@@ -50,6 +47,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <!-- This package version has to be updated whenever the base API implementation changes. -->
     <PackageReference Include="AMWD.Net.API.Cloudflare" Version="0.1.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">

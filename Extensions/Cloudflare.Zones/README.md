@@ -1,8 +1,8 @@
 # Cloudflare API for .NET | Zones
 
-With this extension package, you'll get all features available to manage a Zone on Cloudflare.
+This package contains the feature set of the _Domain/Zone Management_ section of the Cloudflare API.
 
-## Methods
+## Implemented Methods
 
 ### Zone
 

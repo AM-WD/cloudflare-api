@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace AMWD.Net.Api.Cloudflare
+﻿namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// The base Cloudflare response.
+	/// Derived from <see href="https://github.com/cloudflare/cloudflare-typescript/blob/v4.4.1/src/resources/shared.ts#L616">Source: Result</see>
 	/// </summary>
 	public class CloudflareResponse
 	{
@@ -24,12 +23,6 @@ namespace AMWD.Net.Api.Cloudflare
 		/// </summary>
 		[JsonProperty("success")]
 		public bool Success { get; set; }
-
-		/// <summary>
-		/// Information about the processing time of a request.
-		/// </summary>
-		[JsonProperty("timing")]
-		public RecordProcessTiming? Timing { get; set; }
 	}
 
 	/// <inheritdoc/>

@@ -34,7 +34,7 @@ namespace Cloudflare.Tests.Extensions
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentOutOfRangeExceptionForValidateId()
 		{
 			// Arrange
@@ -43,7 +43,7 @@ namespace Cloudflare.Tests.Extensions
 			// Act
 			id.ValidateCloudflareId();
 
-			// Assert - ArgumentOutOfRangeException
+			// Assert - ArgumentException
 		}
 
 		[DataTestMethod]
@@ -54,7 +54,7 @@ namespace Cloudflare.Tests.Extensions
 		public void ShouldThrowArgumentExceptionForValidateId(string id)
 		{
 			// Arrange
-			
+
 			// Act
 			id.ValidateCloudflareId();
 
@@ -89,7 +89,7 @@ namespace Cloudflare.Tests.Extensions
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentOutOfRangeExceptionForValidateName()
 		{
 			// Arrange
@@ -98,7 +98,7 @@ namespace Cloudflare.Tests.Extensions
 			// Act
 			name.ValidateCloudflareName();
 
-			// Assert - ArgumentOutOfRangeException
+			// Assert - ArgumentException
 		}
 
 		[TestMethod]
@@ -139,6 +139,32 @@ namespace Cloudflare.Tests.Extensions
 
 			// Act
 			email.ValidateCloudflareEmailAddress();
+
+			// Assert - ArgumentException
+		}
+
+		[DataTestMethod]
+		[DataRow(null)]
+		[DataRow("SomeExampleString")]
+		public void ShouldValidateLength(string str)
+		{
+			// Arrange
+
+			// Act
+			str.ValidateLength(30, nameof(str));
+
+			// Assert - no exception thrown
+		}
+
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentException))]
+		public void ShouldThrowArgumentExceptionForValidateLength()
+		{
+			// Arrange
+			string str = "SomeExampleString";
+
+			// Act
+			str.ValidateLength(10, nameof(str));
 
 			// Assert - ArgumentException
 		}

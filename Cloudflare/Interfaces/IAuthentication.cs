@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace AMWD.Net.Api.Cloudflare.Auth
+namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// Defines the interface to add authentication information.

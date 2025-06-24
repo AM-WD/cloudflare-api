@@ -5,6 +5,7 @@ namespace AMWD.Net.Api.Cloudflare
 {
 	/// <summary>
 	/// The direction to sort the entity.
+	/// <see href="https://github.com/cloudflare/cloudflare-typescript/blob/v4.4.1/src/resources/shared.ts#L698">Source</see>
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
 	public enum SortDirection

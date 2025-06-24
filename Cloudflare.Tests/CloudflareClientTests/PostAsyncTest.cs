@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
-using AMWD.Net.Api.Cloudflare.Auth;
 using Moq;
 using Moq.Protected;
 
@@ -104,7 +101,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			_httpHandlerMock.Responses.Enqueue(new HttpResponseMessage
 			{
 				StatusCode = HttpStatusCode.OK,
-				Content = new StringContent(@"{""success"": true, ""errors"": [], ""messages"": [], ""result"": { ""string"": ""some-string"", ""integer"": 123 }, ""timing"": {""end_time"": ""2014-03-01T12:20:01Z"", ""process_time"": 1, ""start_time"": ""2014-03-01T12:20:00Z""}}", Encoding.UTF8, MediaTypeNames.Application.Json),
+				Content = new StringContent(@"{""success"": true, ""errors"": [], ""messages"": [], ""result"": { ""string"": ""some-string"", ""integer"": 123 }}", Encoding.UTF8, MediaTypeNames.Application.Json),
 			});
 
 			var client = GetClient();
@@ -125,11 +122,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
-
-			Assert.IsNotNull(response.Timing);
-			Assert.AreEqual("01.03.2014 12:20:00", response.Timing.StartTime?.ToString("dd.MM.yyyy HH:mm:ss"));
-			Assert.AreEqual("01.03.2014 12:20:01", response.Timing.EndTime?.ToString("dd.MM.yyyy HH:mm:ss"));
-			Assert.AreEqual(1, response.Timing.ProcessTime);
 
 			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
 
@@ -175,7 +167,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -227,7 +218,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -305,7 +295,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -383,7 +372,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);

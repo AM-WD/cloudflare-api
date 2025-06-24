@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
-using AMWD.Net.Api.Cloudflare.Auth;
+using AMWD.Net.Api.Cloudflare;
 
 namespace Cloudflare.Core.Tests.Auth
 {

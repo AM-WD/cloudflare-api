@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <NrtTagMatch>zones/v[0-9]*</NrtTagMatch>
 
     <PackageId>AMWD.Net.API.Cloudflare.Zones</PackageId>
     <PackageTags>cloudflare api zones</PackageTags>
@@ -9,8 +10,8 @@
     <AssemblyName>amwd-cloudflare-zones</AssemblyName>
     <RootNamespace>AMWD.Net.Api.Cloudflare.Zones</RootNamespace>
 
-    <Product>Cloudflare API - Zones</Product>
-    <Description>Zone management features of the Cloudflare API</Description>
+    <Product>Cloudflare API - Domain/Zone Management</Product>
+    <Description>The Domain/Zone Management section of the Cloudflare API.</Description>
   </PropertyGroup>
 
   <!-- Only build package for tagged releases or Debug on CI (only dev NuGet feed) -->

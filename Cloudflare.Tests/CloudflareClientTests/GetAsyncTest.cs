@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
-using AMWD.Net.Api.Cloudflare.Auth;
 using Moq;
 using Moq.Protected;
 
@@ -110,7 +107,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);
@@ -212,7 +208,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Errors);
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-			Assert.IsNull(response.Timing);
 
 			Assert.AreEqual(0, response.Errors.Count);
 			Assert.AreEqual(0, response.Messages.Count);

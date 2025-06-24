@@ -17,7 +17,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// <summary>
 		/// Gets or sets the default timeout for the API.
 		/// </summary>
-		public virtual TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(60);
+		public virtual TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(100);
 
 		/// <summary>
 		/// Gets or sets the maximum number of retries for the API.
