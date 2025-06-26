@@ -33,6 +33,16 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [Get Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/get/)
 
 
+##### [Plans]
+
+- [Available Plan Details](https://developers.cloudflare.com/api/resources/zones/subresources/plans/methods/get/)
+- [List Available Plans](https://developers.cloudflare.com/api/resources/zones/subresources/plans/methods/list/)
+
+
+##### [Rate Plans]
+
+- [List Available Rate Plans](https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/methods/get/)
+
 
 
 
@@ -49,3 +59,5 @@ Published under MIT License (see [choose a license])
 [Zones]: https://developers.cloudflare.com/api/resources/zones/
 [Activation Check]: https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/
 [Holds]: https://developers.cloudflare.com/api/resources/zones/subresources/holds/
+[Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/plans/
+[Rate Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/

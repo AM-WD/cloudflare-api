@@ -230,7 +230,8 @@ namespace AMWD.Net.Api.Cloudflare
 					var errorResponse = JsonConvert.DeserializeObject<CloudflareResponse<object>>(content, _jsonSerializerSettings)
 						?? throw new CloudflareException("Response is not a valid Cloudflare API response.");
 
-					throw new AuthenticationException(string.Join(Environment.NewLine, errorResponse.Errors.Select(e => $"{e.Code}: {e.Message}")));
+					string[] errors = errorResponse.Errors?.Select(e => $"{e.Code}: {e.Message}").ToArray() ?? [];
+					throw new AuthenticationException(string.Join(Environment.NewLine, errors));
 
 				default:
 					try
