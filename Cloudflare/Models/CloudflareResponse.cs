@@ -10,13 +10,13 @@
 		/// Errors returned by the API call.
 		/// </summary>
 		[JsonProperty("errors")]
-		public IReadOnlyList<ResponseInfo> Errors { get; set; } = [];
+		public IReadOnlyCollection<ResponseInfo>? Errors { get; set; }
 
 		/// <summary>
 		/// Messages returned by the API call.
 		/// </summary>
 		[JsonProperty("messages")]
-		public IReadOnlyList<ResponseInfo> Messages { get; set; } = [];
+		public IReadOnlyCollection<ResponseInfo>? Messages { get; set; }
 
 		/// <summary>
 		/// Whether the API call was successful.

@@ -292,12 +292,9 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
-			Assert.IsNotNull(response.Errors);
-			Assert.IsNotNull(response.Messages);
+			Assert.IsNull(response.Errors);
+			Assert.IsNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
@@ -369,12 +366,9 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
-			Assert.IsNotNull(response.Errors);
-			Assert.IsNotNull(response.Messages);
+			Assert.IsNull(response.Errors);
+			Assert.IsNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
-
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
