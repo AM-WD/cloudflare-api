@@ -52,6 +52,13 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - **DEPRECATED** [Get All Zone Settings](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/list/)
 
 
+##### [Subscriptions]
+
+- [Create Zone Subscription](https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/methods/create/)
+- [Zone Subscription Details](https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/methods/get/)
+- [Update Zone Subscription](https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/methods/update/)
+
+
 
 ---
 
@@ -68,3 +75,4 @@ Published under MIT License (see [choose a license])
 [Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/plans/
 [Rate Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/
 [Settings]: https://developers.cloudflare.com/api/resources/zones/subresources/settings/
+[Subscriptions]: https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/
