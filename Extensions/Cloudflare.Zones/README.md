@@ -44,6 +44,12 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [List Available Rate Plans](https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/methods/get/)
 
 
+##### [Settings]
+
+- **DEPRECATED** [Edit Multiple Zone Settings](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/bulk_edit/)
+- [Edit Zone Setting](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/edit/)
+- [Get Zone Setting](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/get/)
+- **DEPRECATED** [Get All Zone Settings](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/list/)
 
 
 
@@ -61,3 +67,4 @@ Published under MIT License (see [choose a license])
 [Holds]: https://developers.cloudflare.com/api/resources/zones/subresources/holds/
 [Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/plans/
 [Rate Plans]: https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/
+[Settings]: https://developers.cloudflare.com/api/resources/zones/subresources/settings/
