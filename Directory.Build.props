@@ -6,21 +6,15 @@
     <RepositoryUrl>https://github.com/AM-WD/cloudflare-api.git</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
-    <Title>Modular Cloudflare API implementation in .NET</Title>
-    <Company>AM.WD</Company>
-    <Authors>Andreas Müller</Authors>
-    <Copyright>© {copyright:2025-} AM.WD</Copyright>
+    <PublicKey>00240000048000009400000006020000002400005253413100040000010001005d36da5b1ce821f80e6ec0f2b0d909de7f7fcbd3e59d01f0df660453bde3df65ce571562c540f16f50a3c900e2beacffbe6670443b5bbae62b7f297cd02ab4484a9e2f48e1c6250f684612df57ac7ff6684d040948622da556586229b9f5b562e6f65cf3e83e49ca165bd32cbba8a6015bf6fcd2ccfc0e0cb5d1d9e2449543f1</PublicKey>
 
-    <PublicKey>0024000004800000940000000602000000240000525341310004000001000100a96b0435a48fcae5d097c19c0c3a312d0316c1217a7d5984236f430625510dfdbedc3ffdaea7b3bad77adbe5d85cecdd788a43cd02a8a4950313587bbcb804ff2ef68346f9d6a79f79338e4f12293f216df0536d2b05ab7977b6c50946a42422cb1ddc109c0151a3d65fbe636ce6734070fb6e3eaf000a33ac6a36cab5292ed1</PublicKey>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(SolutionDir)/cloudflare-api.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+
     <Using Include="Newtonsoft.Json"/>
     <Using Include="System"/>
     <Using Include="System.Collections.Generic"/>

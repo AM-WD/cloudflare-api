@@ -1,8 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project>
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <CollectCoverage>true</CollectCoverage>
@@ -25,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Cloudflare\Cloudflare.csproj" />
+    <ProjectReference Include="$(SolutionDir)\src\Cloudflare\Cloudflare.csproj" />
   </ItemGroup>
 
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)\..'))" />
 </Project>
+

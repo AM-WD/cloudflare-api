@@ -1,0 +1,11 @@
+<Project>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="AMWD.Net.API.Cloudflare" Version="0.1.0" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="$(SolutionDir)\src\Cloudflare\Cloudflare.csproj" />
+  </ItemGroup>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)\..'))" />
+</Project>

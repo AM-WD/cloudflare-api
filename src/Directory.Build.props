@@ -1,10 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project>
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-    <NrtTagMatch>v[0-9]*</NrtTagMatch>
-    <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
     <Nullable>enable</Nullable>
+    <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
 
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
@@ -12,26 +9,17 @@
 
     <PackageIcon>package-icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>cloudflare api</PackageTags>
     <PackageProjectUrl>https://developers.cloudflare.com/api</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>false</EmbedUntrackedSources>
-    
-    <PackageId>AMWD.Net.API.Cloudflare</PackageId>
-    <AssemblyName>amwd-cloudflare-core</AssemblyName>
-    <RootNamespace>AMWD.Net.Api.Cloudflare</RootNamespace>
 
-    <Product>Cloudflare API - Core</Product>
-    <Description>Core features of the Cloudflare API</Description>
-  </PropertyGroup>
-
-  <!-- Only build package for tagged releases or Debug on CI (only dev NuGet feed) -->
-  <!--<PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(CI_COMMIT_TAG)', '^v[0-9.]+')) or ('$(Configuration)' == 'Debug' and '$(GITLAB_CI)' == 'true')">-->
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(CI_COMMIT_TAG)', '^v[0-9.]+')) or ('$(Configuration)' == 'Debug')">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Modular Cloudflare API implementation in .NET</Title>
+    <Company>AM.WD</Company>
+    <Authors>Andreas Müller</Authors>
+    <Copyright>© {copyright:2025-} AM.WD</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(GITLAB_CI)' == 'true'">
@@ -59,4 +47,5 @@
     </PackageReference>
   </ItemGroup>
 
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)\..'))" />
 </Project>
