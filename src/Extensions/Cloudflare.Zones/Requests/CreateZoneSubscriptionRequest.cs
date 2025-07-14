@@ -22,7 +22,7 @@
 		/// <summary>
 		/// How often the subscription is renewed automatically.
 		/// </summary>
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		/// <summary>
 		/// The rate plan applied to the subscription.

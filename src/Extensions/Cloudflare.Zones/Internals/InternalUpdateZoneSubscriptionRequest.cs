@@ -3,7 +3,7 @@
 	internal class InternalUpdateZoneSubscriptionRequest
 	{
 		[JsonProperty("frequency")]
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		[JsonProperty("rate_plan")]
 		public RatePlan? RatePlan { get; set; }

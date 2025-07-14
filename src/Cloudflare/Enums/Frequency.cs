@@ -8,7 +8,7 @@ namespace AMWD.Net.Api.Cloudflare
 	/// <see href="https://github.com/cloudflare/cloudflare-typescript/blob/v4.4.1/src/resources/shared.ts#L730">Source</see>
 	/// </summary>
 	[JsonConverter(typeof(StringEnumConverter))]
-	public enum RenewFrequency
+	public enum Frequency
 	{
 		/// <summary>
 		/// Weekly

@@ -40,7 +40,7 @@ namespace Cloudflare.Zones.Tests.ZoneSubscriptionsExtensions
 
 			_request = new CreateZoneSubscriptionRequest(ZoneId)
 			{
-				Frequency = RenewFrequency.Quarterly,
+				Frequency = Frequency.Quarterly,
 				RatePlan = new RatePlan
 				{
 					Id = RatePlanId.Business,

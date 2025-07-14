@@ -34,7 +34,7 @@
 		/// The frequency at which you will be billed for this plan.
 		/// </summary>
 		[JsonProperty("frequency")]
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		/// <summary>
 		/// Indicates whether you are currently subscribed to this plan.

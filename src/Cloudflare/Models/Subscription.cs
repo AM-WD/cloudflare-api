@@ -37,7 +37,7 @@ namespace AMWD.Net.Api.Cloudflare
 		/// How often the subscription is renewed automatically.
 		/// </summary>
 		[JsonProperty("frequency")]
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		/// <summary>
 		/// The price of the subscription that will be billed, in US dollars.

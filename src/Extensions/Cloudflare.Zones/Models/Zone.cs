@@ -309,7 +309,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// How often the customer is billed.
 		/// </summary>
 		[JsonProperty("frequency")]
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		/// <summary>
 		/// States if the subscription active.

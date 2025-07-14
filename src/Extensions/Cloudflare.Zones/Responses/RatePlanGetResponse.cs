@@ -36,7 +36,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		/// The frequency at which you will be billed for this plan.
 		/// </summary>
 		[JsonProperty("frequency")]
-		public RenewFrequency? Frequency { get; set; }
+		public Frequency? Frequency { get; set; }
 
 		/// <summary>
 		/// The plan name.
