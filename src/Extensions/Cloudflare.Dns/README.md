@@ -11,6 +11,21 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [List Account Custom Nameservers](https://developers.cloudflare.com/api/resources/custom_nameservers/methods/get/)
 
 
+### [DNS]
+
+#### [Records]
+
+- [Batch DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/batch/)
+- [Create DNS Record](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/create/)
+- [Delete DNS Record](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/delete/)
+- [Update DNS Record](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/edit/)
+- [Export DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/export/)
+- [DNS Record Details](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/get/)
+- [Import DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/import/)
+- [List DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/list/)
+- [Scan DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/scan/)
+- [Overwrite DNS Record](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/update/)
+
 
 ---
 
@@ -21,3 +36,6 @@ Published under MIT License (see [choose a license])
 [choose a license]: https://choosealicense.com/licenses/mit/
 
 [Account Custom Nameservers]: https://developers.cloudflare.com/api/resources/custom_nameservers/
+
+[DNS]: https://developers.cloudflare.com/api/resources/dns/
+[Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/

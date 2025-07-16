@@ -29,5 +29,11 @@
 		/// </summary>
 		[JsonProperty("total_count")]
 		public int? TotalCount { get; set; }
+
+		/// <summary>
+		/// Total number of pages of results.
+		/// </summary>
+		[JsonProperty("total_pages")]
+		public int? TotalPages { get; set; }
 	}
 }

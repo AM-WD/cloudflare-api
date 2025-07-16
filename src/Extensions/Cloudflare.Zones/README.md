@@ -20,12 +20,12 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [List Zones](https://developers.cloudflare.com/api/resources/zones/methods/list/)
 
 
-##### [Activation Check]
+#### [Activation Check]
 
 - [Rerun The Activation Check](https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/methods/trigger/)
 
 
-##### [Holds]
+#### [Holds]
 
 - [Create Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/create/)
 - [Remove Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/delete/)
@@ -33,18 +33,18 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [Get Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/get/)
 
 
-##### [Plans]
+#### [Plans]
 
 - [Available Plan Details](https://developers.cloudflare.com/api/resources/zones/subresources/plans/methods/get/)
 - [List Available Plans](https://developers.cloudflare.com/api/resources/zones/subresources/plans/methods/list/)
 
 
-##### [Rate Plans]
+#### [Rate Plans]
 
 - [List Available Rate Plans](https://developers.cloudflare.com/api/resources/zones/subresources/rate_plans/methods/get/)
 
 
-##### [Settings]
+#### [Settings]
 
 - **DEPRECATED** [Edit Multiple Zone Settings](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/bulk_edit/)
 - [Edit Zone Setting](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/edit/)
@@ -52,7 +52,7 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - **DEPRECATED** [Get All Zone Settings](https://developers.cloudflare.com/api/resources/zones/subresources/settings/methods/list/)
 
 
-##### [Subscriptions]
+#### [Subscriptions]
 
 - [Create Zone Subscription](https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/methods/create/)
 - [Zone Subscription Details](https://developers.cloudflare.com/api/resources/zones/subresources/subscriptions/methods/get/)
