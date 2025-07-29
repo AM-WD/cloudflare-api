@@ -29,6 +29,12 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 
 #### [Settings]
 
+##### [Account]
+
+- [Update DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/account/methods/edit/)
+- [Show DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/account/methods/get/)
+
+
 ##### [Zone]
 
 - [Update DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/methods/edit/)
@@ -49,4 +55,5 @@ Published under MIT License (see [choose a license])
 [Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/
 
 [Settings]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/
+[Account]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/account/
 [Zone]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/
