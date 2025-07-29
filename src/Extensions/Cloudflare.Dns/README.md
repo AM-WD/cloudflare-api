@@ -27,6 +27,14 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [Overwrite DNS Record](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/update/)
 
 
+#### [Settings]
+
+##### [Zone]
+
+- [Update DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/methods/edit/)
+- [Show DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/methods/get/)
+
+
 ---
 
 Published under MIT License (see [choose a license])
@@ -39,3 +47,6 @@ Published under MIT License (see [choose a license])
 
 [DNS]: https://developers.cloudflare.com/api/resources/dns/
 [Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/
+
+[Settings]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/
+[Zone]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/
