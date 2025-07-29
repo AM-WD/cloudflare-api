@@ -80,7 +80,7 @@ core-build:
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9.]+/
   script:
-    - dotnet build -c Release --nologo Cloudflare/Cloudflare.csproj
+    - dotnet build -c Release --nologo
     - mkdir ./artifacts
     - shopt -s globstar
     - mv ./**/*.nupkg    ./artifacts/ || true
@@ -101,8 +101,12 @@ core-test:
     - 64bit
   rules:
     - if: $CI_COMMIT_TAG =~ /^v[0-9.]+/
+  before_script:
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
   script:
-    - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura Cloudflare.Tests/Cloudflare.Tests.csproj
+    - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura
+    - /dotnet-tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/coverage.cobertura.xml" "-targetdir:/reports" -reportType:TextSummary
+    - cat /reports/Summary.txt
   artifacts:
     when: always
     reports:
@@ -138,7 +142,7 @@ extensions-build:
   script:
     - dotnet build -c Release --nologo
     - mkdir ./artifacts
-    - shopt -s globstars
+    - shopt -s globstar
     - mv ./**/*.nupkg    ./artifacts/ || true
     - mv ./**/*.snupkg   ./artifacts/ || true
   artifacts:
@@ -157,8 +161,12 @@ extensions-test:
     - 64bit
   rules:
     - if: $CI_COMMIT_TAG =~ /^[a-z]+\/v[0-9.]+/
+  before_script:
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
   script:
     - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura
+    - /dotnet-tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/coverage.cobertura.xml" "-targetdir:/reports" -reportType:TextSummary
+    - cat /reports/Summary.txt
   artifacts:
     when: always
     reports:
