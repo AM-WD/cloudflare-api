@@ -168,6 +168,34 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		[DataTestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
+		public async Task ShouldThrowAuthenticationExceptionOnStatusCodeWithoutErrors(HttpStatusCode statusCode)
+		{
+			// Arrange
+			_httpHandlerMock.Responses.Enqueue(new HttpResponseMessage
+			{
+				StatusCode = statusCode,
+				Content = new StringContent(@"{""success"": false, ""errors"": null, ""messages"": []}", Encoding.UTF8, MediaTypeNames.Application.Json),
+			});
+
+			var client = GetClient();
+
+			try
+			{
+				// Act
+				await client.GetAsync<TestClass>("foo");
+				Assert.Fail();
+			}
+			catch (AuthenticationException ex)
+			{
+				// Assert
+				Assert.IsNull(ex.InnerException);
+				Assert.AreEqual(string.Empty, ex.Message);
+			}
+		}
+
+		[DataTestMethod]
+		[DataRow(HttpStatusCode.Unauthorized)]
+		[DataRow(HttpStatusCode.Forbidden)]
 		[ExpectedException(typeof(CloudflareException))]
 		public async Task ShouldThrowCloudflareExceptionOnStatusCodeWhenDeserializeFails(HttpStatusCode statusCode)
 		{

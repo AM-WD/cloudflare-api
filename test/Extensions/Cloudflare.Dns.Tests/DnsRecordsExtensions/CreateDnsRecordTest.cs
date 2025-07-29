@@ -720,6 +720,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 		#region LOC
 
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLatitudeDegrees()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LatitudeDegrees = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(91)]
@@ -736,6 +755,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLatitudeMinutes()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LatitudeMinutes = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
@@ -750,6 +788,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var response = await client.CreateDnsRecord(_request);
 
 			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLatitudeSeconds()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LatitudeSeconds = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[DataTestMethod]
@@ -769,6 +826,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		}
 
 		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLatitudeDirection()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LatitudeDirection = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLatitudeDirection()
 		{
@@ -780,6 +856,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var response = await client.CreateDnsRecord(_request);
 
 			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLongitudeDegrees()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LongitudeDegrees = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[DataTestMethod]
@@ -798,6 +893,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLongitudeMinutes()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LongitudeMinutes = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
@@ -812,6 +926,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var response = await client.CreateDnsRecord(_request);
 
 			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLongitudeSeconds()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LongitudeSeconds = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[DataTestMethod]
@@ -831,6 +964,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		}
 
 		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutLongitudeDirection()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).LongitudeDirection = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
+		[TestMethod]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLongitudeDirection()
 		{
@@ -842,6 +994,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var response = await client.CreateDnsRecord(_request);
 
 			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutAltitude()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).Altitude = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[DataTestMethod]
@@ -860,6 +1031,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutSize()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).Size = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
@@ -876,6 +1066,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutPrecisionHorizontal()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).PrecisionHorizontal = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
+		}
+
 		[DataTestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
@@ -890,6 +1099,25 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var response = await client.CreateDnsRecord(_request);
 
 			// Assert - ArgumentOutOfRangeException
+		}
+
+		[TestMethod]
+		public async Task ShouldCreateLocDataRecordWithoutPrecisionVertical()
+		{
+			// Arrange
+			((LOCRecordData)_request.Data).PrecisionVertical = null;
+			var client = GetClient();
+
+			// Act
+			var response = await client.CreateDnsRecord(_request);
+
+			// Assert
+			Assert.IsNotNull(response);
+			Assert.IsTrue(response.Success);
+			Assert.AreEqual(_response.Result, response.Result);
+
+			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[DataTestMethod]

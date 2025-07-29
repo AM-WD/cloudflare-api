@@ -22,22 +22,22 @@
 		/// <summary>
 		/// The DNS records to delete.
 		/// </summary>
-		public IReadOnlyCollection<string>? Deletes { get; set; }
+		public IReadOnlyCollection<string> Deletes { get; set; } = [];
 
 		/// <summary>
 		/// The DNS records to update.
 		/// </summary>
-		public IReadOnlyCollection<Patch>? Updates { get; set; }
+		public IReadOnlyCollection<Patch> Updates { get; set; } = [];
 
 		/// <summary>
 		/// The DNS records to create.
 		/// </summary>
-		public IReadOnlyCollection<Post>? Creates { get; set; }
+		public IReadOnlyCollection<Post> Creates { get; set; } = [];
 
 		/// <summary>
 		/// The DNS records to overwrite.
 		/// </summary>
-		public IReadOnlyCollection<Put>? Overwrites { get; set; }
+		public IReadOnlyCollection<Put> Overwrites { get; set; } = [];
 
 		/// <summary>
 		/// Represents a request to update a DNS record.

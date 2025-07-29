@@ -70,7 +70,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			// Deletes (DELETE)
 			var deletes = new List<Identifier>();
-			foreach (string delete in request.Deletes ?? [])
+			foreach (string delete in request.Deletes)
 			{
 				delete.ValidateCloudflareId();
 				deletes.Add(new Identifier { Id = delete });
@@ -78,7 +78,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			// Updates (PATCH)
 			var patches = new List<InternalBatchUpdateRequest>();
-			foreach (var patch in request.Updates ?? [])
+			foreach (var patch in request.Updates)
 			{
 				patch.Id.ValidateCloudflareId();
 
@@ -90,7 +90,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			// Creates (POST)
 			var posts = new List<InternalDnsRecordRequest>();
-			foreach (var post in request.Creates ?? [])
+			foreach (var post in request.Creates)
 			{
 				var req = (InternalDnsRecordRequest)ValidateRequest(post);
 				posts.Add(req);
@@ -98,7 +98,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			// Overwrites (PUT)
 			var puts = new List<InternalBatchUpdateRequest>();
-			foreach (var put in request.Overwrites ?? [])
+			foreach (var put in request.Overwrites)
 			{
 				put.Id.ValidateCloudflareId();
 

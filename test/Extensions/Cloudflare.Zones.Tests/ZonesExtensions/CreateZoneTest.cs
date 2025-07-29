@@ -95,12 +95,13 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 		}
 
 		[DataTestMethod]
-		[DataRow(null)]
-		[DataRow("023e105f4ecef8ad9ca31a8372d0c353")]
-		public async Task ShouldCreateZone(string accountId)
+		[DataRow(null, ZoneType.Full)]
+		[DataRow("023e105f4ecef8ad9ca31a8372d0c353", null)]
+		public async Task ShouldCreateZone(string accountId, ZoneType? type)
 		{
 			// Arrange
 			_request.AccountId = accountId;
+			_request.Type = type;
 			var client = GetClient();
 
 			// Act
