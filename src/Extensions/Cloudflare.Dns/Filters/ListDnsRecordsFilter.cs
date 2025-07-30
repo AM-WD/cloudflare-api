@@ -273,7 +273,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		public DnsRecordType? Type { get; set; }
 
 		/// <inheritdoc />
-		public IDictionary<string, string> GetQueryParameters()
+		public IReadOnlyDictionary<string, string> GetQueryParameters()
 		{
 			var dict = new Dictionary<string, string>();
 

@@ -4,7 +4,7 @@
 	{
 		public bool? IncludeSubdomains { get; set; }
 
-		public IDictionary<string, string> GetQueryParameters()
+		public IReadOnlyDictionary<string, string> GetQueryParameters()
 		{
 			var dict = new Dictionary<string, string>();
 

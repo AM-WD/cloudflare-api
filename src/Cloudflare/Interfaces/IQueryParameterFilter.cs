@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Gets the query parameters.
 		/// </summary>
-		IDictionary<string, string> GetQueryParameters();
+		IReadOnlyDictionary<string, string> GetQueryParameters();
 	}
 }

@@ -411,7 +411,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 		private class TestFilter : IQueryParameterFilter
 		{
-			public IDictionary<string, string> GetQueryParameters()
+			public IReadOnlyDictionary<string, string> GetQueryParameters()
 			{
 				return new Dictionary<string, string>
 				{

@@ -88,7 +88,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		public ZoneStatus? Status { get; set; }
 
 		/// <inheritdoc />
-		public IDictionary<string, string> GetQueryParameters()
+		public IReadOnlyDictionary<string, string> GetQueryParameters()
 		{
 			var dict = new Dictionary<string, string>();
 
