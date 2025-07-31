@@ -86,5 +86,104 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			return client.GetAsync<DnsAccountSettings>($"/accounts/{accountId}/dns_settings", null, cancellationToken);
 		}
+
+		#region Views
+
+		/// <summary>
+		/// Create Internal DNS View for an account.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="request">The request.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<InternalDnsView>> CreateInternalDnsView(this ICloudflareClient client, CreateInternalDnsViewRequest request, CancellationToken cancellationToken = default)
+		{
+			request.AccountId.ValidateCloudflareId();
+
+			if (string.IsNullOrWhiteSpace(request.Name))
+				throw new ArgumentNullException(nameof(request.Name));
+
+			if (request.Name.Length > 255)
+				throw new ArgumentOutOfRangeException(nameof(request.Name), request.Name, "The Name length must be between 1 and 255 characters.");
+
+			var req = new InternalModifyInternalDnsViewRequest
+			{
+				Name = request.Name,
+				Zones = request.ZoneIds
+			};
+
+			return client.PostAsync<InternalDnsView, InternalModifyInternalDnsViewRequest>($"/accounts/{request.AccountId}/dns_settings/views", req, null, cancellationToken);
+		}
+
+		/// <summary>
+		/// Delete an existing Internal DNS View.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="viewId">The view identifier.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<Identifier>> DeleteInternalDnsView(this ICloudflareClient client, string accountId, string viewId, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+			viewId.ValidateCloudflareId();
+
+			return client.DeleteAsync<Identifier>($"/accounts/{accountId}/dns_settings/views/{viewId}", null, cancellationToken);
+		}
+
+		/// <summary>
+		/// Update an existing Internal DNS View.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="request">The request.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<InternalDnsView>> UpdateInternalDnsView(this ICloudflareClient client, UpdateInternalDnsViewRequest request, CancellationToken cancellationToken = default)
+		{
+			request.AccountId.ValidateCloudflareId();
+			request.ViewId.ValidateCloudflareId();
+
+			if (string.IsNullOrWhiteSpace(request.Name))
+				throw new ArgumentNullException(nameof(request.Name));
+
+			if (request.Name.Length > 255)
+				throw new ArgumentOutOfRangeException(nameof(request.Name), request.Name, "The Name length must be between 1 and 255 characters.");
+
+			var req = new InternalModifyInternalDnsViewRequest
+			{
+				Name = request.Name,
+				Zones = request.ZoneIds
+			};
+
+			return client.PatchAsync<InternalDnsView, InternalModifyInternalDnsViewRequest>($"/accounts/{request.AccountId}/dns_settings/views/{request.ViewId}", req, cancellationToken);
+		}
+
+		/// <summary>
+		/// Get DNS Internal View.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="viewId">The view identifier.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<InternalDnsView>> InternalDnsViewDetails(this ICloudflareClient client, string accountId, string viewId, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+			viewId.ValidateCloudflareId();
+
+			return client.GetAsync<InternalDnsView>($"/accounts/{accountId}/dns_settings/views/{viewId}", null, cancellationToken);
+		}
+
+		/// <summary>
+		/// List DNS Internal Views for an Account.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="options">Filter options (optional).</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<IReadOnlyCollection<InternalDnsView>>> ListInternalDnsViews(this ICloudflareClient client, string accountId, ListInternalDnsViewsFilter? options = null, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+
+			return client.GetAsync<IReadOnlyCollection<InternalDnsView>>($"/accounts/{accountId}/dns_settings/views", options, cancellationToken);
+		}
+
+		#endregion Views
 	}
 }

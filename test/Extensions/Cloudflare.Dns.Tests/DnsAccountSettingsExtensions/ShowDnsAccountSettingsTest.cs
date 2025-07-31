@@ -83,8 +83,8 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock?.Verify(m => m.GetAsync<DnsAccountSettings>($"/accounts/{AccountId}/dns_settings", null, It.IsAny<CancellationToken>()), Times.Once);
-			_clientMock?.VerifyNoOtherCalls();
+			_clientMock.Verify(m => m.GetAsync<DnsAccountSettings>($"/accounts/{AccountId}/dns_settings", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.VerifyNoOtherCalls();
 		}
 
 		private ICloudflareClient GetClient()

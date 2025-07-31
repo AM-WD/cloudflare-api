@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `Cloudflare` with basic functionality to communicate with Cloudflare's API
-- `Cloudflare.Zones` extending the core package with specific methods to manage Cloudflare's DNS zones
+- `Cloudflare` with the core functionality to communicate with Cloudflare's API endpoint
+- `Cloudflare.Dns` extending the core package with specific methods to manage Cloudflare's DNS settings
+- `Cloudflare.Zones` extending the core package with specific methods to manage Cloudflare's Domain/Zone Management
 
 
 
