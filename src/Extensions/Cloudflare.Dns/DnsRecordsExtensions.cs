@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare.Dns.Internals;
+using Newtonsoft.Json.Linq;
 
 namespace AMWD.Net.Api.Cloudflare.Dns
 {
@@ -63,7 +64,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
 		/// <param name="request">The request.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<BatchDnsRecordsResponse>> BatchDnsRecords(this ICloudflareClient client, BatchDnsRecordsRequest request, CancellationToken cancellationToken = default)
+		public static async Task<CloudflareResponse<BatchDnsRecordsResponse>> BatchDnsRecords(this ICloudflareClient client, BatchDnsRecordsRequest request, CancellationToken cancellationToken = default)
 		{
 			request.ZoneId.ValidateCloudflareId();
 
@@ -121,7 +122,45 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 			if (puts.Count > 0)
 				batchReq.Puts = puts;
 
-			return client.PostAsync<BatchDnsRecordsResponse, InternalBatchRequest>($"/zones/{request.ZoneId}/dns_records/batch", batchReq, null, cancellationToken);
+			var res = await client.PostAsync<JObject, InternalBatchRequest>($"/zones/{request.ZoneId}/dns_records/batch", batchReq, null, cancellationToken);
+
+			var response = new CloudflareResponse<BatchDnsRecordsResponse>
+			{
+				Success = res.Success,
+				Errors = res.Errors,
+				Messages = res.Messages,
+				ResultInfo = res.ResultInfo
+			};
+
+			if (res.Success)
+			{
+#pragma warning disable CS8619 // There will be no null value in the final list.
+				response.Result = new BatchDnsRecordsResponse
+				{
+					Creates = res.Result?.Value<JArray>("posts")?
+						.Select(ConvertToRecord)
+						.Where(r => r != null)
+						.ToList(),
+
+					Deletes = res.Result?.Value<JArray>("deletes")?
+						.Select(ConvertToRecord)
+						.Where(r => r != null)
+						.ToList(),
+
+					Overwrites = res.Result?.Value<JArray>("puts")?
+						.Select(ConvertToRecord)
+						.Where(r => r != null)
+						.ToList(),
+
+					Updates = res.Result?.Value<JArray>("patches")?
+						.Select(ConvertToRecord)
+						.Where(r => r != null)
+						.ToList()
+				};
+#pragma warning restore CS8619
+			}
+
+			return response;
 		}
 
 		/// <summary>
@@ -176,14 +215,22 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
 		/// <param name="request">The request.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<DnsRecord>> UpdateDnsRecord(this ICloudflareClient client, UpdateDnsRecordRequest request, CancellationToken cancellationToken = default)
+		public static async Task<CloudflareResponse<DnsRecord>> UpdateDnsRecord(this ICloudflareClient client, UpdateDnsRecordRequest request, CancellationToken cancellationToken = default)
 		{
 			request.ZoneId.ValidateCloudflareId();
 			request.RecordId.ValidateCloudflareId();
 
 			var req = ValidateRequest(request);
+			var res = await client.PatchAsync<JObject, InternalDnsRecordRequest>($"/zones/{request.ZoneId}/dns_records/{request.RecordId}", req, cancellationToken);
 
-			return client.PatchAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{request.ZoneId}/dns_records/{request.RecordId}", req, cancellationToken);
+			return new CloudflareResponse<DnsRecord>
+			{
+				Success = res.Success,
+				Errors = res.Errors,
+				Messages = res.Messages,
+				ResultInfo = res.ResultInfo,
+				Result = ConvertToRecord(res.Result)
+			};
 		}
 
 		/// <summary>
@@ -206,12 +253,21 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// <param name="zoneId">The zone identifier.</param>
 		/// <param name="recordId">The record identifier.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<DnsRecord>> DnsRecordDetails(this ICloudflareClient client, string zoneId, string recordId, CancellationToken cancellationToken = default)
+		public static async Task<CloudflareResponse<DnsRecord>> DnsRecordDetails(this ICloudflareClient client, string zoneId, string recordId, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 			recordId.ValidateCloudflareId();
 
-			return client.GetAsync<DnsRecord>($"/zones/{zoneId}/dns_records/{recordId}", null, cancellationToken);
+			var res = await client.GetAsync<JObject>($"/zones/{zoneId}/dns_records/{recordId}", null, cancellationToken);
+
+			return new CloudflareResponse<DnsRecord>
+			{
+				Success = res.Success,
+				Errors = res.Errors,
+				Messages = res.Messages,
+				ResultInfo = res.ResultInfo,
+				Result = ConvertToRecord(res.Result)
+			};
 		}
 
 		/// <summary>
@@ -252,11 +308,25 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// <param name="zoneId">The zone identifier.</param>
 		/// <param name="options">Filter options (optional).</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<IReadOnlyCollection<DnsRecord>>> ListDnsRecords(this ICloudflareClient client, string zoneId, ListDnsRecordsFilter? options = null, CancellationToken cancellationToken = default)
+		public static async Task<CloudflareResponse<IReadOnlyCollection<DnsRecord>>> ListDnsRecords(this ICloudflareClient client, string zoneId, ListDnsRecordsFilter? options = null, CancellationToken cancellationToken = default)
 		{
 			zoneId.ValidateCloudflareId();
 
-			return client.GetAsync<IReadOnlyCollection<DnsRecord>>($"/zones/{zoneId}/dns_records", options, cancellationToken);
+			var res = await client.GetAsync<IReadOnlyCollection<JObject>>($"/zones/{zoneId}/dns_records", options, cancellationToken);
+
+#pragma warning disable CS8619 // There will be no null value in the final list.
+			return new CloudflareResponse<IReadOnlyCollection<DnsRecord>>
+			{
+				Success = res.Success,
+				Errors = res.Errors,
+				Messages = res.Messages,
+				ResultInfo = res.ResultInfo,
+				Result = res.Result?
+					.Select(ConvertToRecord)
+					.Where(r => r != null)
+					.ToList()
+			};
+#pragma warning restore CS8619
 		}
 
 		/// <summary>
@@ -287,14 +357,22 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
 		/// <param name="request">The request.</param>
 		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
-		public static Task<CloudflareResponse<DnsRecord>> OverwriteDnsRecord(this ICloudflareClient client, OverwriteDnsRecordRequest request, CancellationToken cancellationToken = default)
+		public static async Task<CloudflareResponse<DnsRecord>> OverwriteDnsRecord(this ICloudflareClient client, OverwriteDnsRecordRequest request, CancellationToken cancellationToken = default)
 		{
 			request.ZoneId.ValidateCloudflareId();
 			request.RecordId.ValidateCloudflareId();
 
 			var req = ValidateRequest(request);
+			var res = await client.PutAsync<JObject, InternalDnsRecordRequest>($"/zones/{request.ZoneId}/dns_records/{request.RecordId}", req, cancellationToken);
 
-			return client.PutAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{request.ZoneId}/dns_records/{request.RecordId}", req, cancellationToken);
+			return new CloudflareResponse<DnsRecord>
+			{
+				Success = res.Success,
+				Errors = res.Errors,
+				Messages = res.Messages,
+				ResultInfo = res.ResultInfo,
+				Result = ConvertToRecord(res.Result)
+			};
 		}
 
 		private static InternalDnsRecordRequest ValidateRequest(CreateDnsRecordRequest request)
@@ -632,6 +710,60 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 				Ttl = req.Ttl,
 				Type = req.Type
 			};
+		}
+
+		private static DnsRecord? ConvertToRecord(JToken? recordObject)
+		{
+			if (recordObject == null)
+				return null;
+
+			var recordType = GetType(recordObject["type"]?.ToString());
+
+			return recordType switch
+			{
+				DnsRecordType.A => recordObject.ToObject<ARecord>(),
+				DnsRecordType.AAAA => recordObject.ToObject<AAAARecord>(),
+				DnsRecordType.CAA => recordObject.ToObject<CAARecord>(),
+				DnsRecordType.CERT => recordObject.ToObject<CERTRecord>(),
+				DnsRecordType.CNAME => recordObject.ToObject<CNAMERecord>(),
+				DnsRecordType.DNSKEY => recordObject.ToObject<DNSKEYRecord>(),
+				DnsRecordType.DS => recordObject.ToObject<DSRecord>(),
+				DnsRecordType.HTTPS => recordObject.ToObject<HTTPSRecord>(),
+				DnsRecordType.LOC => recordObject.ToObject<LOCRecord>(),
+				DnsRecordType.MX => recordObject.ToObject<MXRecord>(),
+				DnsRecordType.NAPTR => recordObject.ToObject<NAPTRRecord>(),
+				DnsRecordType.NS => recordObject.ToObject<NSRecord>(),
+				DnsRecordType.OPENPGPKEY => recordObject.ToObject<OPENPGPKEYRecord>(),
+				DnsRecordType.PTR => recordObject.ToObject<PTRRecord>(),
+				DnsRecordType.SMIMEA => recordObject.ToObject<SMIMEARecord>(),
+				DnsRecordType.SRV => recordObject.ToObject<SRVRecord>(),
+				DnsRecordType.SSHFP => recordObject.ToObject<SSHFPRecord>(),
+				DnsRecordType.SVCB => recordObject.ToObject<SVCBRecord>(),
+				DnsRecordType.TLSA => recordObject.ToObject<TLSARecord>(),
+				DnsRecordType.TXT => recordObject.ToObject<TXTRecord>(),
+				DnsRecordType.URI => recordObject.ToObject<URIRecord>(),
+				_ => null
+			};
+		}
+
+		private static DnsRecordType GetType(string? typeString)
+		{
+			if (string.IsNullOrWhiteSpace(typeString))
+				return 0;
+
+			return Enum.GetValues(typeof(DnsRecordType))
+				.Cast<DnsRecordType>()
+				.Select(rt =>
+				{
+					return new
+					{
+						Value = rt,
+						Name = rt.GetEnumMemberValue()
+					};
+				})
+				.Where(v => v.Name == typeString)
+				.Select(v => v.Value)
+				.FirstOrDefault();
 		}
 	}
 }

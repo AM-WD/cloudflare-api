@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Dns;
 using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 {
@@ -14,7 +15,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 		private Mock<ICloudflareClient> _clientMock;
 
-		private CloudflareResponse<IReadOnlyCollection<DnsRecord>> _response;
+		private CloudflareResponse<IReadOnlyCollection<JObject>> _response;
 
 		private List<(string RequestPath, IQueryParameterFilter QueryFilter)> _callbacks;
 
@@ -23,7 +24,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		{
 			_callbacks = [];
 
-			_response = new CloudflareResponse<IReadOnlyCollection<DnsRecord>>
+			_response = new CloudflareResponse<IReadOnlyCollection<JObject>>
 			{
 				Success = true,
 				Messages = [
@@ -41,7 +42,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 					TotalPages = 100,
 				},
 				Result = [
-					new ARecord("example.com")
+					JObject.FromObject(new ARecord("example.com")
 					{
 						Id = "023e105f4ecef8ad9ca31a8372d0c353",
 						Content = "96.7.128.175",
@@ -55,8 +56,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 						ModifiedOn = DateTime.Parse("2014-01-01T05:20:00.12345Z"),
 						CommentModifiedOn = DateTime.Parse("2024-01-01T05:20:00.12345Z"),
 						TagsModifiedOn = DateTime.Parse("2025-01-01T05:20:00.12345Z"),
-					},
-					new AAAARecord("example.com")
+					}),
+					JObject.FromObject(new AAAARecord("example.com")
 					{
 						Id = "023e105f4ecef8ad9ca31a8372d0c355",
 						Content = "2600:1408:ec00:36::1736:7f31",
@@ -70,7 +71,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 						ModifiedOn = DateTime.Parse("2014-01-01T05:20:00.12345Z"),
 						CommentModifiedOn = DateTime.Parse("2024-01-01T05:20:00.12345Z"),
 						TagsModifiedOn = DateTime.Parse("2025-01-01T05:20:00.12345Z"),
-					}
+					})
 				]
 			};
 		}
@@ -87,7 +88,15 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
-			Assert.AreEqual(_response.Result, response.Result);
+
+			Assert.IsNotNull(response.Result);
+			Assert.AreEqual(2, response.Result.Count);
+
+			Assert.IsInstanceOfType<ARecord>(response.Result.First());
+			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c353", response.Result.First().Id);
+
+			Assert.IsInstanceOfType<AAAARecord>(response.Result.Last());
+			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c355", response.Result.Last().Id);
 
 			Assert.AreEqual(1, _callbacks.Count);
 
@@ -95,7 +104,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual($"/zones/{ZoneId}/dns_records", callback.RequestPath);
 			Assert.IsNull(callback.QueryFilter);
 
-			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<DnsRecord>>($"/zones/{ZoneId}/dns_records", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<JObject>>($"/zones/{ZoneId}/dns_records", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -116,7 +125,15 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
-			Assert.AreEqual(_response.Result, response.Result);
+
+			Assert.IsNotNull(response.Result);
+			Assert.AreEqual(2, response.Result.Count);
+
+			Assert.IsInstanceOfType<ARecord>(response.Result.First());
+			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c353", response.Result.First().Id);
+
+			Assert.IsInstanceOfType<AAAARecord>(response.Result.Last());
+			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c355", response.Result.Last().Id);
 
 			Assert.AreEqual(1, _callbacks.Count);
 
@@ -127,7 +144,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.IsInstanceOfType<ListDnsRecordsFilter>(callback.QueryFilter);
 			Assert.AreEqual("example.com", ((ListDnsRecordsFilter)callback.QueryFilter).Name);
 
-			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<DnsRecord>>($"/zones/{ZoneId}/dns_records", filter, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<JObject>>($"/zones/{ZoneId}/dns_records", filter, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -803,7 +820,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.GetAsync<IReadOnlyCollection<DnsRecord>>(It.IsAny<string>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
+				.Setup(m => m.GetAsync<IReadOnlyCollection<JObject>>(It.IsAny<string>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()))
 				.Callback<string, IQueryParameterFilter, CancellationToken>((requestPath, queryFilter, _) => _callbacks.Add((requestPath, queryFilter)))
 				.ReturnsAsync(() => _response);
 

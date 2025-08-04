@@ -5,6 +5,7 @@ using AMWD.Net.Api.Cloudflare;
 using AMWD.Net.Api.Cloudflare.Dns;
 using AMWD.Net.Api.Cloudflare.Dns.Internals;
 using Moq;
+using Newtonsoft.Json.Linq;
 
 namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 {
@@ -15,7 +16,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		private const string RecordId = "023e105f4ecef8ad9ca31a8372d0c355";
 
 		private Mock<ICloudflareClient> _clientMock;
-		private CloudflareResponse<DnsRecord> _response;
+		private CloudflareResponse<JObject> _response;
 		private List<(string RequestPath, InternalDnsRecordRequest Request)> _callbacks;
 		private OverwriteDnsRecordRequest _request;
 
@@ -24,7 +25,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		{
 			_callbacks = [];
 
-			_response = new CloudflareResponse<DnsRecord>
+			_response = new CloudflareResponse<JObject>
 			{
 				Success = true,
 				Messages = [
@@ -33,7 +34,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 				Errors = [
 					new ResponseInfo(1000, "Error 1")
 				],
-				Result = new ARecord("*.example.com")
+				Result = JObject.FromObject(new ARecord("*.example.com")
 				{
 					Id = RecordId,
 					Content = "96.7.128.175",
@@ -47,7 +48,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 					ModifiedOn = DateTime.Parse("2014-01-01T05:20:00.12345Z"),
 					CommentModifiedOn = DateTime.Parse("2024-01-01T05:20:00.12345Z"),
 					TagsModifiedOn = DateTime.Parse("2025-01-01T05:20:00.12345Z"),
-				}
+				})
 			};
 
 			_request = new OverwriteDnsRecordRequest(ZoneId, RecordId, "example.com")
@@ -69,7 +70,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
-			Assert.AreEqual(_response.Result, response.Result);
+
+			Assert.IsNotNull(response.Result);
+			Assert.IsInstanceOfType<ARecord>(response.Result);
+
+			Assert.AreEqual(RecordId, response.Result.Id);
+			Assert.AreEqual("*.example.com", response.Result.Name);
+			Assert.AreEqual("96.7.128.175", response.Result.Content);
+			Assert.AreEqual("Domain verification record", response.Result.Comment);
+			Assert.AreEqual(1, response.Result.TimeToLive);
+			Assert.IsTrue(response.Result.Proxied);
+			Assert.IsTrue(response.Result.Proxiable);
+			Assert.IsNotNull(response.Result.Settings);
+			Assert.IsNotNull(response.Result.Meta);
+			Assert.IsNotNull(response.Result.CreatedOn);
+			Assert.IsNotNull(response.Result.ModifiedOn);
+			Assert.IsNotNull(response.Result.CommentModifiedOn);
+			Assert.IsNotNull(response.Result.TagsModifiedOn);
 
 			Assert.AreEqual(1, _callbacks.Count);
 
@@ -81,7 +98,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(DnsRecordType.A, callback.Request.Type);
 			Assert.AreEqual("127.0.1.22", callback.Request.Content);
 
-			_clientMock.Verify(m => m.PutAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records/{RecordId}", It.IsAny<InternalDnsRecordRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PutAsync<JObject, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records/{RecordId}", It.IsAny<InternalDnsRecordRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -89,7 +106,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		{
 			_clientMock = new Mock<ICloudflareClient>();
 			_clientMock
-				.Setup(m => m.PutAsync<DnsRecord, InternalDnsRecordRequest>(It.IsAny<string>(), It.IsAny<InternalDnsRecordRequest>(), It.IsAny<CancellationToken>()))
+				.Setup(m => m.PutAsync<JObject, InternalDnsRecordRequest>(It.IsAny<string>(), It.IsAny<InternalDnsRecordRequest>(), It.IsAny<CancellationToken>()))
 				.Callback<string, InternalDnsRecordRequest, CancellationToken>((requestPath, request, _) => _callbacks.Add((requestPath, request)))
 				.ReturnsAsync(() => _response);
 
