@@ -13,6 +13,13 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 
 ### [DNS]
 
+### [DNSSEC]
+
+- [Delete DNSSEC Records](https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/methods/delete/)
+- [Edit DNSSEC Status](https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/methods/edit/)
+- [DNSSEC Details](https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/methods/get/)
+
+
 #### [Records]
 
 - [Batch DNS Records](https://developers.cloudflare.com/api/resources/dns/subresources/records/methods/batch/)
@@ -46,6 +53,7 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [Show DNS Settings](https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/methods/get/)
 
 
+
 ---
 
 Published under MIT License (see [choose a license])
@@ -57,8 +65,8 @@ Published under MIT License (see [choose a license])
 [Account Custom Nameservers]: https://developers.cloudflare.com/api/resources/custom_nameservers/
 
 [DNS]: https://developers.cloudflare.com/api/resources/dns/
-[Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/
-
-[Settings]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/
-[Account]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/account/
-[Zone]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/
+	[DNSSEC]: https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/
+	[Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/
+	[Settings]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/
+		[Account]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/account/
+		[Zone]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/subresources/zone/
