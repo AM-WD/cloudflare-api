@@ -306,7 +306,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 		[DataTestMethod]
 		[DataRow(DnsRecordType.MX)]
-		[DataRow(DnsRecordType.SRV)]
 		[DataRow(DnsRecordType.URI)]
 		public async Task ShouldSetPriority(DnsRecordType type)
 		{
@@ -317,7 +316,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			switch (type)
 			{
 				case DnsRecordType.MX: _request.Content = "www.example.com."; break;
-				case DnsRecordType.SRV: _request.Data = new SRVRecordData { Port = 10, Priority = 0, Target = ".", Weight = 10 }; break;
 				case DnsRecordType.URI: _request.Data = new URIRecordData { Target = ".", Weight = 10 }; break;
 			}
 
@@ -342,7 +340,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 		[DataTestMethod]
 		[DataRow(DnsRecordType.MX)]
-		[DataRow(DnsRecordType.SRV)]
 		[DataRow(DnsRecordType.URI)]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForPriority(DnsRecordType type)

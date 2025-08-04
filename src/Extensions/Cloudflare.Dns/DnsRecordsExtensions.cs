@@ -31,7 +31,6 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 		private static readonly IReadOnlyCollection<DnsRecordType> _priorityTypes = [
 			DnsRecordType.MX,
-			DnsRecordType.SRV,
 			DnsRecordType.URI,
 		];
 
