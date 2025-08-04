@@ -280,7 +280,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("A", dict["type"]);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -297,7 +297,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(false)]
 		public void ShouldNotAddCommentAbsent(bool? b)
@@ -313,7 +313,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -330,7 +330,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -347,7 +347,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -364,7 +364,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(false)]
 		public void ShouldNotAddCommentPresent(bool? b)
@@ -380,7 +380,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -397,7 +397,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -414,7 +414,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -431,7 +431,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -448,7 +448,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -465,7 +465,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -482,7 +482,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((SortDirection)0)]
 		public void ShouldNotAddDirection(SortDirection? direction)
@@ -498,7 +498,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((FilterMatchType)0)]
 		public void ShouldNotAddMatch(FilterMatchType? match)
@@ -514,7 +514,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -531,7 +531,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -548,7 +548,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -565,7 +565,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -582,7 +582,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -599,7 +599,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((DnsRecordsOrderBy)0)]
 		public void ShouldNotAddOrder(DnsRecordsOrderBy? order)
@@ -615,7 +615,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(0)]
 		public void ShouldNotAddPage(int? page)
@@ -631,7 +631,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(0)]
 		[DataRow(5_000_001)]
@@ -648,7 +648,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -665,7 +665,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -682,7 +682,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -699,7 +699,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -716,7 +716,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -733,7 +733,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -750,7 +750,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -767,7 +767,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((FilterMatchType)0)]
 		public void ShouldNotAddTagMatch(FilterMatchType? tagMatch)
@@ -783,7 +783,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((DnsRecordType)0)]
 		public void ShouldNotAddType(DnsRecordType? type)

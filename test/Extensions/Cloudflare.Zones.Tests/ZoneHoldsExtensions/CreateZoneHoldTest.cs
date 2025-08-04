@@ -116,7 +116,7 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true)]
 		[DataRow(false)]
 		public void ShouldReturnQueryParameter(bool includeSubdomains)

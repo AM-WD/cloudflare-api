@@ -120,7 +120,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true)]
 		[DataRow(false)]
 		public async Task ShouldImportDnsRecordsFromStringWithProxied(bool proxied)
@@ -159,7 +159,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true)]
 		[DataRow(false)]
 		public async Task ShouldImportDnsRecordsFromFileWithProxied(bool proxied)
@@ -208,7 +208,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]

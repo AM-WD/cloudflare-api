@@ -25,7 +25,7 @@ namespace Cloudflare.Core.Tests.Auth
 			Assert.AreEqual(apiToken, clt.DefaultRequestHeaders.Authorization.Parameter);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]

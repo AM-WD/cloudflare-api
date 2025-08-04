@@ -94,7 +94,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			};
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null, ZoneType.Full)]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0c353", null)]
 		public async Task ShouldCreateZone(string accountId, ZoneType? type)

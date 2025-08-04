@@ -65,7 +65,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			// Assert - ObjectDisposedException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -245,7 +245,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			_httpHandlerMock.Mock.Protected().Verify("SendAsync", Times.Once(), ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>());
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
 		public async Task ShouldThrowAuthenticationExceptionOnStatusCode(HttpStatusCode statusCode)

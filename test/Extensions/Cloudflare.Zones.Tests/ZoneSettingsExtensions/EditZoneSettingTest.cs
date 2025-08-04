@@ -68,7 +68,7 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			Assert.IsFalse(callback.Request.ContainsKey("enabled"));
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(true)]
 		[DataRow(false)]
 		public async Task ShouldEditEnabledState(bool enabled)

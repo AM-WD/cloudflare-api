@@ -179,7 +179,7 @@ namespace Cloudflare.Core.Tests
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(11)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]

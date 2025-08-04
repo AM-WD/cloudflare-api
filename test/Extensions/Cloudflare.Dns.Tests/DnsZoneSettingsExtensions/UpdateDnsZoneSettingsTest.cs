@@ -191,7 +191,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(29)]
 		[DataRow(86401)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -207,7 +207,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(86399)]
 		[DataRow(2419201)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -223,7 +223,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(59)]
 		[DataRow(86401)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -239,7 +239,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -256,7 +256,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(599)]
 		[DataRow(86401)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -272,7 +272,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(599)]
 		[DataRow(86401)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -288,7 +288,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(299)]
 		[DataRow(86401)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -304,7 +304,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]

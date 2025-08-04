@@ -18,7 +18,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - no exception thrown
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
@@ -46,7 +46,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - ArgumentException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0c35")]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0C353")]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0y353")]
@@ -73,7 +73,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - no exception thrown
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
@@ -113,7 +113,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - no exception thrown
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
@@ -128,7 +128,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("test")]
 		[DataRow("test@example")]
 		[DataRow("example.com")]
@@ -143,7 +143,7 @@ namespace Cloudflare.Tests.Extensions
 			// Assert - ArgumentException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("SomeExampleString")]
 		public void ShouldValidateLength(string str)

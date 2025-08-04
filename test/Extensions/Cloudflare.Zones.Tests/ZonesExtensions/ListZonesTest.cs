@@ -207,7 +207,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			Assert.AreEqual("active", dict["status"]);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -227,7 +227,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -281,7 +281,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -335,7 +335,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(4)]
 		[DataRow(51)]
 		public void ShouldNotAddPerPage(int perPage)

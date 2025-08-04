@@ -135,7 +135,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -166,7 +166,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -304,7 +304,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(DnsRecordType.MX)]
 		[DataRow(DnsRecordType.URI)]
 		public async Task ShouldSetPriority(DnsRecordType type)
@@ -338,7 +338,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(DnsRecordType.MX)]
 		[DataRow(DnsRecordType.URI)]
 		[ExpectedException(typeof(ArgumentNullException))]
@@ -354,7 +354,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(1)]
 		[DataRow(3600)]
 		public async Task ShouldSetTtl(int ttl)
@@ -380,7 +380,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(0)]
 		[DataRow(20)]
 		[DataRow(86401)]
@@ -397,7 +397,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentOutOfRangeException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(DnsRecordType.CAA)]
 		[DataRow(DnsRecordType.CERT)]
 		[DataRow(DnsRecordType.DNSKEY)]
@@ -456,7 +456,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("letsencrypt.org", data.Value);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -474,7 +474,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -525,7 +525,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(3, data.Type);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -576,7 +576,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("test", data.PublicKey);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -627,7 +627,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(4, data.KeyTag);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -677,7 +677,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("foo.bar", data.Value);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -695,7 +695,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -736,7 +736,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(91)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -771,7 +771,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -806,7 +806,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1.0)]
 		[DataRow(59.9991)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -874,7 +874,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(181)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -909,7 +909,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -944,7 +944,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1.0)]
 		[DataRow(59.9991)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -1012,7 +1012,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-100_000.1)]
 		[DataRow(42_849_672.951)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -1047,7 +1047,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -1082,7 +1082,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -1117,7 +1117,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
@@ -1168,7 +1168,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("gh", data.Service);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1186,7 +1186,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1204,7 +1204,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1222,7 +1222,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1273,7 +1273,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(3, data.Usage);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1325,7 +1325,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(456, data.Weight);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1376,7 +1376,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(2, data.Type);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1426,7 +1426,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual("example.com", data.Value);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1444,7 +1444,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1495,7 +1495,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(3, data.Usage);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -1545,7 +1545,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(10, data.Weight);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]

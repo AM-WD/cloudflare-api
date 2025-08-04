@@ -64,7 +64,7 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]

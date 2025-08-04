@@ -70,7 +70,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			_clientMock.VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]

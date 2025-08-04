@@ -152,7 +152,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual("zone.example.com", dict["zone_name"]);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -169,7 +169,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -186,7 +186,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -203,7 +203,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -220,7 +220,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((SortDirection)0)]
 		public void ShouldNotAddDirection(SortDirection? direction)
@@ -236,7 +236,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((FilterMatchType)0)]
 		public void ShouldNotAddMatch(FilterMatchType? match)
@@ -252,7 +252,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow((InternalDnsViewsOrderBy)0)]
 		public void ShouldNotAddOrder(InternalDnsViewsOrderBy? order)
@@ -268,7 +268,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(0)]
 		public void ShouldNotAddPage(int? page)
@@ -284,7 +284,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow(0)]
 		[DataRow(5_000_001)]
@@ -301,7 +301,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -318,7 +318,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			Assert.AreEqual(0, dict.Count);
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]

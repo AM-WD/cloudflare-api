@@ -28,7 +28,7 @@ namespace Cloudflare.Core.Tests.Auth
 			Assert.AreEqual(apiKey, clt.DefaultRequestHeaders.GetValues("X-Auth-Key").First());
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
@@ -44,7 +44,7 @@ namespace Cloudflare.Core.Tests.Auth
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
@@ -60,7 +60,7 @@ namespace Cloudflare.Core.Tests.Auth
 			// Assert - ArgumentNullException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow("test")]
 		[DataRow("test@example")]
 		[DataRow("example.com")]

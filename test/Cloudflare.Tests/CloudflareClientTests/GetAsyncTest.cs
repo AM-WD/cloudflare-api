@@ -57,7 +57,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			// Assert - ObjectDisposedException
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
@@ -137,7 +137,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			VerifyNoOtherCalls();
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
 		public async Task ShouldThrowAuthenticationExceptionOnStatusCode(HttpStatusCode statusCode)
@@ -165,7 +165,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
 		public async Task ShouldThrowAuthenticationExceptionOnStatusCodeWithoutErrors(HttpStatusCode statusCode)
@@ -193,7 +193,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			}
 		}
 
-		[DataTestMethod]
+		[TestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
 		[ExpectedException(typeof(CloudflareException))]
