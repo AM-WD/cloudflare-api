@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_nothing changed yet_
+
+## [v0.1.0], [zones/v0.1.0], [dns/v0.1.0] - 2025-08-04
+
+_Initial Release_
 
 ### Added
 
 - `Cloudflare` with the core functionality to communicate with Cloudflare's API endpoint
-- `Cloudflare.Dns` extending the core package with specific methods to manage Cloudflare's DNS settings
+- `Cloudflare.Dns` extending the core package with specific methods to manage Cloudflare's DNS settings (_still WIP_)
 - `Cloudflare.Zones` extending the core package with specific methods to manage Cloudflare's Domain/Zone Management
 
 
 
-[Unreleased]: https://github.com/AM-WD/cloudflare-api
+[Unreleased]: https://github.com/AM-WD/cloudflare-api/compare/v0.1.0...HEAD
+
+[v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/v0.1.0
+[dns/v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/dns/v0.1.0
+[zones/v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/zones/v0.1.0
