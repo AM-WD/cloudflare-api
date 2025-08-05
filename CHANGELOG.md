@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _nothing changed yet_
 
-## [v0.1.0], [zones/v0.1.0], [dns/v0.1.0] - 2025-08-04
+## [v0.1.0], [zones/v0.1.0], [dns/v0.1.0] - 2025-08-05
 
 _Initial Release_
 

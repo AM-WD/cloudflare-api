@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+
+    <AssemblyOriginatorKeyFile>../../cloudflare-api.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/Cloudflare/Cloudflare.csproj" />
+  </ItemGroup>
 
 </Project>

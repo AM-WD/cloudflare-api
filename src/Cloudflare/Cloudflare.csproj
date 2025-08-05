@@ -12,11 +12,19 @@
 
     <Product>Cloudflare API - Core</Product>
     <Description>Core features of the Cloudflare API</Description>
+
+    <AssemblyOriginatorKeyFile>../../cloudflare-api.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- Only build package for tagged releases or Debug on CI (only dev NuGet feed) -->
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(CI_COMMIT_TAG)', '^v[0-9.]+')) or ('$(Configuration)' == 'Debug' and '$(GITLAB_CI)' == 'true')">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../package-icon.png" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE.txt" Pack="true" PackagePath="/" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
 </Project>

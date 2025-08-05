@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>../../../cloudflare-api.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="../../../src/Cloudflare/Cloudflare.csproj" />
+  </ItemGroup>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)\..'))" />
+</Project>
+
