@@ -1,0 +1,8 @@
+- name: Introduction
+  href: introduction.md
+- name: Getting Started
+  href: getting-started.md
+- name: GitHub
+  href: https://github.com/AM-WD/cloudflare-api
+- name: NuGet
+  href: https://www.nuget.org/packages?q=AMWD.Net.API.Cloudflare
