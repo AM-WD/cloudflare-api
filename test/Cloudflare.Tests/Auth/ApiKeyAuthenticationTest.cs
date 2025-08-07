@@ -2,7 +2,7 @@
 using System.Net.Http;
 using AMWD.Net.Api.Cloudflare;
 
-namespace Cloudflare.Core.Tests.Auth
+namespace Cloudflare.Tests.Auth
 {
 	[TestClass]
 	public class ApiKeyAuthenticationTest
@@ -32,48 +32,39 @@ namespace Cloudflare.Core.Tests.Auth
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldArgumentNullExceptionForEmailAddress(string emailAddress)
 		{
 			// Arrange
 			string apiKey = "some-api-key";
 
-			// Act
-			new ApiKeyAuthentication(emailAddress, apiKey);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => new ApiKeyAuthentication(emailAddress, apiKey));
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldArgumentNullExceptionForApiKey(string apiKey)
 		{
 			// Arrange
 			string emailAddress = "test@example.com";
 
-			// Act
-			new ApiKeyAuthentication(emailAddress, apiKey);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => new ApiKeyAuthentication(emailAddress, apiKey));
 		}
 
 		[TestMethod]
 		[DataRow("test")]
 		[DataRow("test@example")]
 		[DataRow("example.com")]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldArgumentExceptionForInvalidEmailAddress(string emailAddress)
 		{
 			// Arrange
 			string apiKey = "some-api-key";
 
-			// Act
-			new ApiKeyAuthentication(emailAddress, apiKey);
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => new ApiKeyAuthentication(emailAddress, apiKey));
 		}
 	}
 }

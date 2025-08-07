@@ -12,11 +12,13 @@ using AMWD.Net.Api.Cloudflare;
 using Moq;
 using Moq.Protected;
 
-namespace Cloudflare.Core.Tests.CloudflareClientTests
+namespace Cloudflare.Tests.CloudflareClientTests
 {
 	[TestClass]
 	public class GetAsyncTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string BaseUrl = "http://localhost/api/v4/";
 
 		private HttpMessageHandlerMock _httpHandlerMock;
@@ -44,46 +46,46 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectDisposedException))]
 		public async Task ShouldThrowDisposed()
 		{
 			// Arrange
 			var client = GetClient() as CloudflareClient;
 			client.Dispose();
 
-			// Act
-			await client.GetAsync<object>("/test");
-
-			// Assert - ObjectDisposedException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
+			{
+				await client.GetAsync<object>("/test", cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullOnRequestPath(string path)
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			await client.GetAsync<object>(path);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.GetAsync<object>(path, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public async Task ShouldThrowArgumentOnRequestPath()
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			await client.GetAsync<object>("/foo?bar=baz");
-
-			// Assert - ArgumentException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
+			{
+				await client.GetAsync<object>("/foo?bar=baz", cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -99,7 +101,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.GetAsync<TestClass>("test");
+			var response = await client.GetAsync<TestClass>("test", cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -108,21 +110,21 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
 
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
+			Assert.IsEmpty(response.Errors);
+			Assert.IsEmpty(response.Messages);
 
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Get, callback.Method);
 			Assert.AreEqual("http://localhost/api/v4/test", callback.Url);
 			Assert.IsNull(callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -154,7 +156,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			try
 			{
 				// Act
-				await client.GetAsync<TestClass>("foo");
+				await client.GetAsync<TestClass>("foo", cancellationToken: TestContext.CancellationTokenSource.Token);
 				Assert.Fail();
 			}
 			catch (AuthenticationException ex)
@@ -182,7 +184,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			try
 			{
 				// Act
-				await client.GetAsync<TestClass>("foo");
+				await client.GetAsync<TestClass>("foo", cancellationToken: TestContext.CancellationTokenSource.Token);
 				Assert.Fail();
 			}
 			catch (AuthenticationException ex)
@@ -196,7 +198,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		[TestMethod]
 		[DataRow(HttpStatusCode.Unauthorized)]
 		[DataRow(HttpStatusCode.Forbidden)]
-		[ExpectedException(typeof(CloudflareException))]
 		public async Task ShouldThrowCloudflareExceptionOnStatusCodeWhenDeserializeFails(HttpStatusCode statusCode)
 		{
 			// Arrange
@@ -208,10 +209,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			var client = GetClient();
 
-			// Act
-			await client.GetAsync<TestClass>("foo");
-
-			// Assert - CloudflareException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () =>
+			{
+				await client.GetAsync<TestClass>("foo", cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -228,7 +230,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.GetAsync<string>("some-awesome-path", new TestFilter());
+			var response = await client.GetAsync<string>("some-awesome-path", new TestFilter(), TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -239,14 +241,14 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Get, callback.Method);
 			Assert.AreEqual("http://localhost/api/v4/some-awesome-path?bar=08%2F15&test=filter-text", callback.Url);
 			Assert.IsNull(callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -272,7 +274,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(JsonReaderException))]
 		public async Task ShouldThrowExceptionOnInvalidResponse()
 		{
 			// Arrange
@@ -284,12 +285,14 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			var client = GetClient();
 
-			// Act
-			await client.GetAsync<TestClass>("some-path");
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<JsonReaderException>(async () =>
+			{
+				await client.GetAsync<TestClass>("some-path", cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(CloudflareException))]
 		public async Task ShouldThrowCloudflareExceptionWhenDeserializeFails()
 		{
 			// Arrange
@@ -301,10 +304,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			var client = GetClient();
 
-			// Act
-			await client.GetAsync<TestClass>("foo");
-
-			// Assert - CloudflareException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () =>
+			{
+				await client.GetAsync<TestClass>("foo", cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		private void VerifyDefaults()
