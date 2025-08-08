@@ -11,7 +11,9 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 	[TestClass]
 	public class UpdateZoneHoldTest
 	{
-		private readonly DateTime _date = new DateTime(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
+		public TestContext TestContext { get; set; }
+
+		private readonly DateTime _date = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -58,21 +60,21 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateZoneHold(_request);
+			var response = await client.UpdateZoneHold(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual(_date, callback.Request.HoldAfter);
-			Assert.IsTrue(callback.Request.IncludeSubdomains);
+			Assert.IsNotNull(request);
+			Assert.AreEqual(_date, request.HoldAfter);
+			Assert.IsTrue(request.IncludeSubdomains);
 		}
 
 		private ICloudflareClient GetClient()

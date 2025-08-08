@@ -10,7 +10,9 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 	[TestClass]
 	public class GetZoneHoldTest
 	{
-		private readonly DateTime _date = new DateTime(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
+		public TestContext TestContext { get; set; }
+
+		private readonly DateTime _date = new(2024, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -49,18 +51,18 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.GetZoneHold(ZoneId);
+			var response = await client.GetZoneHold(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<ZoneHold>($"/zones/{ZoneId}/hold", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

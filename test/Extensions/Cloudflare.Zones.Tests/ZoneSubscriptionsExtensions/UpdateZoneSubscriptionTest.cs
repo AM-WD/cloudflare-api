@@ -11,6 +11,8 @@ namespace Cloudflare.Zones.Tests.ZoneSubscriptionsExtensions
 	[TestClass]
 	public class UpdateZoneSubscriptionTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -56,21 +58,21 @@ namespace Cloudflare.Zones.Tests.ZoneSubscriptionsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateZoneSubscription(_request);
+			var response = await client.UpdateZoneSubscription(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/subscription", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/subscription", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual(_request.Frequency, callback.Request.Frequency);
-			Assert.AreEqual(_request.RatePlan, callback.Request.RatePlan);
+			Assert.AreEqual(_request.Frequency, request.Frequency);
+			Assert.AreEqual(_request.RatePlan, request.RatePlan);
 
 			_clientMock.Verify(m => m.PutAsync<Subscription, InternalUpdateZoneSubscriptionRequest>($"/zones/{ZoneId}/subscription", It.IsAny<InternalUpdateZoneSubscriptionRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

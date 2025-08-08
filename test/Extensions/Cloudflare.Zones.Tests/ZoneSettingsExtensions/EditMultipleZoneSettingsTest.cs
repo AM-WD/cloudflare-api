@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 	[TestClass]
 	public class EditMultipleZoneSettingsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -57,7 +59,7 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 
 			// Act
 #pragma warning disable CS0618
-			var response = await client.EditMultipleZoneSettings(_request);
+			var response = await client.EditMultipleZoneSettings(_request, TestContext.CancellationTokenSource.Token);
 #pragma warning restore CS0618
 
 			// Assert
@@ -65,16 +67,16 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/settings", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/settings", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual(2, callback.Request.Count);
+			Assert.IsNotNull(request);
+			Assert.HasCount(2, request);
 
-			Assert.IsInstanceOfType<SSL>(callback.Request.First());
-			Assert.IsInstanceOfType<WebP>(callback.Request.Last());
+			Assert.IsInstanceOfType<SSL>(request.First());
+			Assert.IsInstanceOfType<WebP>(request.Last());
 		}
 
 		private ICloudflareClient GetClient()

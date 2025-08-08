@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 	[TestClass]
 	public class ListZonesTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -102,18 +104,18 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListZones();
+			var response = await client.ListZones(cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual("/zones", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual("/zones", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<Zone>>("/zones", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -131,18 +133,18 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListZones(filter);
+			var response = await client.ListZones(filter, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual("/zones", callback.RequestPath);
-			Assert.AreEqual(filter, callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual("/zones", requestPath);
+			Assert.AreEqual(filter, queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<Zone>>("/zones", filter, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -159,7 +161,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -184,7 +186,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(9, dict.Count);
+			Assert.HasCount(9, dict);
 
 			Assert.IsTrue(dict.ContainsKey("account.id"));
 			Assert.IsTrue(dict.ContainsKey("account.name"));
@@ -224,7 +226,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -244,7 +246,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -261,7 +263,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -278,7 +280,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -294,11 +296,11 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			};
 
 			// Act
-			var dict = new Dictionary<string, object>();
+			var dict = filter.GetQueryParameters();
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -315,7 +317,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -332,7 +334,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -351,7 +353,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -368,7 +370,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		private ICloudflareClient GetClient()

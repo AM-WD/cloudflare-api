@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 	[TestClass]
 	public class DeleteZoneTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -46,18 +48,18 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteZone(ZoneId);
+			var response = await client.DeleteZone(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.DeleteAsync<Identifier>($"/zones/{ZoneId}", It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

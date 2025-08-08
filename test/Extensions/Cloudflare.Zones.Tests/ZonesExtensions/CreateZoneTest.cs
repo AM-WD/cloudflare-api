@@ -11,6 +11,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 	[TestClass]
 	public class CreateZoneTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -105,39 +107,36 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateZone(_request);
+			var response = await client.CreateZone(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual("/zones", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual("/zones", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual(_request.AccountId, callback.Request.Account.Id);
-			Assert.AreEqual(_request.Name, callback.Request.Name);
-			Assert.AreEqual(_request.Type, callback.Request.Type);
+			Assert.AreEqual(_request.AccountId, request.Account.Id);
+			Assert.AreEqual(_request.Name, request.Name);
+			Assert.AreEqual(_request.Type, request.Type);
 
 			_clientMock.Verify(m => m.PostAsync<Zone, InternalCreateZoneRequest>("/zones", It.IsAny<InternalCreateZoneRequest>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionOnInvalidType()
 		{
 			// Arrange
 			_request.Type = 0;
 			var client = GetClient();
 
-			// Act
-			await client.CreateZone(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.CreateZone(_request, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()
