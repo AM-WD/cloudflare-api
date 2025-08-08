@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 	[TestClass]
 	public class UpdateDnsZoneSettingsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -93,37 +95,37 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsZoneSettings(_request);
+			var response = await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_settings", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_settings", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.IsTrue(callback.Request.FlattenAllCnames);
-			Assert.IsFalse(callback.Request.FoundationDns);
-			Assert.IsNotNull(callback.Request.InternalDns);
-			Assert.AreEqual(ZoneId, callback.Request.InternalDns.ReferenceZoneId);
-			Assert.IsFalse(callback.Request.MultiProvider);
-			Assert.IsNotNull(callback.Request.Nameservers);
-			Assert.AreEqual(DnsZoneNameserversType.Standard, callback.Request.Nameservers.Type);
-			Assert.AreEqual(86400, callback.Request.NameserverTtl);
-			Assert.IsFalse(callback.Request.SecondaryOverrides);
-			Assert.IsNotNull(callback.Request.SOA);
-			Assert.AreEqual(604800, callback.Request.SOA.Expire);
-			Assert.AreEqual(1800, callback.Request.SOA.MinimumTtl);
-			Assert.AreEqual("ns1.example.org", callback.Request.SOA.PrimaryNameserver);
-			Assert.AreEqual(28800, callback.Request.SOA.Refresh);
-			Assert.AreEqual(3600, callback.Request.SOA.Retry);
-			Assert.AreEqual(43200, callback.Request.SOA.TimeToLive);
-			Assert.AreEqual("admin.example.org", callback.Request.SOA.ZoneAdministrator);
-			Assert.AreEqual(DnsZoneMode.Standard, callback.Request.ZoneMode);
+			Assert.IsNotNull(request);
+			Assert.IsTrue(request.FlattenAllCnames);
+			Assert.IsFalse(request.FoundationDns);
+			Assert.IsNotNull(request.InternalDns);
+			Assert.AreEqual(ZoneId, request.InternalDns.ReferenceZoneId);
+			Assert.IsFalse(request.MultiProvider);
+			Assert.IsNotNull(request.Nameservers);
+			Assert.AreEqual(DnsZoneNameserversType.Standard, request.Nameservers.Type);
+			Assert.AreEqual(86400, request.NameserverTtl);
+			Assert.IsFalse(request.SecondaryOverrides);
+			Assert.IsNotNull(request.SOA);
+			Assert.AreEqual(604800, request.SOA.Expire);
+			Assert.AreEqual(1800, request.SOA.MinimumTtl);
+			Assert.AreEqual("ns1.example.org", request.SOA.PrimaryNameserver);
+			Assert.AreEqual(28800, request.SOA.Refresh);
+			Assert.AreEqual(3600, request.SOA.Retry);
+			Assert.AreEqual(43200, request.SOA.TimeToLive);
+			Assert.AreEqual("admin.example.org", request.SOA.ZoneAdministrator);
+			Assert.AreEqual(DnsZoneMode.Standard, request.ZoneMode);
 
 			_clientMock.Verify(m => m.PatchAsync<DnsZoneSettings, InternalUpdateDnsZoneSettingsRequest>($"/zones/{ZoneId}/dns_settings", It.IsAny<InternalUpdateDnsZoneSettingsRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -133,192 +135,192 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 		public async Task ShouldUpdateDnsSettingsNone()
 		{
 			// Arrange
-			var request = new UpdateDnsZoneSettingsRequest(ZoneId);
+			var req = new UpdateDnsZoneSettingsRequest(ZoneId);
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsZoneSettings(request);
+			var response = await client.UpdateDnsZoneSettings(req, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_settings", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_settings", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.IsNull(callback.Request.FlattenAllCnames);
-			Assert.IsNull(callback.Request.FoundationDns);
-			Assert.IsNull(callback.Request.MultiProvider);
-			Assert.IsNull(callback.Request.Nameservers);
-			Assert.IsNull(callback.Request.NameserverTtl);
-			Assert.IsNull(callback.Request.SecondaryOverrides);
-			Assert.IsNull(callback.Request.SOA);
-			Assert.IsNull(callback.Request.ZoneMode);
+			Assert.IsNotNull(request);
+			Assert.IsNull(request.FlattenAllCnames);
+			Assert.IsNull(request.FoundationDns);
+			Assert.IsNull(request.MultiProvider);
+			Assert.IsNull(request.Nameservers);
+			Assert.IsNull(request.NameserverTtl);
+			Assert.IsNull(request.SecondaryOverrides);
+			Assert.IsNull(request.SOA);
+			Assert.IsNull(request.ZoneMode);
 
 			_clientMock.Verify(m => m.PatchAsync<DnsZoneSettings, InternalUpdateDnsZoneSettingsRequest>($"/zones/{ZoneId}/dns_settings", It.IsAny<InternalUpdateDnsZoneSettingsRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidMode()
 		{
 			// Arrange
 			_request.ZoneMode = 0;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidNameserverType()
 		{
 			// Arrange
 			_request.Nameservers.Type = 0;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(29)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidNameserverTtl(int ttl)
 		{
 			// Arrange
 			_request.NameserverTtl = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(86399)]
 		[DataRow(2419201)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidSoaExpire(int ttl)
 		{
 			// Arrange
 			_request.SOA.Expire = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(59)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidSoaMinimumTtl(int ttl)
 		{
 			// Arrange
 			_request.SOA.MinimumTtl = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForMissingSoaNameserver(string nameserver)
 		{
 			// Arrange
 			_request.SOA.PrimaryNameserver = nameserver;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(599)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidSoaRefresh(int ttl)
 		{
 			// Arrange
 			_request.SOA.Refresh = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(599)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidSoaRetry(int ttl)
 		{
 			// Arrange
 			_request.SOA.Retry = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(299)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidSoaTtl(int ttl)
 		{
 			// Arrange
 			_request.SOA.TimeToLive = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForMissingSoaAdministrator(string admin)
 		{
 			// Arrange
 			_request.SOA.ZoneAdministrator = admin;
 			var client = GetClient();
 
-			// Act
-			await client.UpdateDnsZoneSettings(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		private ICloudflareClient GetClient()

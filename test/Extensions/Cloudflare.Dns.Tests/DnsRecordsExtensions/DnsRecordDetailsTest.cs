@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class DnsRecordDetailsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string RecordId = "023e105f4ecef8ad9ca31a8372d0c355";
 
@@ -59,7 +61,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -67,11 +69,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -101,7 +103,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -109,11 +111,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -142,7 +144,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -150,11 +152,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -183,7 +185,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -191,11 +193,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -224,7 +226,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -232,11 +234,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -265,7 +267,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -273,11 +275,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -306,7 +308,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -314,11 +316,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -347,7 +349,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -355,11 +357,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -388,7 +390,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -396,11 +398,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -429,7 +431,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -437,11 +439,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -470,7 +472,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -478,11 +480,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -511,7 +513,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -519,11 +521,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -552,7 +554,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -560,11 +562,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -593,7 +595,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -601,11 +603,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -634,7 +636,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -642,11 +644,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -675,7 +677,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -683,11 +685,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -716,7 +718,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -724,11 +726,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -757,7 +759,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -765,11 +767,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -798,7 +800,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -806,11 +808,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -839,7 +841,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -847,11 +849,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -880,7 +882,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -888,11 +890,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			AssertRecord(result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -906,18 +908,18 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.IsNull(response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -933,18 +935,18 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.IsNull(response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JObject>($"/zones/{ZoneId}/dns_records/{RecordId}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

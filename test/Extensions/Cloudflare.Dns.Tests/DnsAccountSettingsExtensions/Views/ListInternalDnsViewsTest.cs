@@ -10,6 +10,8 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 	[TestClass]
 	public class ListInternalDnsViewsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -45,19 +47,19 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListInternalDnsViews(AccountId);
+			var response = await client.ListInternalDnsViews(AccountId, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Result);
-			Assert.AreEqual(2, response.Result.Count);
+			Assert.HasCount(2, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<InternalDnsView>>(
 				$"/accounts/{AccountId}/dns_settings/views",
@@ -77,18 +79,18 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			};
 
 			// Act
-			var response = await client.ListInternalDnsViews(AccountId, filter);
+			var response = await client.ListInternalDnsViews(AccountId, filter, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.IsNotNull(response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", callback.RequestPath);
-			Assert.AreEqual(filter, callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", requestPath);
+			Assert.AreEqual(filter, queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<InternalDnsView>>(
 				$"/accounts/{AccountId}/dns_settings/views",
@@ -110,7 +112,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -137,7 +139,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(11, dict.Count);
+			Assert.HasCount(11, dict);
 
 			Assert.AreEqual("desc", dict["direction"]);
 			Assert.AreEqual("all", dict["match"]);
@@ -166,7 +168,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -183,7 +185,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -200,7 +202,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -217,7 +219,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -233,7 +235,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -249,7 +251,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -265,7 +267,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -281,7 +283,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -298,7 +300,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -315,7 +317,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -332,7 +334,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		#endregion QueryFilter

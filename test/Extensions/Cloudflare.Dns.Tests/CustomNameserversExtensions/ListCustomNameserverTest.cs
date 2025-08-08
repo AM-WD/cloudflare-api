@@ -10,9 +10,9 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 	[TestClass]
 	public class ListCustomNameserverTest
 	{
-		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
+		public TestContext TestContext { get; set; }
 
-		private const string Nameserver = "ns1.example.com";
+		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
 
@@ -45,18 +45,18 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListCustomNameserver(AccountId);
+			var response = await client.ListCustomNameserver(AccountId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/custom_ns", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/custom_ns", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<CustomNameserver>>($"/accounts/{AccountId}/custom_ns", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

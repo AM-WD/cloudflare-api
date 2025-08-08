@@ -12,6 +12,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class BatchDnsRecordsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string RecordId = "023e105f4ecef8ad9ca31a8372d0c355";
 
@@ -63,7 +65,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.BatchDnsRecords(_request);
+			var response = await client.BatchDnsRecords(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -79,32 +81,32 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.AreEqual(RecordId, response.Result.Overwrites.Single().Id);
 			Assert.AreEqual(IpContent, response.Result.Overwrites.Single().Content);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/batch", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/batch", requestPath);
+			Assert.IsNull(queryFilter);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual(1, callback.Request.Deletes.Count);
-			Assert.AreEqual(RecordId, callback.Request.Deletes.First().Id);
+			Assert.HasCount(1, request.Deletes);
+			Assert.AreEqual(RecordId, request.Deletes.First().Id);
 
-			Assert.AreEqual(1, callback.Request.Patches.Count);
-			var patch = callback.Request.Patches.First();
+			Assert.HasCount(1, request.Patches);
+			var patch = request.Patches.First();
 			Assert.AreEqual(RecordId, patch.Id);
 			Assert.AreEqual(DomainName, patch.Name);
 			Assert.AreEqual(DnsRecordType.A, patch.Type);
 			Assert.AreEqual(IpContent, patch.Content);
 
-			Assert.AreEqual(1, callback.Request.Puts.Count);
-			var put = callback.Request.Puts.First();
+			Assert.HasCount(1, request.Puts);
+			var put = request.Puts.First();
 			Assert.AreEqual(RecordId, put.Id);
 			Assert.AreEqual(DomainName, put.Name);
 			Assert.AreEqual(DnsRecordType.A, put.Type);
 			Assert.AreEqual(IpContent, put.Content);
 
-			Assert.AreEqual(1, callback.Request.Posts.Count);
-			var post = callback.Request.Posts.First();
+			Assert.HasCount(1, request.Posts);
+			var post = request.Posts.First();
 			Assert.AreEqual(DomainName, post.Name);
 			Assert.AreEqual(DnsRecordType.A, post.Type);
 			Assert.AreEqual(IpContent, post.Content);

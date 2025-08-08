@@ -12,6 +12,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class CreateDnsRecordTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -91,33 +93,33 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual(_request.Name, callback.Request.Name);
-			Assert.AreEqual(_request.Type, callback.Request.Type);
-			Assert.IsNull(callback.Request.Content);
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsNull(callback.Request.Settings);
-			Assert.IsNull(callback.Request.Priority);
-			Assert.AreEqual(_request.Proxied, callback.Request.Proxied);
-			Assert.AreEqual(_request.Comment, callback.Request.Comment);
-			Assert.AreEqual(_request.TimeToLive, callback.Request.Ttl);
-			CollectionAssert.AreEqual(_request.Tags.ToArray(), callback.Request.Tags.ToArray());
+			Assert.IsNotNull(request);
+			Assert.AreEqual(_request.Name, request.Name);
+			Assert.AreEqual(_request.Type, request.Type);
+			Assert.IsNull(request.Content);
+			Assert.IsNotNull(request.Data);
+			Assert.IsNull(request.Settings);
+			Assert.IsNull(request.Priority);
+			Assert.AreEqual(_request.Proxied, request.Proxied);
+			Assert.AreEqual(_request.Comment, request.Comment);
+			Assert.AreEqual(_request.TimeToLive, request.Ttl);
+			CollectionAssert.AreEqual(_request.Tags.ToArray(), request.Tags.ToArray());
 
-			Assert.IsInstanceOfType<LOCRecordData>(callback.Request.Data);
-			var locData = callback.Request.Data as LOCRecordData;
+			Assert.IsInstanceOfType<LOCRecordData>(request.Data);
+			var locData = request.Data as LOCRecordData;
 			Assert.AreEqual(48, locData.LatitudeDegrees);
 			Assert.AreEqual(8, locData.LatitudeMinutes);
 			Assert.AreEqual(8.126, locData.LatitudeSeconds);
@@ -139,38 +141,37 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForName(string str)
 		{
 			// Arrange
 			_request.Name = str;
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForType()
 		{
 			// Arrange
 			_request.Type = 0;
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForContent(string str)
 		{
 			// Arrange
@@ -178,10 +179,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Content = str;
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -193,17 +195,20 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual(_request.Content, callback.Request.Content);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
+
+			Assert.AreEqual(_request.Content, request.Content);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -219,17 +224,20 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNull(callback.Request.Settings);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
+
+			Assert.IsNull(request.Settings);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -245,17 +253,20 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNull(callback.Request.Settings);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
+
+			Assert.IsNull(request.Settings);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -271,37 +282,40 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Settings);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			Assert.IsInstanceOfType<CNAMERecordSettings>(callback.Request.Settings);
-			Assert.AreEqual(true, ((CNAMERecordSettings)callback.Request.Settings).FlattenCname);
+			Assert.IsNotNull(request.Settings);
+
+			Assert.IsInstanceOfType<CNAMERecordSettings>(request.Settings);
+			Assert.IsTrue(((CNAMERecordSettings)request.Settings).FlattenCname);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForData()
 		{
 			// Arrange
 			_request.Data = null;
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -322,17 +336,20 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual(_request.Priority, callback.Request.Priority);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
+
+			Assert.AreEqual(_request.Priority, request.Priority);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -341,17 +358,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(DnsRecordType.MX)]
 		[DataRow(DnsRecordType.URI)]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForPriority(DnsRecordType type)
 		{
 			// Arrange
 			_request.Type = type;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -364,17 +381,20 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual(ttl, callback.Request.Ttl);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
+
+			Assert.AreEqual(ttl, request.Ttl);
 
 			_clientMock.Verify(m => m.PostAsync<DnsRecord, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records", It.IsAny<InternalDnsRecordRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -384,17 +404,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(0)]
 		[DataRow(20)]
 		[DataRow(86401)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForTtl(int ttl)
 		{
 			// Arrange
 			_request.TimeToLive = ttl;
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -411,7 +431,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(DnsRecordType.SVCB)]
 		[DataRow(DnsRecordType.TLSA)]
 		[DataRow(DnsRecordType.URI)]
-		[ExpectedException(typeof(ArgumentException))]
 		public async Task ShouldThrowArgumentExceptionForInvalidTypeOfData(DnsRecordType type)
 		{
 			// Arrange
@@ -420,10 +439,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new object();
 			var client = GetClient();
 
-			// Act
-			await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#region CAA
@@ -437,20 +457,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType<CAARecordData>(callback.Request.Data);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (CAARecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType<CAARecordData>(request.Data);
+
+			var data = (CAARecordData)request.Data;
 			Assert.AreEqual(1, data.Flags);
 			Assert.AreEqual("issue", data.Tag);
 			Assert.AreEqual("letsencrypt.org", data.Value);
@@ -460,7 +483,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForCaaDataTag(string str)
 		{
 			// Arrange
@@ -468,17 +490,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new CAARecordData { Flags = 1, Tag = str, Value = "letsencrypt.org" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForCaaDataValue(string str)
 		{
 			// Arrange
@@ -486,10 +508,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new CAARecordData { Flags = 1, Tag = "issue", Value = str };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion CAA
@@ -505,20 +528,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(CERTRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (CERTRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(CERTRecordData));
+
+			var data = (CERTRecordData)request.Data;
 			Assert.AreEqual(1, data.Algorithm);
 			Assert.AreEqual("test", data.Certificate);
 			Assert.AreEqual(2, data.KeyTag);
@@ -529,7 +555,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForCertDataValue(string str)
 		{
 			// Arrange
@@ -537,10 +562,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new CERTRecordData { Algorithm = 1, Certificate = str, KeyTag = 2, Type = 3 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion CERT
@@ -556,20 +582,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(DNSKEYRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (DNSKEYRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(DNSKEYRecordData));
+
+			var data = (DNSKEYRecordData)request.Data;
 			Assert.AreEqual(1, data.Algorithm);
 			Assert.AreEqual(2, data.Flags);
 			Assert.AreEqual(3, data.Protocol);
@@ -580,7 +609,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForDnsKeyDataPublicKey(string str)
 		{
 			// Arrange
@@ -588,10 +616,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new DNSKEYRecordData { Algorithm = 1, Flags = 2, Protocol = 3, PublicKey = str };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion DNSKEY
@@ -607,20 +636,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(DSRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (DSRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(DSRecordData));
+
+			var data = (DSRecordData)request.Data;
 			Assert.AreEqual(1, data.Algorithm);
 			Assert.AreEqual("test", data.Digest);
 			Assert.AreEqual(3, data.DigestType);
@@ -631,7 +663,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForDsDataDigest(string str)
 		{
 			// Arrange
@@ -639,10 +670,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new DSRecordData { Algorithm = 1, Digest = str, DigestType = 3, KeyTag = 4 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion DS
@@ -658,20 +690,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(HTTPSRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (HTTPSRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(HTTPSRecordData));
+
+			var data = (HTTPSRecordData)request.Data;
 			Assert.AreEqual(10, data.Priority);
 			Assert.AreEqual(".", data.Target);
 			Assert.AreEqual("foo.bar", data.Value);
@@ -681,7 +716,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForHttpsDataTarget(string str)
 		{
 			// Arrange
@@ -689,17 +723,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new HTTPSRecordData { Priority = 10, Target = str, Value = "foo.bar" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForHttpsDataValue(string str)
 		{
 			// Arrange
@@ -707,10 +741,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new HTTPSRecordData { Priority = 10, Target = ".", Value = str };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion HTTPS
@@ -725,7 +760,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -739,17 +774,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(91)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLatitudeDegree(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LatitudeDegrees = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -760,7 +795,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -774,17 +809,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLatitudeMinutes(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LatitudeMinutes = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -795,7 +830,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -809,17 +844,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1.0)]
 		[DataRow(59.9991)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLatitudeSeconds(double val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LatitudeSeconds = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -830,7 +865,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -842,17 +877,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLatitudeDirection()
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LatitudeDirection = 0;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -863,7 +898,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -877,17 +912,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(181)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLongitudeDegree(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LongitudeDegrees = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -898,7 +933,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -912,17 +947,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(60)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLongitudeMinutes(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LongitudeMinutes = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -933,7 +968,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -947,17 +982,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1.0)]
 		[DataRow(59.9991)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLongitudeSeconds(double val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LongitudeSeconds = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -968,7 +1003,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -980,17 +1015,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataLongitudeDirection()
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).LongitudeDirection = 0;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -1001,7 +1036,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1015,17 +1050,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-100_000.1)]
 		[DataRow(42_849_672.951)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataAltitde(double val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).Altitude = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -1036,7 +1071,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1050,17 +1085,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataSize(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).Size = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -1071,7 +1106,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1085,17 +1120,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataPrecisionHorizontal(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).PrecisionHorizontal = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -1106,7 +1141,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1120,17 +1155,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(90_000_001)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForLocDataPrecisionVertical(int val)
 		{
 			// Arrange
 			((LOCRecordData)_request.Data).PrecisionVertical = val;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion LOC
@@ -1146,20 +1181,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(NAPTRRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (NAPTRRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(NAPTRRecordData));
+
+			var data = (NAPTRRecordData)request.Data;
 			Assert.AreEqual("ab", data.Flags);
 			Assert.AreEqual(1, data.Order);
 			Assert.AreEqual(2, data.Preference);
@@ -1172,7 +1210,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForNaPtrDataFlags(string str)
 		{
 			// Arrange
@@ -1180,17 +1217,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new NAPTRRecordData { Flags = str, Order = 1, Preference = 2, Regex = "cd", Replacement = "ef", Service = "gh" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForNaPtrDataRegex(string str)
 		{
 			// Arrange
@@ -1198,17 +1235,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new NAPTRRecordData { Flags = "ab", Order = 1, Preference = 2, Regex = str, Replacement = "ef", Service = "gh" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForNaPtrDataReplacement(string str)
 		{
 			// Arrange
@@ -1216,17 +1253,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new NAPTRRecordData { Flags = "ab", Order = 1, Preference = 2, Regex = "cd", Replacement = str, Service = "gh" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForNaPtrDataService(string str)
 		{
 			// Arrange
@@ -1234,10 +1271,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new NAPTRRecordData { Flags = "ab", Order = 1, Preference = 2, Regex = "cd", Replacement = "ef", Service = str };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion NAPTR
@@ -1253,20 +1291,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(SMIMEARecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (SMIMEARecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(SMIMEARecordData));
+
+			var data = (SMIMEARecordData)request.Data;
 			Assert.AreEqual("cert", data.Certificate);
 			Assert.AreEqual(1, data.MatchingType);
 			Assert.AreEqual(2, data.Selector);
@@ -1277,7 +1318,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForSMimeACertificate(string str)
 		{
 			// Arrange
@@ -1285,10 +1325,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new SMIMEARecordData { Certificate = str, MatchingType = 1, Selector = 2, Usage = 3 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion SMIMEA
@@ -1305,20 +1346,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(SRVRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (SRVRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(SRVRecordData));
+
+			var data = (SRVRecordData)request.Data;
 			Assert.AreEqual(123, data.Port);
 			Assert.AreEqual(345, data.Priority);
 			Assert.AreEqual(".", data.Target);
@@ -1329,7 +1373,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForSrvTarget(string str)
 		{
 			// Arrange
@@ -1338,10 +1381,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new SRVRecordData { Port = 123, Priority = 345, Target = str, Weight = 456 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion SRV
@@ -1357,20 +1401,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(SSHFPRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (SSHFPRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(SSHFPRecordData));
+
+			var data = (SSHFPRecordData)request.Data;
 			Assert.AreEqual(1, data.Algorithm);
 			Assert.AreEqual("fingerprint", data.Fingerprint);
 			Assert.AreEqual(2, data.Type);
@@ -1380,7 +1427,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForSshFpFingerprint(string str)
 		{
 			// Arrange
@@ -1388,10 +1434,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new SSHFPRecordData { Algorithm = 1, Fingerprint = str, Type = 2 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion SSHFP
@@ -1407,20 +1454,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(SVCBRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (SVCBRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(SVCBRecordData));
+
+			var data = (SVCBRecordData)request.Data;
 			Assert.AreEqual(10, data.Priority);
 			Assert.AreEqual(".", data.Target);
 			Assert.AreEqual("example.com", data.Value);
@@ -1430,7 +1480,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForSvcBTarget(string str)
 		{
 			// Arrange
@@ -1438,17 +1487,17 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new SVCBRecordData { Priority = 10, Target = str, Value = "example.com" };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForSvcBValue(string str)
 		{
 			// Arrange
@@ -1456,10 +1505,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new SVCBRecordData { Priority = 10, Target = ".", Value = str };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion SVCB
@@ -1475,20 +1525,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(TLSARecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (TLSARecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(TLSARecordData));
+
+			var data = (TLSARecordData)request.Data;
 			Assert.AreEqual("cert", data.Certificate);
 			Assert.AreEqual(1, data.MatchingType);
 			Assert.AreEqual(2, data.Selector);
@@ -1499,7 +1552,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForTlsACertificate(string str)
 		{
 			// Arrange
@@ -1507,10 +1559,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new TLSARecordData { Certificate = str, MatchingType = 1, Selector = 2, Usage = 3 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion TLSA
@@ -1527,20 +1580,23 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.IsNotNull(callback.Request.Data);
-			Assert.IsInstanceOfType(callback.Request.Data, typeof(URIRecordData));
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
-			var data = (URIRecordData)callback.Request.Data;
+			Assert.IsNotNull(request.Data);
+			Assert.IsInstanceOfType(request.Data, typeof(URIRecordData));
+
+			var data = (URIRecordData)request.Data;
 			Assert.AreEqual("aim", data.Target);
 			Assert.AreEqual(10, data.Weight);
 		}
@@ -1549,7 +1605,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionForUriTarget(string str)
 		{
 			// Arrange
@@ -1558,10 +1613,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			_request.Data = new URIRecordData { Target = str, Weight = 10 };
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateDnsRecord(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		#endregion URI

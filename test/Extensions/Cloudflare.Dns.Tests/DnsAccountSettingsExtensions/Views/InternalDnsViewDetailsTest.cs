@@ -10,6 +10,8 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 	[TestClass]
 	public class InternalDnsViewDetailsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string ViewId = "023e105f4ecef8ad9ca31a8372d0c354";
 		private const string ViewName = "InternalView";
@@ -43,18 +45,18 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.InternalDnsViewDetails(AccountId, ViewId);
+			var response = await client.InternalDnsViewDetails(AccountId, ViewId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views/{ViewId}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views/{ViewId}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<InternalDnsView>(
 				$"/accounts/{AccountId}/dns_settings/views/{ViewId}",

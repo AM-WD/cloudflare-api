@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 	[TestClass]
 	public class AddCustomNameserverTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private const string Nameserver = "ns1.example.com";
@@ -50,21 +52,21 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.AddCustomNameserver(_request);
+			var response = await client.AddCustomNameserver(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/custom_ns", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/custom_ns", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual(_request.NameserverName, callback.Request.NameserverName);
-			Assert.IsNull(callback.Request.NameserverSet);
+			Assert.AreEqual(_request.NameserverName, request.NameserverName);
+			Assert.IsNull(request.NameserverSet);
 
 			_clientMock.Verify(m => m.PostAsync<CustomNameserver, InternalAddCustomNameserverRequest>($"/accounts/{AccountId}/custom_ns", It.IsAny<InternalAddCustomNameserverRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

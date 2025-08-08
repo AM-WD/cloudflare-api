@@ -10,6 +10,8 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 	[TestClass]
 	public class DeleteCustomNameserverTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private const string Nameserver = "ns1.example.com";
@@ -45,18 +47,18 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteCustomNameserver(AccountId, Nameserver);
+			var response = await client.DeleteCustomNameserver(AccountId, Nameserver, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/custom_ns/{Nameserver}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/custom_ns/{Nameserver}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.DeleteAsync<IReadOnlyCollection<string>>($"/accounts/{AccountId}/custom_ns/{Nameserver}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -66,16 +68,13 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldDeleteCustomNameserver(string nameserver)
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			var response = await client.DeleteCustomNameserver(AccountId, nameserver);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.DeleteCustomNameserver(AccountId, nameserver, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()

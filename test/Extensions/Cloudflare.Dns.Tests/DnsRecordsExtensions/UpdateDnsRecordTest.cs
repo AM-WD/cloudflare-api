@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AMWD.Net.Api.Cloudflare;
@@ -15,6 +12,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class UpdateDnsRecordTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string RecordId = "023e105f4ecef8ad9ca31a8372d0c355";
 
@@ -70,7 +69,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsRecord(_request);
+			var response = await client.UpdateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -93,15 +92,15 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.IsNotNull(response.Result.CommentModifiedOn);
 			Assert.IsNotNull(response.Result.TagsModifiedOn);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records/{RecordId}", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual("example.com", callback.Request.Name);
-			Assert.AreEqual(DnsRecordType.A, callback.Request.Type);
-			Assert.AreEqual("127.0.1.22", callback.Request.Content);
+			Assert.AreEqual("example.com", request.Name);
+			Assert.AreEqual(DnsRecordType.A, request.Type);
+			Assert.AreEqual("127.0.1.22", request.Content);
 
 			_clientMock.Verify(m => m.PatchAsync<JObject, InternalDnsRecordRequest>($"/zones/{ZoneId}/dns_records/{RecordId}", It.IsAny<InternalDnsRecordRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
