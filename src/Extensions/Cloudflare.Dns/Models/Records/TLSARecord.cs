@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public TLSARecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  TLSA  {Data?.Usage} {Data?.Selector} {Data?.MatchingType} {Data?.Certificate}";
+		}
 	}
 
 	/// <summary>

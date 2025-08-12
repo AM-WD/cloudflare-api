@@ -27,6 +27,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public URIRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  URI  {Priority} {Data?.Weight} \"{Data?.Target}\"";
+		}
 	}
 
 	/// <summary>

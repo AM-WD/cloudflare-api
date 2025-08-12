@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public HTTPSRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  HTTPS  {Data?.Priority} {Data?.Target} {Data?.Value}";
+		}
 	}
 
 	/// <summary>

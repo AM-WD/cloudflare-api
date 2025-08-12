@@ -240,7 +240,7 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// A record for DANE. RFC 6698 defines "The TLSA DNS resource record is used to associate a TLS server certificate
 		/// or public key with the domain name where the record is found, thus forming a 'TLSA certificate association'".
 		/// <code>
-		/// _443._tcp.example.com.		3600	IN	TLSA	3 0 18cb0fc6c527506a053f4f14c8464bebbd6dede2738d11468dd953d7d6a3021f1
+		/// _443._tcp.example.com.		3600	IN	TLSA	3 0 1 18cb0fc6c527506a053f4f14c8464bebbd6dede2738d11468dd953d7d6a3021f1
 		/// </code>
 		/// </remarks>
 		[EnumMember(Value = "TLSA")]

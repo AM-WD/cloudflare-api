@@ -14,5 +14,12 @@
 		{
 			Type = DnsRecordType.NS;
 		}
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  NS  {Content}";
+		}
 	}
 }

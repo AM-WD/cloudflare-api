@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("settings")]
 		public new CNAMERecordSettings? Settings { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  CNAME  {Content}";
+		}
 	}
 
 	/// <summary>

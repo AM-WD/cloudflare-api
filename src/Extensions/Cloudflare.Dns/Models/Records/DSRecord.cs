@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public DSRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  DS  {Data?.KeyTag} {Data?.DigestType} {Data?.Algorithm} {Data?.Digest}";
+		}
 	}
 
 	/// <summary>

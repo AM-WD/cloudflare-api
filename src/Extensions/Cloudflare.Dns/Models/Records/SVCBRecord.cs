@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public SVCBRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  SVCB  {Data?.Priority} {Data?.Target} {Data?.Value}";
+		}
 	}
 
 	/// <summary>

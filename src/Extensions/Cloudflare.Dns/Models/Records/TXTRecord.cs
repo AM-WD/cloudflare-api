@@ -25,5 +25,12 @@
 		/// </remarks>
 		[JsonProperty("content")]
 		public new string? Content { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  TXT  \"{Content}\"";
+		}
 	}
 }

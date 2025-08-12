@@ -71,5 +71,17 @@
 		/// </summary>
 		[JsonProperty("ttl")]
 		public int TimeToLive { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"@                {TimeToLive}  IN  SOA  {PrimaryNameserver}  {ZoneAdministrator}  ({Environment.NewLine}"
+				+ $"  <serial-number>  ; Serial{Environment.NewLine}"
+				+ $"  {Refresh}  ; Time interval for DNS resolvers to check the SOA for updates{Environment.NewLine}"
+				+ $"  {Retry}  ; Time interval to wait before a new query should be performed when the server was not responding{Environment.NewLine}"
+				+ $"  {Expire}  ; Time interval after which a resolver should stop answering queries when the server was not responding{Environment.NewLine}"
+				+ $"  {MinimumTtl}  ; Time interval for negative caching)";
+		}
 	}
 }

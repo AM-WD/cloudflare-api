@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public SSHFPRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  SSHFP  {Data?.Algorithm} {Data?.Type} {Data?.Fingerprint}";
+		}
 	}
 
 	/// <summary>

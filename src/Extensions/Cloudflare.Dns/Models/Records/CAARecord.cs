@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public CAARecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  CAA  {Data?.Flags} {Data?.Tag} \"{Data?.Value}\"";
+		}
 	}
 
 	/// <summary>

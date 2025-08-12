@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public CERTRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  CERT  {Data?.Type} {Data?.KeyTag} {Data?.Algorithm} {Data?.Certificate}";
+		}
 	}
 
 	/// <summary>

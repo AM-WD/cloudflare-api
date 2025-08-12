@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public SRVRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  SRV  {Data?.Priority} {Data?.Weight} {Data?.Port} {Data?.Target}";
+		}
 	}
 
 	/// <summary>

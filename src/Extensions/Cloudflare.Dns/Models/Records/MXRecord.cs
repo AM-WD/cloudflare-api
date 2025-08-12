@@ -21,5 +21,12 @@
 		/// </summary>
 		[JsonProperty("priority")]
 		public int? Priority { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  MX  {Priority} {Content}";
+		}
 	}
 }

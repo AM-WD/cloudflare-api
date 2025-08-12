@@ -23,6 +23,13 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		/// </summary>
 		[JsonProperty("data")]
 		public LOCRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  LOC  {Data?.LatitudeDegrees} {Data?.LatitudeMinutes} {Data?.LatitudeSeconds} {Data?.LatitudeDirection} {Data?.LongitudeDegrees} {Data?.LongitudeMinutes} {Data?.LongitudeSeconds} {Data?.LongitudeDirection} {Data?.Altitude} {Data?.Size} {Data?.PrecisionHorizontal} {Data?.PrecisionVertical}";
+		}
 	}
 
 	/// <summary>

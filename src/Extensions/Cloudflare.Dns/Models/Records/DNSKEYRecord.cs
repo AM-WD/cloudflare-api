@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public DNSKEYRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  DNSKEY  {Data?.Flags} {Data?.Protocol} {Data?.Algorithm} {Data?.PublicKey}";
+		}
 	}
 
 	/// <summary>

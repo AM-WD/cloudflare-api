@@ -20,6 +20,13 @@
 		/// </summary>
 		[JsonProperty("data")]
 		public NAPTRRecordData? Data { get; set; }
+
+		/// <inheritdoc/>
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+		public override string ToString()
+		{
+			return $"{Name}  {TimeToLive}  IN  NAPTR  {Data?.Order} {Data?.Preference} {Data?.Flags} \"{Data?.Service}\" \"{Data?.Regex}\" \"{Data?.Replacement}\"";
+		}
 	}
 
 	/// <summary>
