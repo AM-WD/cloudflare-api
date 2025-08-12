@@ -11,6 +11,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 	[TestClass]
 	public class EditZoneTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -104,22 +106,22 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request);
+			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.IsTrue(callback.Request.Paused);
-			Assert.IsNull(callback.Request.Type);
-			Assert.IsNull(callback.Request.VanityNameServers);
+			Assert.IsTrue(request.Paused);
+			Assert.IsNull(request.Type);
+			Assert.IsNull(request.VanityNameServers);
 
 			_clientMock.Verify(m => m.PatchAsync<Zone, InternalEditZoneRequest>($"/zones/{ZoneId}", It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -134,22 +136,22 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request);
+			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.IsNull(callback.Request.Paused);
-			Assert.AreEqual(_request.Type.Value, callback.Request.Type.Value);
-			Assert.IsNull(callback.Request.VanityNameServers);
+			Assert.IsNull(request.Paused);
+			Assert.AreEqual(_request.Type.Value, request.Type.Value);
+			Assert.IsNull(request.VanityNameServers);
 
 			_clientMock.Verify(m => m.PatchAsync<Zone, InternalEditZoneRequest>($"/zones/{ZoneId}", It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -165,59 +167,52 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request);
+			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.IsNull(callback.Request.Paused);
-			Assert.IsNull(callback.Request.Type);
-			Assert.AreEqual(2, callback.Request.VanityNameServers.Count);
-			Assert.IsTrue(callback.Request.VanityNameServers.Contains("ns1.example.org"));
-			Assert.IsTrue(callback.Request.VanityNameServers.Contains("ns2.example.org"));
+			Assert.IsNull(request.Paused);
+			Assert.IsNull(request.Type);
+			Assert.HasCount(2, request.VanityNameServers);
+			Assert.IsTrue(request.VanityNameServers.Contains("ns1.example.org"));
+			Assert.IsTrue(request.VanityNameServers.Contains("ns2.example.org"));
 
 			_clientMock.Verify(m => m.PatchAsync<Zone, InternalEditZoneRequest>($"/zones/{ZoneId}", It.IsAny<InternalEditZoneRequest>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(CloudflareException))]
 		public async Task ShouldThrowCloudflareExceptionOnMultiplePropertiesSet1()
 		{
 			// Arrange
 			_request.VanityNameServers = null;
 			var client = GetClient();
 
-			// Act
-			await client.EditZone(_request);
-
-			// Assert - CloudflareException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(CloudflareException))]
 		public async Task ShouldThrowCloudflareExceptionOnMultiplePropertiesSet2()
 		{
 			// Arrange
 			_request.Paused = null;
 			var client = GetClient();
 
-			// Act
-			await client.EditZone(_request);
-
-			// Assert - CloudflareException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionForInvalidType()
 		{
 			// Arrange
@@ -226,10 +221,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			_request.VanityNameServers = null;
 			var client = GetClient();
 
-			// Act
-			await client.EditZone(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()

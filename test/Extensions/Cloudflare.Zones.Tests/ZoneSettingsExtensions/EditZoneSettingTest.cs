@@ -11,6 +11,8 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 	[TestClass]
 	public class EditZoneSettingTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -51,21 +53,21 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZoneSetting(_request);
+			var response = await client.EditZoneSetting(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual("origin_pull", callback.Request["value"]);
-			Assert.IsFalse(callback.Request.ContainsKey("enabled"));
+			Assert.IsNotNull(request);
+			Assert.AreEqual("origin_pull", request["value"]);
+			Assert.IsFalse(request.ContainsKey("enabled"));
 		}
 
 		[TestMethod]
@@ -78,35 +80,32 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZoneSetting(_request);
+			var response = await client.EditZoneSetting(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual(enabled, callback.Request["enabled"]);
-			Assert.IsFalse(callback.Request.ContainsKey("value"));
+			Assert.IsNotNull(request);
+			Assert.AreEqual(enabled, request["enabled"]);
+			Assert.IsFalse(request.ContainsKey("value"));
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public async Task ShouldThrowArgumentException()
 		{
 			// Arrange
 			var request = new EditZoneSettingRequest<TestSetting>(ZoneId, new TestSetting());
 			var client = GetClient();
 
-			// Act
-			var response = await client.EditZoneSetting(request);
-
-			// Assert - ArgumentException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () => await client.EditZoneSetting(request, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()

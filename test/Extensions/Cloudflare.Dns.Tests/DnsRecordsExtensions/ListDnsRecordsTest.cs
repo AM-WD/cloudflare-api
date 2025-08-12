@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class ListDnsRecordsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -83,14 +85,14 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListDnsRecords(ZoneId);
+			var response = await client.ListDnsRecords(ZoneId, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 
 			Assert.IsNotNull(response.Result);
-			Assert.AreEqual(2, response.Result.Count);
+			Assert.HasCount(2, response.Result);
 
 			Assert.IsInstanceOfType<ARecord>(response.Result.First());
 			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c353", response.Result.First().Id);
@@ -98,11 +100,11 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.IsInstanceOfType<AAAARecord>(response.Result.Last());
 			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c355", response.Result.Last().Id);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<JObject>>($"/zones/{ZoneId}/dns_records", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -120,14 +122,14 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListDnsRecords(ZoneId, filter);
+			var response = await client.ListDnsRecords(ZoneId, filter, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 
 			Assert.IsNotNull(response.Result);
-			Assert.AreEqual(2, response.Result.Count);
+			Assert.HasCount(2, response.Result);
 
 			Assert.IsInstanceOfType<ARecord>(response.Result.First());
 			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c353", response.Result.First().Id);
@@ -135,14 +137,14 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.IsInstanceOfType<AAAARecord>(response.Result.Last());
 			Assert.AreEqual("023e105f4ecef8ad9ca31a8372d0c355", response.Result.Last().Id);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dns_records", callback.RequestPath);
-			Assert.IsNotNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dns_records", requestPath);
+			Assert.IsNotNull(queryFilter);
 
-			Assert.IsInstanceOfType<ListDnsRecordsFilter>(callback.QueryFilter);
-			Assert.AreEqual("example.com", ((ListDnsRecordsFilter)callback.QueryFilter).Name);
+			Assert.IsInstanceOfType<ListDnsRecordsFilter>(queryFilter);
+			Assert.AreEqual("example.com", ((ListDnsRecordsFilter)queryFilter).Name);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<JObject>>($"/zones/{ZoneId}/dns_records", filter, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -159,7 +161,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -214,7 +216,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(33, dict.Count);
+			Assert.HasCount(33, dict);
 
 			Assert.IsTrue(dict.ContainsKey("comment"));
 			Assert.IsTrue(dict.ContainsKey("comment.absent"));
@@ -311,7 +313,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -327,7 +329,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -344,7 +346,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -361,7 +363,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -378,7 +380,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -394,7 +396,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -411,7 +413,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -428,7 +430,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -445,7 +447,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -462,7 +464,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -479,7 +481,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -496,7 +498,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -512,7 +514,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -528,7 +530,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -545,7 +547,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -562,7 +564,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -579,7 +581,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -596,7 +598,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -613,7 +615,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -629,7 +631,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -645,7 +647,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -662,7 +664,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -679,7 +681,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -696,7 +698,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -713,7 +715,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -730,7 +732,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -747,7 +749,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -764,7 +766,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -781,7 +783,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -797,7 +799,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -813,7 +815,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		private ICloudflareClient GetClient()

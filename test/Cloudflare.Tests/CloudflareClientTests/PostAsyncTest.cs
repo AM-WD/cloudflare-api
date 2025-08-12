@@ -12,11 +12,13 @@ using AMWD.Net.Api.Cloudflare;
 using Moq;
 using Moq.Protected;
 
-namespace Cloudflare.Core.Tests.CloudflareClientTests
+namespace Cloudflare.Tests.CloudflareClientTests
 {
 	[TestClass]
 	public class PostAsyncTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string BaseUrl = "https://localhost/api/v4/";
 
 		private HttpMessageHandlerMock _httpHandlerMock;
@@ -52,46 +54,46 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ObjectDisposedException))]
 		public async Task ShouldThrowDisposed()
 		{
 			// Arrange
 			var client = GetClient() as CloudflareClient;
 			client.Dispose();
 
-			// Act
-			await client.PostAsync<object, object>("test", _request);
-
-			// Assert - ObjectDisposedException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
+			{
+				await client.PostAsync<object, object>("test", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullOnRequestPath(string path)
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			await client.PostAsync<object, object>(path, _request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				await client.PostAsync<object, object>(path, _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public async Task ShouldThrowArgumentOnRequestPath()
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			await client.PostAsync<object, object>("foo?bar=baz", _request);
-
-			// Assert - ArgumentException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
+			{
+				await client.PostAsync<object, object>("foo?bar=baz", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -107,7 +109,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, TestClass>("test", _request);
+			var response = await client.PostAsync<TestClass, TestClass>("test", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -116,21 +118,21 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
 
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
+			Assert.IsEmpty(response.Errors);
+			Assert.IsEmpty(response.Messages);
 
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Post, callback.Method);
 			Assert.AreEqual("https://localhost/api/v4/test", callback.Url);
 			Assert.AreEqual(@"{""string"":""Happy Testing!"",""integer"":54321}", callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -159,7 +161,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, StringContent>("test", stringContent);
+			var response = await client.PostAsync<TestClass, StringContent>("test", stringContent, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -168,21 +170,21 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
 
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
+			Assert.IsEmpty(response.Errors);
+			Assert.IsEmpty(response.Messages);
 
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Post, callback.Method);
 			Assert.AreEqual("https://localhost/api/v4/test", callback.Url);
 			Assert.AreEqual(@"{""test"":""HERE ?""}", callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -210,7 +212,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, object>("posting", null);
+			var response = await client.PostAsync<TestClass, object>("posting", null, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -219,21 +221,21 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			Assert.IsNotNull(response.Messages);
 			Assert.IsNull(response.ResultInfo);
 
-			Assert.AreEqual(0, response.Errors.Count);
-			Assert.AreEqual(0, response.Messages.Count);
+			Assert.IsEmpty(response.Errors);
+			Assert.IsEmpty(response.Messages);
 
 			Assert.IsNotNull(response.Result);
 			Assert.AreEqual("some-string", response.Result.Str);
 			Assert.AreEqual(123, response.Result.Int);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Post, callback.Method);
 			Assert.AreEqual("https://localhost/api/v4/posting", callback.Url);
 			Assert.IsNull(callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -259,18 +261,13 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			var client = GetClient();
 
-			try
+			// Act & Assert
+			var ex = await Assert.ThrowsExactlyAsync<AuthenticationException>(async () =>
 			{
-				// Act
-				await client.PostAsync<object, object>("foo", _request);
-				Assert.Fail();
-			}
-			catch (AuthenticationException ex)
-			{
-				// Assert
-				Assert.IsNull(ex.InnerException);
-				Assert.AreEqual($"4711: foo & baz.{Environment.NewLine}4712: Happy Error!", ex.Message);
-			}
+				await client.PostAsync<object, object>("foo", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
+			Assert.IsNull(ex.InnerException);
+			Assert.AreEqual($"4711: foo & baz.{Environment.NewLine}4712: Happy Error!", ex.Message);
 		}
 
 		[TestMethod]
@@ -287,7 +284,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<string, TestClass>("some-awesome-path", _request);
+			var response = await client.PostAsync<string, TestClass>("some-awesome-path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -298,14 +295,14 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Post, callback.Method);
 			Assert.AreEqual("https://localhost/api/v4/some-awesome-path?bar=08%2F15", callback.Url);
 			Assert.AreEqual(@"{""string"":""Happy Testing!"",""integer"":54321}", callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));
@@ -331,7 +328,6 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(JsonReaderException))]
 		public async Task ShouldThrowExceptionOnInvalidResponse()
 		{
 			// Arrange
@@ -343,8 +339,11 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			var client = GetClient();
 
-			// Act
-			await client.PostAsync<TestClass, TestClass>("some-path", _request);
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<JsonReaderException>(async () =>
+			{
+				await client.PostAsync<TestClass, TestClass>("some-path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
@@ -361,7 +360,7 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<string, TestClass>("path", _request);
+			var response = await client.PostAsync<string, TestClass>("path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -372,14 +371,14 @@ namespace Cloudflare.Core.Tests.CloudflareClientTests
 
 			Assert.AreEqual("This is an awesome text ;-)", response.Result);
 
-			Assert.AreEqual(1, _httpHandlerMock.Callbacks.Count);
+			Assert.HasCount(1, _httpHandlerMock.Callbacks);
 
 			var callback = _httpHandlerMock.Callbacks.First();
 			Assert.AreEqual(HttpMethod.Post, callback.Method);
 			Assert.AreEqual("https://localhost/api/v4/path", callback.Url);
 			Assert.AreEqual(@"{""integer"":54321}", callback.Content);
 
-			Assert.AreEqual(3, callback.Headers.Count);
+			Assert.HasCount(3, callback.Headers);
 			Assert.IsTrue(callback.Headers.ContainsKey("Accept"));
 			Assert.IsTrue(callback.Headers.ContainsKey("Authorization"));
 			Assert.IsTrue(callback.Headers.ContainsKey("User-Agent"));

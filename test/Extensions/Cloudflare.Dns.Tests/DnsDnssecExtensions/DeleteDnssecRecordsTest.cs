@@ -10,13 +10,15 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 	[TestClass]
 	public class DeleteDnssecRecordsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
 
 		private CloudflareResponse<string> _response;
 
-		private List<(string RequestPath, IQueryParameterFilter? QueryFilter)> _callbacks;
+		private List<(string RequestPath, IQueryParameterFilter QueryFilter)> _callbacks;
 
 		[TestInitialize]
 		public void Initialize()
@@ -45,18 +47,18 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteDnssecRecords(ZoneId);
+			var response = await client.DeleteDnssecRecords(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dnssec", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dnssec", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.DeleteAsync<string>(
 				$"/zones/{ZoneId}/dnssec",
@@ -71,9 +73,9 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 			_clientMock
 				.Setup(m => m.DeleteAsync<string>(
 					It.IsAny<string>(),
-					It.IsAny<IQueryParameterFilter?>(),
+					It.IsAny<IQueryParameterFilter>(),
 					It.IsAny<CancellationToken>()))
-				.Callback<string, IQueryParameterFilter?, CancellationToken>((requestPath, queryFilter, _) => _callbacks.Add((requestPath, queryFilter)))
+				.Callback<string, IQueryParameterFilter, CancellationToken>((requestPath, queryFilter, _) => _callbacks.Add((requestPath, queryFilter)))
 				.ReturnsAsync(() => _response);
 
 			return _clientMock.Object;

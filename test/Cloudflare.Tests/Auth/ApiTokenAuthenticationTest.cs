@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using AMWD.Net.Api.Cloudflare;
 
-namespace Cloudflare.Core.Tests.Auth
+namespace Cloudflare.Tests.Auth
 {
 	[TestClass]
 	public class ApiTokenAuthenticationTest
@@ -29,15 +29,12 @@ namespace Cloudflare.Core.Tests.Auth
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldArgumentNullExceptionForEmailAddress(string apiToken)
 		{
 			// Arrange
 
-			// Act
-			new ApiTokenAuthentication(apiToken);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => new ApiTokenAuthentication(apiToken));
 		}
 	}
 }

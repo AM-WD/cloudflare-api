@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 	[TestClass]
 	public class EditDnssecStatusTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -72,23 +74,23 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditDnssecStatus(_request);
+			var response = await client.EditDnssecStatus(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/dnssec", callback.RequestPath);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/dnssec", requestPath);
 
-			Assert.IsNotNull(callback.Request);
-			Assert.AreEqual(_request.DnssecMultiSigner, callback.Request.DnssecMultiSigner);
-			Assert.AreEqual(_request.DnssecPresigned, callback.Request.DnssecPresigned);
-			Assert.AreEqual(_request.DnssecUseNsec3, callback.Request.DnssecUseNsec3);
-			Assert.AreEqual(_request.Status, callback.Request.Status);
+			Assert.IsNotNull(request);
+			Assert.AreEqual(_request.DnssecMultiSigner, request.DnssecMultiSigner);
+			Assert.AreEqual(_request.DnssecPresigned, request.DnssecPresigned);
+			Assert.AreEqual(_request.DnssecUseNsec3, request.DnssecUseNsec3);
+			Assert.AreEqual(_request.Status, request.Status);
 
 			_clientMock.Verify(m => m.PatchAsync<DNSSEC, InternalEditDnssecStatusRequest>(
 				$"/zones/{ZoneId}/dnssec",

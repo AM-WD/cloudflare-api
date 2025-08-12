@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 	[TestClass]
 	public class RerunActivationCheckTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -46,18 +48,18 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.RerunActivationCheck(ZoneId);
+			var response = await client.RerunActivationCheck(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/activation_check", callback.RequestPath);
-			Assert.IsNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/activation_check", requestPath);
+			Assert.IsNull(request);
 
 			_clientMock.Verify(m => m.PutAsync<Identifier, object>($"/zones/{ZoneId}/activation_check", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

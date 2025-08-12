@@ -11,8 +11,9 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 	[TestClass]
 	public class GetDomainTest
 	{
-		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
+		public TestContext TestContext { get; set; }
 
+		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string DomainName = "example.com";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -36,16 +37,16 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			var client = GetClient();
 
 			// Act
-			var result = await client.GetDomain(AccountId, DomainName);
+			var result = await client.GetDomain(AccountId, DomainName, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.AreEqual(_response, result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/registrar/domains/{DomainName}", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/registrar/domains/{DomainName}", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<JToken>($"/accounts/{AccountId}/registrar/domains/{DomainName}", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -55,16 +56,13 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionOnDomainName(string domainName)
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			var result = await client.GetDomain(AccountId, domainName);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.GetDomain(AccountId, domainName, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()

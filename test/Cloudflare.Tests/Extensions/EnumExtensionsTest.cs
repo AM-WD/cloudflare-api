@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using AMWD.Net.Api.Cloudflare;
 
-namespace Cloudflare.Core.Tests.Extensions
+namespace Cloudflare.Tests.Extensions
 {
 	[TestClass]
 	public class EnumExtensionsTest

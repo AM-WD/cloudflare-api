@@ -11,6 +11,8 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 	[TestClass]
 	public class CreateInternalDnsViewTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 		private const string ViewId = "023e105f4ecef8ad9ca31a8372d0c354";
 		private const string ViewName = "InternalView";
@@ -50,21 +52,21 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateInternalDnsView(_request);
+			var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", callback.RequestPath);
-			Assert.IsNotNull(callback.Request);
+			var (requestPath, request) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/dns_settings/views", requestPath);
+			Assert.IsNotNull(request);
 
-			Assert.AreEqual(ViewName, callback.Request.Name);
-			CollectionAssert.AreEqual(_request.ZoneIds.ToList(), callback.Request.Zones.ToList());
+			Assert.AreEqual(ViewName, request.Name);
+			CollectionAssert.AreEqual(_request.ZoneIds.ToList(), request.Zones.ToList());
 
 			_clientMock.Verify(m => m.PostAsync<InternalDnsView, InternalModifyInternalDnsViewRequest>($"/accounts/{AccountId}/dns_settings/views", It.IsAny<InternalModifyInternalDnsViewRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -74,31 +76,31 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("   ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public async Task ShouldThrowArgumentNullExceptionWhenNameIsNull(string name)
 		{
 			// Arrange
 			_request.Name = name;
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateInternalDnsView(_request);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
+			{
+				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public async Task ShouldThrowArgumentOutOfRangeExceptionWhenNameTooLong()
 		{
 			// Arrange
 			_request.Name = new string('a', 256);
 			var client = GetClient();
 
-			// Act
-			var response = await client.CreateInternalDnsView(_request);
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+			{
+				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
+			});
 		}
 
 		private ICloudflareClient GetClient()

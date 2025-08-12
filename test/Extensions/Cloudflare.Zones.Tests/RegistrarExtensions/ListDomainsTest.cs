@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 	[TestClass]
 	public class ListDomainsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string AccountId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -33,16 +35,16 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			var client = GetClient();
 
 			// Act
-			var result = await client.ListDomains(AccountId);
+			var result = await client.ListDomains(AccountId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.AreEqual(_response, result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/accounts/{AccountId}/registrar/domains", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/accounts/{AccountId}/registrar/domains", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<Domain>>($"/accounts/{AccountId}/registrar/domains", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();

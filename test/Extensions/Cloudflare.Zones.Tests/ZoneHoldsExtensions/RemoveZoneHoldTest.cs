@@ -11,8 +11,9 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 	[TestClass]
 	public class RemoveZoneHoldTest
 	{
-		// Local: Europe/Berlin (Germany) - [CEST +2] | CET +1
-		private readonly DateTime _date = new(2025, 10, 10, 20, 30, 40, 0, DateTimeKind.Unspecified);
+		public TestContext TestContext { get; set; }
+
+		private readonly DateTime _date = new(2025, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -55,21 +56,21 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.RemoveZoneHold(_request);
+			var response = await client.RemoveZoneHold(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
-			Assert.IsNotNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
+			Assert.IsNotNull(queryFilter);
 
-			Assert.IsInstanceOfType<InternalRemoveZoneHoldFilter>(callback.QueryFilter);
-			Assert.IsNull(((InternalRemoveZoneHoldFilter)callback.QueryFilter).HoldAfter);
+			Assert.IsInstanceOfType<InternalRemoveZoneHoldFilter>(queryFilter);
+			Assert.IsNull(((InternalRemoveZoneHoldFilter)queryFilter).HoldAfter);
 
 			_clientMock.Verify(m => m.DeleteAsync<ZoneHold>($"/zones/{ZoneId}/hold", It.IsAny<InternalRemoveZoneHoldFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -83,21 +84,21 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.RemoveZoneHold(_request);
+			var response = await client.RemoveZoneHold(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
-			Assert.IsNotNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
+			Assert.IsNotNull(queryFilter);
 
-			Assert.IsInstanceOfType<InternalRemoveZoneHoldFilter>(callback.QueryFilter);
-			Assert.AreEqual(_date, ((InternalRemoveZoneHoldFilter)callback.QueryFilter).HoldAfter);
+			Assert.IsInstanceOfType<InternalRemoveZoneHoldFilter>(queryFilter);
+			Assert.AreEqual(_date, ((InternalRemoveZoneHoldFilter)queryFilter).HoldAfter);
 
 			_clientMock.Verify(m => m.DeleteAsync<ZoneHold>($"/zones/{ZoneId}/hold", It.IsAny<InternalRemoveZoneHoldFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -114,7 +115,7 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -128,9 +129,9 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(1, dict.Count);
+			Assert.HasCount(1, dict);
 			Assert.IsTrue(dict.ContainsKey("hold_after"));
-			Assert.AreEqual("2025-10-10T18:30:40Z", dict["hold_after"]);
+			Assert.AreEqual("2025-10-10T20:30:40Z", dict["hold_after"]);
 		}
 
 		private ICloudflareClient GetClient()

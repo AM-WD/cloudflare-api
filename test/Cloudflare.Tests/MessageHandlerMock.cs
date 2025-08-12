@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 
-namespace Cloudflare.Core.Tests
+namespace Cloudflare.Tests
 {
 	internal class HttpMessageHandlerMock
 	{
@@ -25,11 +24,11 @@ namespace Cloudflare.Core.Tests
 					};
 
 					if (request.Content != null)
-						callback.Content = await request.Content.ReadAsStringAsync();
+						callback.Content = await request.Content.ReadAsStringAsync(ct);
 
 					Callbacks.Add(callback);
 				})
-				.ReturnsAsync(() => Responses.Dequeue());
+				.ReturnsAsync(Responses.Dequeue);
 		}
 
 		public List<HttpMessageRequestCallback> Callbacks { get; } = [];

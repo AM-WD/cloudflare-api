@@ -11,6 +11,8 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 	[TestClass]
 	public class CreateZoneHoldTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private readonly DateTime _date = new(2025, 10, 10, 20, 30, 40, 0, DateTimeKind.Utc);
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
@@ -54,21 +56,21 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateZoneHold(_request);
+			var response = await client.CreateZoneHold(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
-			Assert.IsNotNull(callback.QueryFilter);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
+			Assert.IsNotNull(queryFilter);
 
-			Assert.IsInstanceOfType<InternalCreateZoneHoldFilter>(callback.QueryFilter);
-			Assert.IsNull(((InternalCreateZoneHoldFilter)callback.QueryFilter).IncludeSubdomains);
+			Assert.IsInstanceOfType<InternalCreateZoneHoldFilter>(queryFilter);
+			Assert.IsNull(((InternalCreateZoneHoldFilter)queryFilter).IncludeSubdomains);
 
 			_clientMock.Verify(m => m.PostAsync<ZoneHold, object>($"/zones/{ZoneId}/hold", null, It.IsAny<InternalCreateZoneHoldFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -82,21 +84,21 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateZoneHold(_request);
+			var response = await client.CreateZoneHold(_request, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/hold", callback.RequestPath);
-			Assert.IsNotNull(callback.QueryFilter);
+			var (requestPath, request, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/hold", requestPath);
+			Assert.IsNotNull(queryFilter);
 
-			Assert.IsInstanceOfType<InternalCreateZoneHoldFilter>(callback.QueryFilter);
-			Assert.IsTrue(((InternalCreateZoneHoldFilter)callback.QueryFilter).IncludeSubdomains);
+			Assert.IsInstanceOfType<InternalCreateZoneHoldFilter>(queryFilter);
+			Assert.IsTrue(((InternalCreateZoneHoldFilter)queryFilter).IncludeSubdomains);
 
 			_clientMock.Verify(m => m.PostAsync<ZoneHold, object>($"/zones/{ZoneId}/hold", null, It.IsAny<InternalCreateZoneHoldFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -113,7 +115,7 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(0, dict.Count);
+			Assert.IsEmpty(dict);
 		}
 
 		[TestMethod]
@@ -129,7 +131,7 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 
 			// Assert
 			Assert.IsNotNull(dict);
-			Assert.AreEqual(1, dict.Count);
+			Assert.HasCount(1, dict);
 			Assert.IsTrue(dict.ContainsKey("include_subdomains"));
 			Assert.AreEqual(includeSubdomains.ToString().ToLower(), dict["include_subdomains"]);
 		}

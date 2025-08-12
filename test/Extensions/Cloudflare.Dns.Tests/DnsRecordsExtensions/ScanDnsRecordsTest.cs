@@ -10,6 +10,8 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 	[TestClass]
 	public class ScanDnsRecordsTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -45,14 +47,14 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ScanDnsRecords(ZoneId);
+			var response = await client.ScanDnsRecords(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 			Assert.AreEqual($"/zones/{ZoneId}/dns_records/scan", _callbacks.First());
 
 			_clientMock.Verify(m => m.PostAsync<RecordScanResponse, object>($"/zones/{ZoneId}/dns_records/scan", null, null, It.IsAny<CancellationToken>()), Times.Once);

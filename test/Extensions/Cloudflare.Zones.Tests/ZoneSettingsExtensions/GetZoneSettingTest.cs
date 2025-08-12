@@ -10,6 +10,8 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 	[TestClass]
 	public class GetZoneSettingTest
 	{
+		public TestContext TestContext { get; set; }
+
 		private const string ZoneId = "023e105f4ecef8ad9ca31a8372d0c353";
 
 		private Mock<ICloudflareClient> _clientMock;
@@ -43,34 +45,31 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.GetZoneSetting<SSL>(ZoneId);
+			var response = await client.GetZoneSetting<SSL>(ZoneId, TestContext.CancellationTokenSource.Token);
 
 			// Assert
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Success);
 			Assert.AreEqual(_response.Result, response.Result);
 
-			Assert.AreEqual(1, _callbacks.Count);
+			Assert.HasCount(1, _callbacks);
 
-			var callback = _callbacks.First();
-			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", callback.RequestPath);
-			Assert.IsNull(callback.QueryFilter);
+			var (requestPath, queryFilter) = _callbacks.First();
+			Assert.AreEqual($"/zones/{ZoneId}/settings/ssl", requestPath);
+			Assert.IsNull(queryFilter);
 
 			_clientMock.Verify(m => m.GetAsync<SSL>($"/zones/{ZoneId}/settings/ssl", null, It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public async Task ShouldThrowArgumentException()
 		{
 			// Arrange
 			var client = GetClient();
 
-			// Act
-			var response = await client.GetZoneSetting<TestSetting>(ZoneId);
-
-			// Assert - ArgumentException
+			// Act & Assert
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () => await client.GetZoneSetting<TestSetting>(ZoneId, TestContext.CancellationTokenSource.Token));
 		}
 
 		private ICloudflareClient GetClient()

@@ -1,5 +1,4 @@
-﻿using System;
-using AMWD.Net.Api.Cloudflare;
+﻿using AMWD.Net.Api.Cloudflare;
 
 namespace Cloudflare.Tests.Extensions
 {
@@ -22,43 +21,34 @@ namespace Cloudflare.Tests.Extensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullExceptionForValidateId(string name)
 		{
 			// Arrange
 
-			// Act
-			name.ValidateCloudflareId();
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => name.ValidateCloudflareId());
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentOutOfRangeExceptionForValidateId()
 		{
 			// Arrange
 			string id = new('a', 33);
 
-			// Act
-			id.ValidateCloudflareId();
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => id.ValidateCloudflareId());
 		}
 
 		[TestMethod]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0c35")]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0C353")]
 		[DataRow("023e105f4ecef8ad9ca31a8372d0y353")]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentExceptionForValidateId(string id)
 		{
 			// Arrange
 
-			// Act
-			id.ValidateCloudflareId();
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => id.ValidateCloudflareId());
 		}
 
 		[TestMethod]
@@ -77,28 +67,22 @@ namespace Cloudflare.Tests.Extensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullExceptionForValidateName(string name)
 		{
 			// Arrange
 
-			// Act
-			name.ValidateCloudflareName();
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => name.ValidateCloudflareName());
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentOutOfRangeExceptionForValidateName()
 		{
 			// Arrange
 			string name = new('a', 254);
 
-			// Act
-			name.ValidateCloudflareName();
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => name.ValidateCloudflareName());
 		}
 
 		[TestMethod]
@@ -117,30 +101,24 @@ namespace Cloudflare.Tests.Extensions
 		[DataRow(null)]
 		[DataRow("")]
 		[DataRow("  ")]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullExceptionForValidateEmail(string email)
 		{
 			// Arrange
 
-			// Act
-			email.ValidateCloudflareEmailAddress();
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() => email.ValidateCloudflareEmailAddress());
 		}
 
 		[TestMethod]
 		[DataRow("test")]
 		[DataRow("test@example")]
 		[DataRow("example.com")]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentExceptionForValidateEmail(string email)
 		{
 			// Arrange
 
-			// Act
-			email.ValidateCloudflareEmailAddress();
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => email.ValidateCloudflareEmailAddress());
 		}
 
 		[TestMethod]
@@ -157,16 +135,13 @@ namespace Cloudflare.Tests.Extensions
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentException))]
 		public void ShouldThrowArgumentExceptionForValidateLength()
 		{
 			// Arrange
 			string str = "SomeExampleString";
 
-			// Act
-			str.ValidateLength(10, nameof(str));
-
-			// Assert - ArgumentException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentException>(() => str.ValidateLength(10, nameof(str)));
 		}
 	}
 }

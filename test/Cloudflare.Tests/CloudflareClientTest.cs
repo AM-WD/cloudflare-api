@@ -5,7 +5,7 @@ using AMWD.Net.Api.Cloudflare;
 using Moq;
 using Moq.Protected;
 
-namespace Cloudflare.Core.Tests
+namespace Cloudflare.Tests
 {
 	[TestClass]
 	public class CloudflareClientTest
@@ -72,15 +72,15 @@ namespace Cloudflare.Core.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullOnMissingAuthentication()
 		{
 			// Arrange
 
-			// Act
-			using var client = new CloudflareClient((IAuthentication)null);
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				using var client = new CloudflareClient((IAuthentication)null);
+			});
 		}
 
 		[TestMethod]
@@ -150,7 +150,6 @@ namespace Cloudflare.Core.Tests
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullForBaseUrlOnAssertClientOptions()
 		{
 			// Arrange
@@ -158,14 +157,14 @@ namespace Cloudflare.Core.Tests
 				.Setup(o => o.BaseUrl)
 				.Returns((string)null);
 
-			// Act
-			var client = GetClient();
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				var client = GetClient();
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void ShouldThrowArgumentOutOfRangeForTimeoutOnAssertClientOptions()
 		{
 			// Arrange
@@ -173,16 +172,16 @@ namespace Cloudflare.Core.Tests
 				.Setup(o => o.Timeout)
 				.Returns(TimeSpan.Zero);
 
-			// Act
-			var client = GetClient();
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				var client = GetClient();
+			});
 		}
 
 		[TestMethod]
 		[DataRow(-1)]
 		[DataRow(11)]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void ShouldThrowArgumentOutOfRangeForMaxRetriesOnAssertClientOptions(int maxRetries)
 		{
 			// Arrange
@@ -190,14 +189,14 @@ namespace Cloudflare.Core.Tests
 				.Setup(o => o.MaxRetries)
 				.Returns(maxRetries);
 
-			// Act
-			var client = GetClient();
-
-			// Assert - ArgumentOutOfRangeException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+			{
+				var client = GetClient();
+			});
 		}
 
 		[TestMethod]
-		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowArgumentNullForUseProxyOnAssertClientOptions()
 		{
 			// Arrange
@@ -205,10 +204,11 @@ namespace Cloudflare.Core.Tests
 				.Setup(o => o.UseProxy)
 				.Returns(true);
 
-			// Act
-			var client = GetClient();
-
-			// Assert - ArgumentNullException
+			// Act & Assert
+			Assert.ThrowsExactly<ArgumentNullException>(() =>
+			{
+				var client = GetClient();
+			});
 		}
 
 		private void VerifyDefault()
