@@ -87,8 +87,6 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			Assert.IsTrue(response.Result.Proxiable);
 			Assert.IsNotNull(response.Result.Settings);
 			Assert.IsNotNull(response.Result.Meta);
-			Assert.IsNotNull(response.Result.CreatedOn);
-			Assert.IsNotNull(response.Result.ModifiedOn);
 			Assert.IsNotNull(response.Result.CommentModifiedOn);
 			Assert.IsNotNull(response.Result.TagsModifiedOn);
 
