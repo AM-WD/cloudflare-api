@@ -9,7 +9,7 @@
 			var dict = new Dictionary<string, string>();
 
 			if (HoldAfter.HasValue)
-				dict.Add("hold_after", HoldAfter.Value.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+				dict.Add("hold_after", HoldAfter.Value.ToIso8601Format());
 
 			return dict;
 		}
