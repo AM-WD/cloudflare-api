@@ -85,28 +85,26 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		{
 			var dict = new Dictionary<string, string>();
 
-#pragma warning disable CS8602, CS8604 // There will be no null value below.
-
 			if (Direction.HasValue && Enum.IsDefined(typeof(SortDirection), Direction.Value))
-				dict.Add("direction", Direction.Value.GetEnumMemberValue());
+				dict.Add("direction", Direction.Value.GetEnumMemberValue()!);
 
 			if (Match.HasValue && Enum.IsDefined(typeof(FilterMatchType), Match.Value))
-				dict.Add("match", Match.Value.GetEnumMemberValue());
+				dict.Add("match", Match.Value.GetEnumMemberValue()!);
 
 			if (!string.IsNullOrWhiteSpace(NameContains))
-				dict.Add("name.contains", NameContains.Trim());
+				dict.Add("name.contains", NameContains!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameEndsWith))
-				dict.Add("name.endswith", NameEndsWith.Trim());
+				dict.Add("name.endswith", NameEndsWith!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameExact))
-				dict.Add("name.exact", NameExact.Trim());
+				dict.Add("name.exact", NameExact!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameStartsWith))
-				dict.Add("name.startswith", NameStartsWith.Trim());
+				dict.Add("name.startswith", NameStartsWith!.Trim());
 
 			if (OrderBy.HasValue && Enum.IsDefined(typeof(InternalDnsViewsOrderBy), OrderBy.Value))
-				dict.Add("order", OrderBy.Value.GetEnumMemberValue());
+				dict.Add("order", OrderBy.Value.GetEnumMemberValue()!);
 
 			if (Page.HasValue && Page.Value >= 1)
 				dict.Add("page", Page.Value.ToString());
@@ -115,12 +113,10 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 				dict.Add("per_page", PerPage.Value.ToString());
 
 			if (!string.IsNullOrWhiteSpace(ZoneId))
-				dict.Add("zone_id", ZoneId.Trim());
+				dict.Add("zone_id", ZoneId!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(ZoneName))
-				dict.Add("zone_name", ZoneName.Trim());
-
-#pragma warning restore CS8602, CS8604
+				dict.Add("zone_name", ZoneName!.Trim());
 
 			return dict;
 		}

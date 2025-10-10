@@ -277,79 +277,77 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 		{
 			var dict = new Dictionary<string, string>();
 
-#pragma warning disable CS8602, CS8604 // There will be no null value below.
-
 			#region Comment
 
 			if (!string.IsNullOrWhiteSpace(Comment))
-				dict.Add("comment", Comment.Trim());
+				dict.Add("comment", Comment!.Trim());
 
 			if (CommentAbsent.HasValue && CommentAbsent.Value)
 				dict.Add("comment.absent", "true");
 
 			if (!string.IsNullOrWhiteSpace(CommentContains))
-				dict.Add("comment.contains", CommentContains.Trim());
+				dict.Add("comment.contains", CommentContains!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(CommentEndsWith))
-				dict.Add("comment.endswith", CommentEndsWith.Trim());
+				dict.Add("comment.endswith", CommentEndsWith!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(CommentExact))
-				dict.Add("comment.exact", CommentExact.Trim());
+				dict.Add("comment.exact", CommentExact!.Trim());
 
 			if (CommentPresent.HasValue && CommentPresent.Value)
 				dict.Add("comment.present", "true");
 
 			if (!string.IsNullOrWhiteSpace(CommentStartsWith))
-				dict.Add("comment.startswith", CommentStartsWith.Trim());
+				dict.Add("comment.startswith", CommentStartsWith!.Trim());
 
 			#endregion Comment
 
 			#region Content
 
 			if (!string.IsNullOrWhiteSpace(Content))
-				dict.Add("content", Content.Trim());
+				dict.Add("content", Content!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(ContentContains))
-				dict.Add("content.contains", ContentContains.Trim());
+				dict.Add("content.contains", ContentContains!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(ContentEndsWith))
-				dict.Add("content.endswith", ContentEndsWith.Trim());
+				dict.Add("content.endswith", ContentEndsWith!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(ContentExact))
-				dict.Add("content.exact", ContentExact.Trim());
+				dict.Add("content.exact", ContentExact!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(ContentStartsWith))
-				dict.Add("content.startswith", ContentStartsWith.Trim());
+				dict.Add("content.startswith", ContentStartsWith!.Trim());
 
 			#endregion Content
 
 			if (Direction.HasValue && Enum.IsDefined(typeof(SortDirection), Direction.Value))
-				dict.Add("direction", Direction.Value.GetEnumMemberValue());
+				dict.Add("direction", Direction.Value.GetEnumMemberValue()!);
 
 			if (Match.HasValue && Enum.IsDefined(typeof(FilterMatchType), Match.Value))
-				dict.Add("match", Match.Value.GetEnumMemberValue());
+				dict.Add("match", Match.Value.GetEnumMemberValue()!);
 
 			#region Name
 
 			if (!string.IsNullOrWhiteSpace(Name))
-				dict.Add("name", Name.Trim());
+				dict.Add("name", Name!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameContains))
-				dict.Add("name.contains", NameContains.Trim());
+				dict.Add("name.contains", NameContains!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameEndsWith))
-				dict.Add("name.endswith", NameEndsWith.Trim());
+				dict.Add("name.endswith", NameEndsWith!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameExact))
-				dict.Add("name.exact", NameExact.Trim());
+				dict.Add("name.exact", NameExact!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(NameStartsWith))
-				dict.Add("name.startswith", NameStartsWith.Trim());
+				dict.Add("name.startswith", NameStartsWith!.Trim());
 
 			#endregion Name
 
 			if (OrderBy.HasValue && Enum.IsDefined(typeof(DnsRecordsOrderBy), OrderBy.Value))
-				dict.Add("order", OrderBy.Value.GetEnumMemberValue());
+				dict.Add("order", OrderBy.Value.GetEnumMemberValue()!);
 
 			if (Page.HasValue && Page.Value >= 1)
 				dict.Add("page", Page.Value.ToString());
@@ -361,40 +359,38 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 				dict.Add("proxied", Proxied.Value.ToString().ToLowerInvariant());
 
 			if (!string.IsNullOrWhiteSpace(Search))
-				dict.Add("search", Search.Trim());
+				dict.Add("search", Search!.Trim());
 
 			#region Tag
 
 			if (!string.IsNullOrWhiteSpace(Tag))
-				dict.Add("tag", Tag.Trim());
+				dict.Add("tag", Tag!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagAbsent))
-				dict.Add("tag.absent", TagAbsent.Trim());
+				dict.Add("tag.absent", TagAbsent!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagContains))
-				dict.Add("tag.contains", TagContains.Trim());
+				dict.Add("tag.contains", TagContains!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagEndsWith))
-				dict.Add("tag.endswith", TagEndsWith.Trim());
+				dict.Add("tag.endswith", TagEndsWith!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagExact))
-				dict.Add("tag.exact", TagExact.Trim());
+				dict.Add("tag.exact", TagExact!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagPresent))
-				dict.Add("tag.present", TagPresent.Trim());
+				dict.Add("tag.present", TagPresent!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(TagStartsWith))
-				dict.Add("tag.startswith", TagStartsWith.Trim());
+				dict.Add("tag.startswith", TagStartsWith!.Trim());
 
 			#endregion Tag
 
 			if (TagMatch.HasValue && Enum.IsDefined(typeof(FilterMatchType), TagMatch.Value))
-				dict.Add("tag_match", TagMatch.Value.GetEnumMemberValue());
+				dict.Add("tag_match", TagMatch.Value.GetEnumMemberValue()!);
 
 			if (Type.HasValue && Enum.IsDefined(typeof(DnsRecordType), Type.Value))
-				dict.Add("type", Type.Value.GetEnumMemberValue());
-
-#pragma warning restore CS8602, CS8604
+				dict.Add("type", Type.Value.GetEnumMemberValue()!);
 
 			return dict;
 		}

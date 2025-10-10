@@ -25,6 +25,11 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 - [Rerun The Activation Check](https://developers.cloudflare.com/api/resources/zones/subresources/activation_check/methods/trigger/)
 
 
+#### Custom Nameservers
+
+_This part of the API is marked as deprecated and therefore not implemented._
+
+
 #### [Holds]
 
 - [Create Zone Hold](https://developers.cloudflare.com/api/resources/zones/subresources/holds/methods/create/)

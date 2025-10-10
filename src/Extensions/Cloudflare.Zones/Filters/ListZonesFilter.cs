@@ -92,25 +92,23 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 		{
 			var dict = new Dictionary<string, string>();
 
-#pragma warning disable CS8602, CS8604 // There will be no null value below.
-
 			if (!string.IsNullOrWhiteSpace(AccountId))
-				dict.Add("account.id", AccountId.Trim());
+				dict.Add("account.id", AccountId!.Trim());
 
 			if (!string.IsNullOrWhiteSpace(AccountName))
-				dict.Add("account.name", AccountName.Trim());
+				dict.Add("account.name", AccountName!.Trim());
 
 			if (Direction.HasValue && Enum.IsDefined(typeof(SortDirection), Direction.Value))
-				dict.Add("direction", Direction.Value.GetEnumMemberValue());
+				dict.Add("direction", Direction.Value.GetEnumMemberValue()!);
 
 			if (Match.HasValue && Enum.IsDefined(typeof(ListZonesMatch), Match.Value))
-				dict.Add("match", Match.Value.GetEnumMemberValue());
+				dict.Add("match", Match.Value.GetEnumMemberValue()!);
 
 			if (!string.IsNullOrWhiteSpace(Name))
-				dict.Add("name", Name);
+				dict.Add("name", Name!);
 
 			if (OrderBy.HasValue && Enum.IsDefined(typeof(ListZonesOrderBy), OrderBy.Value))
-				dict.Add("order", OrderBy.Value.GetEnumMemberValue());
+				dict.Add("order", OrderBy.Value.GetEnumMemberValue()!);
 
 			if (Page.HasValue && Page.Value >= 1)
 				dict.Add("page", Page.Value.ToString());
@@ -119,9 +117,7 @@ namespace AMWD.Net.Api.Cloudflare.Zones
 				dict.Add("per_page", PerPage.Value.ToString());
 
 			if (Status.HasValue && Enum.IsDefined(typeof(ZoneStatus), Status.Value))
-				dict.Add("status", Status.Value.GetEnumMemberValue());
-
-#pragma warning restore CS8602, CS8604
+				dict.Add("status", Status.Value.GetEnumMemberValue()!);
 
 			return dict;
 		}
