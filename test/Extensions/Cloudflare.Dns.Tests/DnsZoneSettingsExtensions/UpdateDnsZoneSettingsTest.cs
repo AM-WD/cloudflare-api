@@ -95,7 +95,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -139,7 +139,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsZoneSettings(req, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateDnsZoneSettings(req, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -175,7 +175,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -189,7 +189,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -205,7 +205,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -221,7 +221,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -237,7 +237,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -254,7 +254,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -270,7 +270,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -286,7 +286,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -302,7 +302,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -319,7 +319,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsZoneSettings(_request, TestContext.CancellationToken);
 			});
 		}
 

@@ -47,7 +47,7 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteDnssecRecords(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteDnssecRecords(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

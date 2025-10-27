@@ -37,7 +37,7 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			var client = GetClient();
 
 			// Act
-			var result = await client.GetDomain(AccountId, DomainName, TestContext.CancellationTokenSource.Token);
+			var result = await client.GetDomain(AccountId, DomainName, TestContext.CancellationToken);
 
 			// Assert
 			Assert.AreEqual(_response, result);
@@ -62,7 +62,7 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.GetDomain(AccountId, domainName, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.GetDomain(AccountId, domainName, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

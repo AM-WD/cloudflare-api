@@ -47,7 +47,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteCustomNameserver(AccountId, Nameserver, TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteCustomNameserver(AccountId, Nameserver, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -60,7 +60,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			Assert.AreEqual($"/accounts/{AccountId}/custom_ns/{Nameserver}", requestPath);
 			Assert.IsNull(queryFilter);
 
-			_clientMock.Verify(m => m.DeleteAsync<IReadOnlyCollection<string>>($"/accounts/{AccountId}/custom_ns/{Nameserver}", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.DeleteAsync<IReadOnlyCollection<string>>($"/accounts/{AccountId}/custom_ns/{Nameserver}", null, TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -74,7 +74,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.DeleteCustomNameserver(AccountId, nameserver, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.DeleteCustomNameserver(AccountId, nameserver, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

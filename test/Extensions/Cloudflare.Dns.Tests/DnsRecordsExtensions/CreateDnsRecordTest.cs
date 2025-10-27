@@ -93,7 +93,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -150,7 +150,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -164,7 +164,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -182,7 +182,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -195,7 +195,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -224,7 +224,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -253,7 +253,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -282,7 +282,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -314,7 +314,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -336,7 +336,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -367,7 +367,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -381,7 +381,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -413,7 +413,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -442,7 +442,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -457,7 +457,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -493,7 +493,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -511,7 +511,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -528,7 +528,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -565,7 +565,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -582,7 +582,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -619,7 +619,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -636,7 +636,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -673,7 +673,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -690,7 +690,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -726,7 +726,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -744,7 +744,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -760,7 +760,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -783,7 +783,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -795,7 +795,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -818,7 +818,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -830,7 +830,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -853,7 +853,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -865,7 +865,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -886,7 +886,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -898,7 +898,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -921,7 +921,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -933,7 +933,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -956,7 +956,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -968,7 +968,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -991,7 +991,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1003,7 +1003,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1024,7 +1024,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1036,7 +1036,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1059,7 +1059,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1071,7 +1071,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1094,7 +1094,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1106,7 +1106,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1129,7 +1129,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1141,7 +1141,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1164,7 +1164,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1181,7 +1181,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1220,7 +1220,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1238,7 +1238,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1256,7 +1256,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1274,7 +1274,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1291,7 +1291,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1328,7 +1328,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1346,7 +1346,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1384,7 +1384,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1401,7 +1401,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1437,7 +1437,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1454,7 +1454,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1490,7 +1490,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1508,7 +1508,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1525,7 +1525,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1562,7 +1562,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -1580,7 +1580,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -1616,7 +1616,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.CreateDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+				await client.CreateDnsRecord(_request, TestContext.CancellationToken);
 			});
 		}
 

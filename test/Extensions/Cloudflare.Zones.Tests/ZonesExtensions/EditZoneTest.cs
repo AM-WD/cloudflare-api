@@ -106,7 +106,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.EditZone(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -136,7 +136,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.EditZone(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -167,7 +167,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.EditZone(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.EditZone(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -198,7 +198,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationToken));
 		}
 
 		[TestMethod]
@@ -209,7 +209,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<CloudflareException>(async () => await client.EditZone(_request, TestContext.CancellationToken));
 		}
 
 		[TestMethod]
@@ -222,7 +222,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.EditZone(_request, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.EditZone(_request, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

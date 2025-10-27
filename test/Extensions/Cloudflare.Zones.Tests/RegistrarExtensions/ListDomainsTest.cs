@@ -35,7 +35,7 @@ namespace Cloudflare.Zones.Tests.RegistrarExtensions
 			var client = GetClient();
 
 			// Act
-			var result = await client.ListDomains(AccountId, TestContext.CancellationTokenSource.Token);
+			var result = await client.ListDomains(AccountId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.AreEqual(_response, result);

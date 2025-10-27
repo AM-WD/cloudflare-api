@@ -63,7 +63,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
 			{
-				await client.PostAsync<object, object>("test", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.PostAsync<object, object>("test", _request, cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -79,7 +79,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.PostAsync<object, object>(path, _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.PostAsync<object, object>(path, _request, cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -92,7 +92,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
 			{
-				await client.PostAsync<object, object>("foo?bar=baz", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.PostAsync<object, object>("foo?bar=baz", _request, cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -109,7 +109,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, TestClass>("test", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.PostAsync<TestClass, TestClass>("test", _request, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -161,7 +161,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, StringContent>("test", stringContent, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.PostAsync<TestClass, StringContent>("test", stringContent, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -212,7 +212,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<TestClass, object>("posting", null, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.PostAsync<TestClass, object>("posting", null, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -264,7 +264,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			var ex = await Assert.ThrowsExactlyAsync<AuthenticationException>(async () =>
 			{
-				await client.PostAsync<object, object>("foo", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.PostAsync<object, object>("foo", _request, cancellationToken: TestContext.CancellationToken);
 			});
 			Assert.IsNull(ex.InnerException);
 			Assert.AreEqual($"4711: foo & baz.{Environment.NewLine}4712: Happy Error!", ex.Message);
@@ -284,7 +284,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<string, TestClass>("some-awesome-path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.PostAsync<string, TestClass>("some-awesome-path", _request, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -342,7 +342,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<JsonReaderException>(async () =>
 			{
-				await client.PostAsync<TestClass, TestClass>("some-path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.PostAsync<TestClass, TestClass>("some-path", _request, cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -360,7 +360,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PostAsync<string, TestClass>("path", _request, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.PostAsync<string, TestClass>("path", _request, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

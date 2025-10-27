@@ -47,7 +47,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteInternalDnsView(AccountId, ViewId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteInternalDnsView(AccountId, ViewId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

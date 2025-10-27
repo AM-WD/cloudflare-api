@@ -55,7 +55,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
 			{
-				await client.DeleteAsync<object>("test", cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.DeleteAsync<object>("test", cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -71,7 +71,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.DeleteAsync<object>(path, cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.DeleteAsync<object>(path, cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -84,7 +84,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
 			{
-				await client.DeleteAsync<object>("foo?bar=baz", cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.DeleteAsync<object>("foo?bar=baz", cancellationToken: TestContext.CancellationToken);
 			});
 		}
 
@@ -101,7 +101,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteAsync<TestClass>("test", cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteAsync<TestClass>("test", cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -156,7 +156,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			try
 			{
 				// Act
-				await client.DeleteAsync<TestClass>("foo", cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.DeleteAsync<TestClass>("foo", cancellationToken: TestContext.CancellationToken);
 				Assert.Fail();
 			}
 			catch (AuthenticationException ex)
@@ -181,7 +181,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteAsync<string>("some-awesome-path", cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteAsync<string>("some-awesome-path", cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -239,7 +239,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<JsonReaderException>(async () =>
 			{
-				await client.DeleteAsync<TestClass>("some-path", cancellationToken: TestContext.CancellationTokenSource.Token);
+				await client.DeleteAsync<TestClass>("some-path", cancellationToken: TestContext.CancellationToken);
 			});
 		}
 

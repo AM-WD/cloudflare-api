@@ -47,7 +47,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ScanDnsRecords(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.ScanDnsRecords(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

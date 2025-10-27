@@ -65,7 +65,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.BatchDnsRecords(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.BatchDnsRecords(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

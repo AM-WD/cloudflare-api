@@ -46,7 +46,7 @@ namespace Cloudflare.Zones.Tests.ZonePlansExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.AvailablePlanDetails(ZoneId, PlanId, TestContext.CancellationTokenSource.Token);
+			var response = await client.AvailablePlanDetails(ZoneId, PlanId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

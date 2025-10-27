@@ -45,7 +45,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListCustomNameserver(AccountId, TestContext.CancellationTokenSource.Token);
+			var response = await client.ListCustomNameserver(AccountId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -58,7 +58,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			Assert.AreEqual($"/accounts/{AccountId}/custom_ns", requestPath);
 			Assert.IsNull(queryFilter);
 
-			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<CustomNameserver>>($"/accounts/{AccountId}/custom_ns", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.GetAsync<IReadOnlyCollection<CustomNameserver>>($"/accounts/{AccountId}/custom_ns", null, TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 

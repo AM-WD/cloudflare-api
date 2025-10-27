@@ -102,7 +102,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -134,7 +134,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			Assert.AreEqual("admin.example.org", request.ZoneDefaults.SOA.ZoneAdministrator);
 			Assert.AreEqual(DnsZoneMode.Standard, request.ZoneDefaults.ZoneMode);
 
-			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -146,7 +146,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsAccountSettings(req, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateDnsAccountSettings(req, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -161,7 +161,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			Assert.IsNotNull(request);
 			Assert.IsNull(request.ZoneDefaults);
 
-			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -176,7 +176,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateDnsAccountSettings(req, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateDnsAccountSettings(req, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -199,7 +199,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			Assert.IsNull(request.ZoneDefaults.SOA);
 			Assert.IsNull(request.ZoneDefaults.ZoneMode);
 
-			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PatchAsync<DnsAccountSettings, InternalUpdateDnsAccountSettingsRequest>($"/accounts/{AccountId}/dns_settings", It.IsAny<InternalUpdateDnsAccountSettingsRequest>(), TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 
@@ -213,7 +213,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -227,7 +227,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -243,7 +243,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -259,7 +259,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -275,7 +275,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -292,7 +292,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -308,7 +308,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -324,7 +324,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -340,7 +340,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -357,7 +357,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationTokenSource.Token);
+				await client.UpdateDnsAccountSettings(_request, TestContext.CancellationToken);
 			});
 		}
 

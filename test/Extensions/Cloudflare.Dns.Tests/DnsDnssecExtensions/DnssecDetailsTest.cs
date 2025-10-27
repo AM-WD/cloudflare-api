@@ -63,7 +63,7 @@ namespace Cloudflare.Dns.Tests.DnsDnssecExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnssecDetails(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnssecDetails(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

@@ -67,7 +67,7 @@ namespace Cloudflare.Dns.Tests.DnsZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ShowDnsZoneSettings(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.ShowDnsZoneSettings(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

@@ -45,7 +45,7 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.GetZoneSetting<SSL>(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.GetZoneSetting<SSL>(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -69,7 +69,7 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentException>(async () => await client.GetZoneSetting<TestSetting>(ZoneId, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentException>(async () => await client.GetZoneSetting<TestSetting>(ZoneId, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

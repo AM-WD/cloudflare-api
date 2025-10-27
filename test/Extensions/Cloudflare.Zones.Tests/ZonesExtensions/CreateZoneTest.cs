@@ -107,7 +107,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateZone(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateZone(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -136,7 +136,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.CreateZone(_request, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () => await client.CreateZone(_request, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

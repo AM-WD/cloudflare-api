@@ -52,7 +52,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateInternalDnsView(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -85,7 +85,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
+				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationToken);
 			});
 		}
 
@@ -99,7 +99,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
 			{
-				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationTokenSource.Token);
+				var response = await client.CreateInternalDnsView(_request, TestContext.CancellationToken);
 			});
 		}
 

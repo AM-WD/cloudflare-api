@@ -60,7 +60,7 @@ namespace Cloudflare.Zones.Tests.ZoneHoldsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.UpdateZoneHold(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.UpdateZoneHold(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

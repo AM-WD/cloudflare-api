@@ -71,7 +71,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ShowDnsAccountSettings(AccountId, TestContext.CancellationTokenSource.Token);
+			var response = await client.ShowDnsAccountSettings(AccountId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -85,7 +85,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions
 
 			Assert.IsNull(queryFilter);
 
-			_clientMock.Verify(m => m.GetAsync<DnsAccountSettings>($"/accounts/{AccountId}/dns_settings", null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.GetAsync<DnsAccountSettings>($"/accounts/{AccountId}/dns_settings", null, TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 

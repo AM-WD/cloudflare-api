@@ -48,7 +48,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DeleteZone(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DeleteZone(ZoneId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

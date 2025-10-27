@@ -52,7 +52,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.AddCustomNameserver(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.AddCustomNameserver(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -68,7 +68,7 @@ namespace Cloudflare.Dns.Tests.CustomNameserversExtensions
 			Assert.AreEqual(_request.NameserverName, request.NameserverName);
 			Assert.IsNull(request.NameserverSet);
 
-			_clientMock.Verify(m => m.PostAsync<CustomNameserver, InternalAddCustomNameserverRequest>($"/accounts/{AccountId}/custom_ns", It.IsAny<InternalAddCustomNameserverRequest>(), null, It.IsAny<CancellationToken>()), Times.Once);
+			_clientMock.Verify(m => m.PostAsync<CustomNameserver, InternalAddCustomNameserverRequest>($"/accounts/{AccountId}/custom_ns", It.IsAny<InternalAddCustomNameserverRequest>(), null, TestContext.CancellationToken), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
 		}
 

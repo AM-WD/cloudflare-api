@@ -47,7 +47,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListInternalDnsViews(AccountId, cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.ListInternalDnsViews(AccountId, cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -79,7 +79,7 @@ namespace Cloudflare.Dns.Tests.DnsAccountSettingsExtensions.Views
 			};
 
 			// Act
-			var response = await client.ListInternalDnsViews(AccountId, filter, TestContext.CancellationTokenSource.Token);
+			var response = await client.ListInternalDnsViews(AccountId, filter, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

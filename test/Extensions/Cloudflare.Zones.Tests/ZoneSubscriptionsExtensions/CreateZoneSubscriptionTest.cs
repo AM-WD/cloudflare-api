@@ -58,7 +58,7 @@ namespace Cloudflare.Zones.Tests.ZoneSubscriptionsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.CreateZoneSubscription(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.CreateZoneSubscription(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

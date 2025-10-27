@@ -67,7 +67,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.OverwriteDnsRecord(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.OverwriteDnsRecord(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

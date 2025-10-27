@@ -63,7 +63,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
 			{
-				await client.PutAsync<object, object>("test", _request, TestContext.CancellationTokenSource.Token);
+				await client.PutAsync<object, object>("test", _request, TestContext.CancellationToken);
 			});
 		}
 
@@ -79,7 +79,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
 			{
-				await client.PutAsync<object, object>(path, _request, TestContext.CancellationTokenSource.Token);
+				await client.PutAsync<object, object>(path, _request, TestContext.CancellationToken);
 			});
 		}
 
@@ -92,7 +92,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<ArgumentException>(async () =>
 			{
-				await client.PutAsync<object, object>("foo?bar=baz", _request, TestContext.CancellationTokenSource.Token);
+				await client.PutAsync<object, object>("foo?bar=baz", _request, TestContext.CancellationToken);
 			});
 		}
 
@@ -109,7 +109,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PutAsync<TestClass, TestClass>("test", _request, TestContext.CancellationTokenSource.Token);
+			var response = await client.PutAsync<TestClass, TestClass>("test", _request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -161,7 +161,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PutAsync<TestClass, StringContent>("test", stringContent, TestContext.CancellationTokenSource.Token);
+			var response = await client.PutAsync<TestClass, StringContent>("test", stringContent, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -212,7 +212,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PutAsync<TestClass, object>("putput", null, TestContext.CancellationTokenSource.Token);
+			var response = await client.PutAsync<TestClass, object>("putput", null, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -264,7 +264,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			try
 			{
 				// Act
-				await client.PutAsync<object, object>("foo", _request, TestContext.CancellationTokenSource.Token);
+				await client.PutAsync<object, object>("foo", _request, TestContext.CancellationToken);
 				Assert.Fail();
 			}
 			catch (AuthenticationException ex)
@@ -289,7 +289,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			var client = GetClient();
 
 			// Act
-			var response = await client.PutAsync<string, TestClass>("some-awesome-path", _request, TestContext.CancellationTokenSource.Token);
+			var response = await client.PutAsync<string, TestClass>("some-awesome-path", _request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -347,7 +347,7 @@ namespace Cloudflare.Tests.CloudflareClientTests
 			// Act & Assert
 			await Assert.ThrowsExactlyAsync<JsonReaderException>(async () =>
 			{
-				await client.PutAsync<TestClass, TestClass>("some-path", _request, TestContext.CancellationTokenSource.Token);
+				await client.PutAsync<TestClass, TestClass>("some-path", _request, TestContext.CancellationToken);
 			});
 		}
 

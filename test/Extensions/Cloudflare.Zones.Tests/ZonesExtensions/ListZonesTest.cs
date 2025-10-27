@@ -104,7 +104,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListZones(cancellationToken: TestContext.CancellationTokenSource.Token);
+			var response = await client.ListZones(cancellationToken: TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -133,7 +133,7 @@ namespace Cloudflare.Zones.Tests.ZonesExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ListZones(filter, TestContext.CancellationTokenSource.Token);
+			var response = await client.ListZones(filter, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

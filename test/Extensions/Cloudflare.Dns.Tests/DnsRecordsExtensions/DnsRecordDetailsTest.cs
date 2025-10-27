@@ -61,7 +61,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -103,7 +103,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -144,7 +144,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -185,7 +185,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -226,7 +226,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -267,7 +267,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -308,7 +308,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -349,7 +349,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -390,7 +390,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -431,7 +431,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -472,7 +472,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -513,7 +513,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -554,7 +554,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -595,7 +595,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -636,7 +636,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -677,7 +677,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -718,7 +718,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -759,7 +759,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -800,7 +800,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -841,7 +841,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -882,7 +882,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -908,7 +908,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -935,7 +935,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationTokenSource.Token);
+			var response = await client.DnsRecordDetails(ZoneId, RecordId, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);

@@ -57,7 +57,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ImportDnsRecords(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.ImportDnsRecords(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -75,7 +75,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var part = request.First();
 			Assert.AreEqual("file", part.Headers.ContentDisposition.Name);
 			Assert.IsInstanceOfType<ByteArrayContent>(part);
-			Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+			Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 			_clientMock.Verify(m => m.PostAsync<RecordImportResponse, MultipartFormDataContent>($"/zones/{ZoneId}/dns_records/import", It.IsAny<MultipartFormDataContent>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -93,7 +93,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 				var client = GetClient();
 
 				// Act
-				var response = await client.ImportDnsRecords(_request, TestContext.CancellationTokenSource.Token);
+				var response = await client.ImportDnsRecords(_request, TestContext.CancellationToken);
 
 				// Assert
 				Assert.IsNotNull(response);
@@ -111,7 +111,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 				var part = request.First();
 				Assert.AreEqual("file", part.Headers.ContentDisposition.Name);
 				Assert.IsInstanceOfType<ByteArrayContent>(part);
-				Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+				Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 				_clientMock.Verify(m => m.PostAsync<RecordImportResponse, MultipartFormDataContent>($"/zones/{ZoneId}/dns_records/import", It.IsAny<MultipartFormDataContent>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 				_clientMock.VerifyNoOtherCalls();
@@ -132,7 +132,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act
-			var response = await client.ImportDnsRecords(_request, TestContext.CancellationTokenSource.Token);
+			var response = await client.ImportDnsRecords(_request, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsNotNull(response);
@@ -150,12 +150,12 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var part = request.First();
 			Assert.AreEqual("proxied", part.Headers.ContentDisposition.Name);
 			Assert.IsInstanceOfType<StringContent>(part);
-			Assert.AreEqual(proxied.ToString().ToLower(), await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+			Assert.AreEqual(proxied.ToString().ToLower(), await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 			part = request.Last();
 			Assert.AreEqual("file", part.Headers.ContentDisposition.Name);
 			Assert.IsInstanceOfType<ByteArrayContent>(part);
-			Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+			Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 			_clientMock.Verify(m => m.PostAsync<RecordImportResponse, MultipartFormDataContent>($"/zones/{ZoneId}/dns_records/import", It.IsAny<MultipartFormDataContent>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 			_clientMock.VerifyNoOtherCalls();
@@ -176,7 +176,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 				var client = GetClient();
 
 				// Act
-				var response = await client.ImportDnsRecords(_request, TestContext.CancellationTokenSource.Token);
+				var response = await client.ImportDnsRecords(_request, TestContext.CancellationToken);
 
 				// Assert
 				Assert.IsNotNull(response);
@@ -194,12 +194,12 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 				var part = request.First();
 				Assert.AreEqual("proxied", part.Headers.ContentDisposition.Name);
 				Assert.IsInstanceOfType<StringContent>(part);
-				Assert.AreEqual(proxied.ToString().ToLower(), await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+				Assert.AreEqual(proxied.ToString().ToLower(), await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 				part = request.Last();
 				Assert.AreEqual("file", part.Headers.ContentDisposition.Name);
 				Assert.IsInstanceOfType<ByteArrayContent>(part);
-				Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationTokenSource.Token));
+				Assert.AreEqual(BindConfigContent, await part.ReadAsStringAsync(TestContext.CancellationToken));
 
 				_clientMock.Verify(m => m.PostAsync<RecordImportResponse, MultipartFormDataContent>($"/zones/{ZoneId}/dns_records/import", It.IsAny<MultipartFormDataContent>(), It.IsAny<IQueryParameterFilter>(), It.IsAny<CancellationToken>()), Times.Once);
 				_clientMock.VerifyNoOtherCalls();
@@ -221,7 +221,7 @@ namespace Cloudflare.Dns.Tests.DnsRecordsExtensions
 			var client = GetClient();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.ImportDnsRecords(_request, TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => await client.ImportDnsRecords(_request, TestContext.CancellationToken));
 		}
 
 		private ICloudflareClient GetClient()

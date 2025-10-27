@@ -49,7 +49,7 @@ namespace Cloudflare.Zones.Tests.ZoneSettingsExtensions
 
 			// Act
 #pragma warning disable CS0618
-			var response = await client.GetAllZoneSettings(ZoneId, TestContext.CancellationTokenSource.Token);
+			var response = await client.GetAllZoneSettings(ZoneId, TestContext.CancellationToken);
 #pragma warning restore CS0618
 
 			// Assert
