@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Additional articles for the documentation.
 - `DateTime` extensions for ISO 8601 formatting.
 - DNS Analytics
+- Zone Transfers
 
 
 ## [v0.1.0], [zones/v0.1.0], [dns/v0.1.0] - 2025-08-05
