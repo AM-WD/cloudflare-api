@@ -13,7 +13,13 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 
 ### [DNS]
 
-### [DNSSEC]
+#### [Analytics]
+
+- [Get Report Table](https://developers.cloudflare.com/api/resources/dns/subresources/analytics/subresources/reports/methods/get/)
+- [Get Report By Time](https://developers.cloudflare.com/api/resources/dns/subresources/analytics/subresources/reports/subresources/bytimes/methods/get/)
+
+
+#### [DNSSEC]
 
 - [Delete DNSSEC Records](https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/methods/delete/)
 - [Edit DNSSEC Status](https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/methods/edit/)
@@ -65,6 +71,7 @@ Published under MIT License (see [choose a license])
 [Account Custom Nameservers]: https://developers.cloudflare.com/api/resources/custom_nameservers/
 
 [DNS]: https://developers.cloudflare.com/api/resources/dns/
+	[Analytics]: https://developers.cloudflare.com/api/resources/dns/subresources/analytics/
 	[DNSSEC]: https://developers.cloudflare.com/api/resources/dns/subresources/dnssec/
 	[Records]: https://developers.cloudflare.com/api/resources/dns/subresources/records/
 	[Settings]: https://developers.cloudflare.com/api/resources/dns/subresources/settings/
