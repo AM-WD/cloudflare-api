@@ -122,6 +122,12 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [Delete DNS Firewall Cluster](https://developers.cloudflare.com/api/resources/dns_firewall/methods/delete/)
 
 
+#### [Analytics (Firewall)]
+
+- [Get Report Table](https://developers.cloudflare.com/api/resources/dns_firewall/subresources/analytics/subresources/reports/methods/get/)
+- [Get Report By Time](https://developers.cloudflare.com/api/resources/dns_firewall/subresources/analytics/subresources/reports/subresources/bytimes/methods/get/)
+
+
 #### [Reverse DNS]
 
 - [Show DNS Firewall Cluster Reverse DNS](https://developers.cloudflare.com/api/resources/dns_firewall/subresources/reverse_dns/methods/get/)
@@ -152,5 +158,7 @@ Published under MIT License (see [choose a license])
 		[Outgoing]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/outgoing/
 		[Peers]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/peers/
 		[TSIGs]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/tsigs/
+
 [DNS Firewall]: https://developers.cloudflare.com/api/resources/dns_firewall/
+	[Analytics (Firewall)]: https://developers.cloudflare.com/api/resources/dns_firewall/subresources/analytics/
 	[Reverse DNS]: https://developers.cloudflare.com/api/resources/dns_firewall/subresources/reverse_dns/

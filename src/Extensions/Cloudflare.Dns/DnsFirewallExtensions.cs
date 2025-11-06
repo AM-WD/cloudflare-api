@@ -155,6 +155,43 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 		#endregion DNS Firewall
 
+		#region Analytics
+
+		/// <summary>
+		/// Retrieves a list of summarised aggregate metrics over a given time period.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="dnsFirewallId">The DNS firewall identifier.</param>
+		/// <param name="options">Filter options (optional).</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		/// <returns></returns>
+		public static Task<CloudflareResponse<DnsAnalyticsReport>> GetDnsFirewallAnalyticsReport(this ICloudflareClient client, string accountId, string dnsFirewallId, GetDnsAnalyticsReportFilter? options = null, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+			dnsFirewallId.ValidateCloudflareId();
+
+			return client.GetAsync<DnsAnalyticsReport>($"/accounts/{accountId}/dns_firewall/{dnsFirewallId}/dns_analytics/report", options, cancellationToken);
+		}
+
+		/// <summary>
+		/// Retrieves a list of aggregate metrics grouped by time interval.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="dnsFirewallId">The DNS firewall identifier.</param>
+		/// <param name="options">Filter options (optional).</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<DnsAnalyticsByTime>> GetDnsFirewallAnalyticsByTime(this ICloudflareClient client, string accountId, string dnsFirewallId, GetDnsAnalyticsByTimeFilter? options = null, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+			dnsFirewallId.ValidateCloudflareId();
+
+			return client.GetAsync<DnsAnalyticsByTime>($"/accounts/{accountId}/dns_firewall/{dnsFirewallId}/dns_analytics/report/bytime", options, cancellationToken);
+		}
+
+		#endregion Analytics
+
 		#region Reverse DNS
 
 		/// <summary>
