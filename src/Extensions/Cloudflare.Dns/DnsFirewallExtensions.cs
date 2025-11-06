@@ -9,6 +9,8 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 	/// </summary>
 	public static class DnsFirewallExtensions
 	{
+		#region DNS Firewall
+
 		/// <summary>
 		/// List DNS Firewall clusters for an account.
 		/// </summary>
@@ -150,5 +152,45 @@ namespace AMWD.Net.Api.Cloudflare.Dns
 
 			return client.DeleteAsync<Identifier>($"/accounts/{accountId}/dns_firewall/{dnsFirewallId}", null, cancellationToken);
 		}
+
+		#endregion DNS Firewall
+
+		#region Reverse DNS
+
+		/// <summary>
+		/// Show reverse DNS configuration (PTR records) for a DNS Firewall cluster
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="accountId">The account identifier.</param>
+		/// <param name="dnsFirewallId">The DNS firewall identifier.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<ReverseDnsResponse>> ShowDNSFirewallClusterReverseDNS(this ICloudflareClient client, string accountId, string dnsFirewallId, CancellationToken cancellationToken = default)
+		{
+			accountId.ValidateCloudflareId();
+			dnsFirewallId.ValidateCloudflareId();
+
+			return client.GetAsync<ReverseDnsResponse>($"/accounts/{accountId}/dns_firewall/{dnsFirewallId}/reverse_dns", null, cancellationToken);
+		}
+
+		/// <summary>
+		/// Update reverse DNS configuration (PTR records) for a DNS Firewall cluster.
+		/// </summary>
+		/// <param name="client">The <see cref="ICloudflareClient"/> instance.</param>
+		/// <param name="request">The request.</param>
+		/// <param name="cancellationToken">A cancellation token used to propagate notification that this operation should be canceled.</param>
+		public static Task<CloudflareResponse<ReverseDnsResponse>> UpdateDNSFirewallClusterReverseDNS(this ICloudflareClient client, UpdateDNSFirewallClusterReverseDNSRequest request, CancellationToken cancellationToken = default)
+		{
+			request.AccountId.ValidateCloudflareId();
+			request.DnsFirewallId.ValidateCloudflareId();
+
+			var req = new InternalUpdateDNSFirewallClusterReverseDNSRequest
+			{
+				Ptr = request.ReverseDNS
+			};
+
+			return client.PatchAsync<ReverseDnsResponse, InternalUpdateDNSFirewallClusterReverseDNSRequest>($"/accounts/{request.AccountId}/dns_firewall/{request.DnsFirewallId}/reverse_dns", req, cancellationToken);
+		}
+
+		#endregion Reverse DNS
 	}
 }

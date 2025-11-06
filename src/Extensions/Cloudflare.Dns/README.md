@@ -122,6 +122,13 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [Delete DNS Firewall Cluster](https://developers.cloudflare.com/api/resources/dns_firewall/methods/delete/)
 
 
+#### [Reverse DNS]
+
+- [Show DNS Firewall Cluster Reverse DNS](https://developers.cloudflare.com/api/resources/dns_firewall/subresources/reverse_dns/methods/get/)
+- [Update DNS Firewall Cluster Reverse DNS](https://developers.cloudflare.com/api/resources/dns_firewall/subresources/reverse_dns/methods/edit/)
+
+
+
 ---
 
 Published under MIT License (see [choose a license])
@@ -146,3 +153,4 @@ Published under MIT License (see [choose a license])
 		[Peers]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/peers/
 		[TSIGs]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/tsigs/
 [DNS Firewall]: https://developers.cloudflare.com/api/resources/dns_firewall/
+	[Reverse DNS]: https://developers.cloudflare.com/api/resources/dns_firewall/subresources/reverse_dns/
