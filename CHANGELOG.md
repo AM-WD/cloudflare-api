@@ -2,21 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] / [DNS] / [Zones]
 
 ### Added
 
-- New automatic documentation generation using docfx.
-- Additional articles for the documentation.
-- `DateTime` extensions for ISO 8601 formatting.
-- DNS Analytics
-- Zone Transfers
+- (General) New automatic documentation generation using docfx
+- (General) Additional articles for the documentation
+- (Core/Zone) `DateTime` extensions for ISO 8601 formatting
+- (DNS) DNS Analytics
+- (DNS) Zone Transfers
+- (DNS) DNS Firewall
+
+### Changed
+
+- (Core/Zone) Use the new `DateTime` extensions for ISO 8601 formatting
 
 
-## [v0.1.0], [zones/v0.1.0], [dns/v0.1.0] - 2025-08-05
+## [v0.1.0], [dns/v0.1.0], [zones/v0.1.0] - 2025-08-05
 
 _Initial Release_
 
