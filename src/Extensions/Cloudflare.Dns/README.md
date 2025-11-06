@@ -113,6 +113,15 @@ This package contains the feature set of the _DNS_ section of the Cloudflare API
 - [Delete TSIG](https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/tsigs/methods/delete/)
 
 
+### [DNS Firewall]
+
+- [List DNS Firewall Clusters](https://developers.cloudflare.com/api/resources/dns_firewall/methods/list/)
+- [DNS Firewall Cluster Details](https://developers.cloudflare.com/api/resources/dns_firewall/methods/get/)
+- [Create DNS Firewall Cluster](https://developers.cloudflare.com/api/resources/dns_firewall/methods/create/)
+- [Update DNS Firewall Cluster](https://developers.cloudflare.com/api/resources/dns_firewall/methods/update/)
+- [Delete DNS Firewall Cluster](https://developers.cloudflare.com/api/resources/dns_firewall/methods/delete/)
+
+
 ---
 
 Published under MIT License (see [choose a license])
@@ -136,3 +145,4 @@ Published under MIT License (see [choose a license])
 		[Outgoing]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/outgoing/
 		[Peers]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/peers/
 		[TSIGs]: https://developers.cloudflare.com/api/resources/dns/subresources/zone_transfers/subresources/tsigs/
+[DNS Firewall]: https://developers.cloudflare.com/api/resources/dns_firewall/
