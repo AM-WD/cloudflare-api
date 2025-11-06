@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] / [DNS] / [Zones]
 
+_No changes yet_
+
+
+## [v0.1.1], [dns/v0.2.0], [zones/v0.1.1] - 2025-11-06
+
 ### Added
 
 - (General) New automatic documentation generation using docfx
@@ -33,12 +38,15 @@ _Initial Release_
 
 
 
-[Unreleased]: https://github.com/AM-WD/cloudflare-api/compare/v0.1.0...HEAD
-[DNS]: https://github.com/AM-WD/cloudflare-api/compare/dns/v0.1.0...HEAD
-[Zones]: https://github.com/AM-WD/cloudflare-api/compare/zones/v0.1.0...HEAD
+[Unreleased]: https://github.com/AM-WD/cloudflare-api/compare/v0.1.1...HEAD
+[DNS]: https://github.com/AM-WD/cloudflare-api/compare/dns/v0.2.0...HEAD
+[Zones]: https://github.com/AM-WD/cloudflare-api/compare/zones/v0.1.1...HEAD
 
 [v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/v0.1.0
+[v0.1.1]: https://github.com/AM-WD/cloudflare-api/compare/v0.1.0...v0.1.1
 
 [dns/v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/dns/v0.1.0
+[dns/v0.2.0]: https://github.com/AM-WD/cloudflare-api/compare/dns/v0.1.0...dns/v0.2.0
 
 [zones/v0.1.0]: https://github.com/AM-WD/cloudflare-api/commits/zones/v0.1.0
+[zones/v0.1.1]: https://github.com/AM-WD/cloudflare-api/compare/zones/v0.1.0...zones/v0.1.1
