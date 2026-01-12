@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated tests to .NET 10
 - Updated solution to VS 2026
+- Migrated main repository from Gitlab to Gitea (CI/CD)
 
 
 ## v0.1.1, dns/v0.2.0, zones/v0.1.1 - 2025-11-06

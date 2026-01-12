@@ -28,8 +28,6 @@ This package contains the feature set of the _Domain/Zone Management_ section of
 
 Published under [MIT License] (see [choose a license])
 
-[![Buy me a Coffee](https://shields.am-wd.de/badge/PayPal-Buy_me_a_Coffee-yellow?style=flat&logo=paypal)](https://link.am-wd.de/donate)
-
 
 
 [Cloudflare]: src/Cloudflare/README.md

@@ -16,8 +16,8 @@
     <AssemblyOriginatorKeyFile>../../cloudflare-api.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <!-- Only build package for tagged releases or Debug on CI (only dev NuGet feed) -->
-  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(CI_COMMIT_TAG)', '^v[0-9.]+')) or ('$(Configuration)' == 'Debug' and '$(GITLAB_CI)' == 'true')">
+  <!-- Only build package for tagged releases -->
+  <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(CI_COMMIT_TAG)', '^v[0-9.]+'))">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

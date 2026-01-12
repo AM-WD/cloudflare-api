@@ -1,8 +1,13 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/Solution Items/" />
   <Folder Name="/Solution Items/build/">
-    <File Path=".gitlab-ci.yml" />
     <File Path="Directory.Build.props" />
+  </Folder>
+  <Folder Name="/Solution Items/build/workflows/">
+    <File Path=".gitea/workflows/branch-build.yml" />
+    <File Path=".gitea/workflows/core-build.yml" />
+    <File Path=".gitea/workflows/docs-build.yml" />
+    <File Path=".gitea/workflows/extensions-build.yml" />
   </Folder>
   <Folder Name="/Solution Items/config/">
     <File Path=".editorconfig" />
